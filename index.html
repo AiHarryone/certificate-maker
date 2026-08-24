@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Certificate Maker – Create Stunning Certificates of Completion &amp; Awards Online</title>
+<meta name="description" content="Create beautiful certificates of completion, award certificates and recognition certificates online in seconds. Free templates, instant PNG download, no sign-up required.">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Trebuchet MS','Segoe UI',sans-serif;background:#f4f7fb;color:#2c3e50;line-height:1.6;}
+  header{background:linear-gradient(135deg,#3a7bd5,#00d2ff);color:#fff;padding:20px 0;margin-bottom:30px;}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 20px;}
+  .nav{display:flex;justify-content:space-between;align-items:center;}
+  .logo{font-weight:bold;font-size:22px;}
+  .nav a{color:#fff;text-decoration:none;font-weight:bold;margin-left:20px;}
+  .nav a:hover{text-decoration:underline;}
+  h1{color:#2c3e50;margin-bottom:10px;font-size:32px;}
+  .sub{color:#7a8ea8;margin-bottom:24px;font-size:16px;}
+  .layout{display:grid;grid-template-columns:1fr 380px;gap:30px;align-items:start;}
+  @media(max-width:900px){.layout{grid-template-columns:1fr;}}
+  .panel{background:#fff;border-radius:14px;padding:22px;box-shadow:0 4px 14px rgba(58,123,213,.1);}
+  .panel h2{color:#3a7bd5;font-size:18px;margin-bottom:14px;}
+  label{display:block;font-weight:bold;margin:12px 0 5px;color:#34495e;font-size:14px;}
+  input[type=text],textarea,select{width:100%;padding:10px;border:2px solid #d6e2f0;border-radius:8px;font-size:14px;background:#fff;font-family:inherit;}
+  textarea{min-height:60px;resize:vertical;}
+  input[type=color]{width:50px;height:38px;border:2px solid #d6e2f0;border-radius:8px;padding:2px;background:#fff;}
+  .row{display:flex;gap:10px;}
+  .row > div{flex:1;}
+  .btn{display:inline-block;background:#3a7bd5;color:#fff;border:none;padding:12px 26px;border-radius:30px;font-size:16px;font-weight:bold;cursor:pointer;margin-top:16px;}
+  .btn:hover{background:#2c6ab3;}
+  .btn.green{background:#27ae60;}
+  .btn.green:hover{background:#1f9b52;}
+  .btn.ghost{background:#fff;color:#3a7bd5;border:2px solid #3a7bd5;}
+  .btn:disabled{background:#a0b8d0;cursor:not-allowed;}
+  .preview-wrap{background:#fff;border-radius:14px;padding:22px;box-shadow:0 4px 14px rgba(58,123,213,.1);}
+  .preview-wrap h2{color:#3a7bd5;font-size:18px;margin-bottom:14px;}
+  #previewCanvas{width:100%;height:auto;border:1px solid #d6e2f0;border-radius:8px;background:#fff;}
+  .watermark{color:#c0392b;font-weight:bold;font-size:13px;margin-top:10px;text-align:center;}
+  .tpl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px;}
+  @media(max-width:600px){.tpl-grid{grid-template-columns:repeat(2,1fr);}}
+  .tpl{background:#f4f7fb;border:2px solid #d6e2f0;border-radius:8px;padding:10px;text-align:center;cursor:pointer;font-size:12px;color:#34495e;transition:.2s;}
+  .tpl:hover{border-color:#3a7bd5;background:#eef5ff;}
+  .tpl.active{border-color:#3a7bd5;background:#eef5ff;box-shadow:0 2px 8px rgba(58,123,213,.2);}
+  .tpl .swatch{display:block;width:100%;height:40px;border-radius:5px;margin-bottom:6px;}
+  .tpl span{font-weight:bold;}
+  .locked{position:relative;}
+  .locked .lock{position:absolute;top:4px;right:6px;background:#e74c3c;color:#fff;border-radius:50%;width:20px;height:20px;font-size:12px;line-height:20px;text-align:center;opacity:.9;}
+  footer{background:#2c3e50;color:#a8bdc9;padding:24px 0;text-align:center;font-size:13px;margin-top:50px;}
+  footer a{color:#7ec8e3;text-decoration:none;}
+  #paywall{display:none;position:fixed;inset:0;background:rgba(30,60,80,.7);z-index:30;align-items:center;justify-content:center;}
+  #paywall .box{background:#fff;border-radius:18px;padding:34px;max-width:420px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.3);}
+  #paywall h2{color:#2c3e50;margin-bottom:10px;}
+  #paywall .price{font-size:34px;color:#3a7bd5;font-weight:bold;margin:14px 0;}
+  #paywall .small{font-size:13px;color:#7a8ea8;}
+  #unlockInput{width:100%;padding:12px;border:2px solid #d6e2f0;border-radius:8px;font-size:14px;margin:10px 0;}
+  #unlockBtn{margin-top:8px;background:#27ae60;color:#fff;border:none;padding:12px 20px;border-radius:30px;font-weight:bold;cursor:pointer;width:100%;font-size:15px;}
+  .banner{background:#d6f2ff;color:#2c6d8f;padding:10px 16px;border-radius:10px;margin:0 0 20px;font-weight:bold;text-align:center;}
+  .save-actions{display:flex;gap:10px;}
+  .save-actions .btn{flex:1;text-align:center;margin-top:12px;}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap nav">
+    <div class="logo">🏆 Certificate Maker</div>
+    <nav>
+      <a href="index.html">Certificate Maker</a>
+      <a href="certificate-of-completion-template.html">Templates</a>
+      <a href="privacy.html">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <h1>Create Beautiful Certificates Online — Free</h1>
+  <p class="sub">Design professional certificates of completion, awards and recognition in seconds. No sign-up, no watermarks on your own design. Export as high-quality PNG.</p>
+
+  <div class="layout">
+    <!-- LEFT: Form -->
+    <div class="panel">
+      <h2>1. Choose a Template</h2>
+      <div class="tpl-grid" id="tplGrid"></div>
+
+      <h2 style="margin-top:20px;">2. Add Your Details</h2>
+      <label>Recipient Name</label>
+      <input type="text" id="recipient" placeholder="e.g. Sarah Johnson">
+      <label>Course / Award Title</label>
+      <input type="text" id="course" placeholder="e.g. Advanced Web Development">
+      <label>Description (optional)</label>
+      <textarea id="desc" placeholder="e.g. For successfully completing the full course curriculum with distinction."></textarea>
+      <label>Issuer / Organization</label>
+      <input type="text" id="issuer" placeholder="e.g. SkillBridge Academy">
+      <label>Date</label>
+      <input type="text" id="date" placeholder="e.g. August 24, 2026">
+      <label>Signature Line</label>
+      <input type="text" id="signature" placeholder="e.g. Dr. Emily Carter">
+
+      <h2 style="margin-top:20px;">3. Customize</h2>
+      <div class="row">
+        <div><label>Border Color</label><input type="color" id="borderColor" value="#3a7bd5"></div>
+        <div><label>Text Color</label><input type="color" id="textColor" value="#2c3e50"></div>
+      </div>
+
+      <div class="save-actions">
+        <button class="btn green" id="downloadBtn">⬇ Download PNG</button>
+        <button class="btn ghost" id="shareBtn">🔗 Share</button>
+      </div>
+      <div class="watermark" id="wmText"></div>
+    </div>
+
+    <!-- RIGHT: Preview -->
+    <div class="preview-wrap">
+      <h2>Live Preview</h2>
+      <canvas id="previewCanvas" width="1200" height="850"></canvas>
+    </div>
+  </div>
+</div>
+
+<div id="paywall">
+  <div class="box">
+    <h2>Unlock Premium Templates &amp; Watermark-Free Downloads</h2>
+    <p class="small">Get instant access to all <b>premium certificate templates</b>, <b>no watermark</b> on downloads, and <b>unlimited designs</b>.</p>
+    <p class="price">$7 <span class="small" style="font-size:14px;">one-time</span></p>
+    <a class="btn" href="https://www.creem.io/payment/prod_5W0dpkrCU5C8iS3uO6EdhW" style="text-decoration:none;width:100%;text-align:center;">Get Unlimited Access</a>
+    <p class="small" style="margin:12px 0 4px;">Already purchased? Enter your unlock code:</p>
+    <input type="text" id="unlockInput" placeholder="e.g. CERT-XXXX-2026">
+    <button id="unlockBtn">Unlock</button>
+  </div>
+</div>
+
+<footer>
+  Made for teachers, trainers and creators who value beautiful certificates. Questions? Contact: Ai_harryone@outlook.com · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a>
+</footer>
+
+<script>
+(function(){
+  // ---------- Templates ----------
+  // Each template: id, name, colors (gradient), unlocked (bool), accent
+  var TEMPLATES = [
+    {id:'classic', name:'Classic Blue', unlocked:true, c1:'#e8f0fe', c2:'#ffffff', border:'#3a7bd5', corner:'#d6e2f0'},
+    {id:'gold', name:'Elegant Gold', unlocked:false, c1:'#fdf6e3', c2:'#ffffff', border:'#c9a227', corner:'#f0e6c8'},
+    {id:'green', name:'Forest Green', unlocked:false, c1:'#e8f5e9', c2:'#ffffff', border:'#2e7d32', corner:'#c8e6c9'},
+    {id:'royal', name:'Royal Purple', unlocked:false, c1:'#f3e5f5', c2:'#ffffff', border:'#6a1b9a', corner:'#e1bee7'},
+    {id:'ocean', name:'Ocean Teal', unlocked:false, c1:'#e0f7fa', c2:'#ffffff', border:'#00838f', corner:'#b2ebf2'},
+    {id:'crimson', name:'Crimson Red', unlocked:false, c1:'#fce4ec', c2:'#ffffff', border:'#c62828', corner:'#f8bbd0'}
+  ];
+  var FREE_TPLS = 1; // number of free templates
+  var PREMIUM_PRICE = 7;
+
+  var locked = !localStorage.getItem('certmaker_unlocked');
+  var selectedTpl = 0;
+
+  // ---------- State ----------
+  var canvas = document.getElementById('previewCanvas');
+  var ctx = canvas.getContext('2d');
+
+  // ---------- Build template grid ----------
+  var grid = document.getElementById('tplGrid');
+  TEMPLATES.forEach(function(t, i){
+    var d = document.createElement('div');
+    d.className = 'tpl' + (i===0?' active':'') + (t.unlocked?'':' locked');
+    d.innerHTML = '<span class="swatch" style="background:linear-gradient(135deg,'+t.c1+','+t.c2+');"></span><span>'+t.name+'</span>' + (t.unlocked?'':'<div class="lock">🔒</div>');
+    d.onclick = function(){
+      if(locked && !t.unlocked){
+        showPaywall();
+        return;
+      }
+      selectedTpl = i;
+      document.querySelectorAll('.tpl').forEach(function(x,idx){ x.className = 'tpl' + (idx===i?' active':'') + (TEMPLATES[idx].unlocked?'':' locked'); });
+      render();
+    };
+    grid.appendChild(d);
+  });
+
+  // ---------- Render ----------
+  function render(){
+    var t = TEMPLATES[selectedTpl];
+    var W = canvas.width, H = canvas.height;
+    var m = 30;
+    // background
+    var grad = ctx.createLinearGradient(0,0,W,H);
+    grad.addColorStop(0,t.c1); grad.addColorStop(1,t.c2);
+    ctx.fillStyle = grad;
+    ctx.fillRect(0,0,W,H);
+    // border frame
+    ctx.strokeStyle = document.getElementById('borderColor').value;
+    ctx.lineWidth = 10;
+    ctx.strokeRect(m/2,m/2,W-m,H-m);
+    ctx.strokeStyle = t.corner;
+    ctx.lineWidth = 3;
+    ctx.strokeRect(m+8,m+8,W-m-16,H-m-16);
+    // decorative top ribbon
+    ctx.fillStyle = t.border;
+    ctx.fillRect(0,0,W,14);
+    ctx.fillRect(0,H-14,W,14);
+
+    // center badge
+    ctx.fillStyle = t.border;
+    ctx.beginPath();
+    ctx.arc(W/2, 140, 46, 0, Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 34px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('🏆', W/2, 152);
+
+    var textColor = document.getElementById('textColor').value;
+
+    // "CERTIFICATE"
+    ctx.fillStyle = textColor;
+    ctx.font = 'bold 40px Georgia, serif';
+    ctx.fillText('C E R T I F I C A T E', W/2, 235);
+
+    // "OF COMPLETION" / "OF ACHIEVEMENT"
+    ctx.font = 'italic 26px Georgia, serif';
+    ctx.fillStyle = t.border;
+    ctx.fillText('OF COMPLETION', W/2, 278);
+
+    // "This is proudly presented to"
+    ctx.font = '18px Georgia, serif';
+    ctx.fillStyle = '#555';
+    ctx.fillText('This certificate is proudly presented to', W/2, 330);
+
+    // Recipient name
+    var recipient = document.getElementById('recipient').value || 'Your Name';
+    ctx.font = 'bold 48px Georgia, serif';
+    ctx.fillStyle = textColor;
+    ctx.fillText(recipient, W/2, 395);
+
+    // decorative line under name
+    ctx.strokeStyle = t.border;
+    ctx.lineWidth = 2;
+    var lineW = 300;
+    ctx.beginPath();
+    ctx.moveTo(W/2 - lineW/2, 415);
+    ctx.lineTo(W/2 + lineW/2, 415);
+    ctx.stroke();
+
+    // course
+    var course = document.getElementById('course').value || 'Your Course Name';
+    ctx.font = '22px Georgia, serif';
+    ctx.fillStyle = '#333';
+    ctx.fillText('for successfully completing', W/2, 460);
+    ctx.font = 'bold 30px Georgia, serif';
+    ctx.fillStyle = t.border;
+    ctx.fillText(course, W/2, 505);
+
+    // description
+    var desc = document.getElementById('desc').value;
+    if(desc){
+      ctx.font = 'italic 16px Georgia, serif';
+      ctx.fillStyle = '#555';
+      wrapText(desc, W/2, 555, 700, 22);
+    }
+
+    // issuer + date
+    ctx.font = '16px Georgia, serif';
+    ctx.fillStyle = '#555';
+    var issuer = document.getElementById('issuer').value || 'Your Organization';
+    ctx.fillText('Issued by ' + issuer, W/2, H - 130);
+
+    // signature
+    var sig = document.getElementById('signature').value || 'Signature';
+    ctx.font = 'italic 18px Georgia, serif';
+    ctx.fillStyle = '#333';
+    ctx.fillText(sig, W/2, H - 70);
+    ctx.strokeStyle = '#999';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(W/2 - 110, H - 92);
+    ctx.lineTo(W/2 + 110, H - 92);
+    ctx.stroke();
+    ctx.font = '13px Arial';
+    ctx.fillStyle = '#888';
+    ctx.fillText('Authorized Signature', W/2, H - 55);
+
+    // date at bottom
+    var date = document.getElementById('date').value || 'August 24, 2026';
+    ctx.fillStyle = '#888';
+    ctx.font = '15px Georgia, serif';
+    ctx.fillText(date, W/2, H - 130);
+
+    // watermark if locked
+    var wm = document.getElementById('wmText');
+    if(locked){
+      ctx.font = 'bold 30px Arial';
+      ctx.fillStyle = 'rgba(231,76,60,0.25)';
+      ctx.save();
+      ctx.translate(W/2, H/2 + 60);
+      ctx.rotate(-0.3);
+      ctx.fillText('PREMIUM', 0, 0);
+      ctx.restore();
+      wm.textContent = '🔒 Free version — watermark will appear on download. Unlock to remove.';
+      wm.style.display = 'block';
+    } else {
+      wm.style.display = 'none';
+    }
+  }
+
+  function wrapText(text, x, y, maxWidth, lineHeight){
+    var words = text.split(' ');
+    var line = '';
+    var yy = y;
+    for(var n=0;n<words.length;n++){
+      var test = line + words[n] + ' ';
+      if(ctx.measureText(test).width > maxWidth && n>0){
+        ctx.fillText(line.trim(), x, yy);
+        line = words[n] + ' ';
+        yy += lineHeight;
+      } else {
+        line = test;
+      }
+    }
+    ctx.fillText(line.trim(), x, yy);
+  }
+
+  // ---------- Show paywall ----------
+  function showPaywall(){
+    document.getElementById('paywall').style.display = 'flex';
+  }
+
+  // ---------- Download ----------
+  function download(){
+    render();
+    var link = document.createElement('a');
+    link.download = 'certificate.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  }
+
+  // ---------- Share ----------
+  function share(){
+    render();
+    canvas.toBlob(function(blob){
+      if(navigator.share && blob){
+        navigator.share({ files:[new File([blob], 'certificate.png', {type:'image/png'})], title:'My Certificate' }).catch(function(){});
+      } else {
+        var link = document.createElement('a');
+        link.download = 'certificate.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      }
+    });
+  }
+
+  // ---------- Unlock ----------
+  function unlockViaApi(code){
+    // Backend unlock endpoint (Cloudflare Worker or local)
+    var UNLOCK_API = 'https://certificate-maker-unlock.aiharryone.workers.dev';
+    return fetch(UNLOCK_API + '/unlock', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({ key: code })
+    }).then(function(r){return r.json().catch(function(){return {};});})
+      .then(function(data){
+        if(data.ok){
+          localStorage.setItem('certmaker_unlocked','1');
+          locked = false;
+          document.getElementById('paywall').style.display = 'none';
+          document.getElementById('wmText').style.display = 'none';
+          render();
+          alert('Unlocked! Enjoy premium templates.');
+          return true;
+        }
+        return false;
+      });
+  }
+
+  // ---------- Events ----------
+  document.getElementById('downloadBtn').addEventListener('click', function(){
+    if(locked){ showPaywall(); return; }
+    download();
+  });
+  document.getElementById('shareBtn').addEventListener('click', function(){
+    if(locked){ showPaywall(); return; }
+    share();
+  });
+  document.getElementById('unlockBtn').addEventListener('click', function(){
+    var v = document.getElementById('unlockInput').value.trim();
+    if(!v){ alert('Please enter your unlock code.'); return; }
+    var btn = this; btn.disabled = true; btn.textContent = 'Checking…';
+    unlockViaApi(v).then(function(ok){
+      btn.disabled = false; btn.textContent = 'Unlock';
+      if(!ok) alert('Invalid unlock code. Check your purchase email.');
+    }).catch(function(){ btn.disabled=false; btn.textContent='Unlock'; alert('Could not verify code. Please try again.'); });
+  });
+  // URL ?unlock= param
+  (function(){
+    var m; try{ m=location.search.match(/[?&]unlock=([^&]+)/); }catch(e){}
+    if(m){
+      var code = decodeURIComponent(m[1]).trim();
+      if(code) unlockViaApi(code);
+    }
+  })();
+
+  // re-render on input
+  ['recipient','course','desc','issuer','date','signature','borderColor','textColor'].forEach(function(id){
+    document.getElementById(id).addEventListener('input', render);
+  });
+
+  // init
+  render();
+})();
+</script>
+</body>
+</html>
