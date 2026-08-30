@@ -6,6 +6,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Certificate Maker – Create Stunning Certificates of Completion &amp; Awards Online</title>
 <meta name="description" content="Create beautiful certificates of completion, award certificates and recognition certificates online in seconds. Your first certificate is free; unlock all templates & watermark-free downloads for a one-time $9.99. No sign-up.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Cinzel:wght@400;600&family=Great+Vibes&family=Montserrat:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@400;600&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
   body{font-family:'Trebuchet MS','Segoe UI',sans-serif;background:#f4f7fb;color:#2c3e50;line-height:1.6;}
@@ -130,6 +133,17 @@
       <input type="text" id="signature" placeholder="e.g. Dr. Emily Carter">
 
       <h2 style="margin-top:20px;">3. Customize</h2>
+      <label>Font Style</label>
+      <select id="fontSel">
+        <option value="classic">Classic — Georgia</option>
+        <option value="times">Formal — Times New Roman</option>
+        <option value="garamond">Book — EB Garamond</option>
+        <option value="playfair">Elegant — Playfair Display</option>
+        <option value="cormorant">Refined — Cormorant Garamond</option>
+        <option value="cinzel">Diploma — Cinzel</option>
+        <option value="script">Calligraphy — Great Vibes</option>
+        <option value="modern">Modern — Montserrat</option>
+      </select>
       <div class="row">
         <div><label>Border Color</label><input type="color" id="borderColor" value="#3a7bd5"></div>
         <div><label>Text Color</label><input type="color" id="textColor" value="#2c3e50"></div>
@@ -307,7 +321,7 @@
   function nameAt(W, y, sz, name, ink, serif){ ctx.textAlign='center'; ctx.fillStyle=ink; ctx.font='bold '+sz+'px '+serif; ctx.fillText(name, W/2, y); }
   function line(W, y, accent){ ctx.strokeStyle=accent; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(W/2-150,y); ctx.lineTo(W/2+150,y); ctx.stroke(); }
   function courseBlock(W, y1, y2, course, accent, ink, serif){ ctx.textAlign='center'; ctx.fillStyle=ink; ctx.font='22px '+serif; ctx.fillText('for successfully completing', W/2, y1); ctx.fillStyle=accent; ctx.font='bold 30px '+serif; ctx.fillText(course, W/2, y2); }
-  function descBlock(W, y, desc, ink, serif){ if(desc){ ctx.textAlign='center'; ctx.fillStyle=ink; ctx.font='italic 16px '+serif; wrapText(desc, W/2, y, 700, 22); } }
+  function descBlock(W, y, desc, ink, bodyFont){ if(desc){ ctx.textAlign='center'; ctx.fillStyle=ink; ctx.font='16px '+bodyFont; wrapText(desc, W/2, y, 700, 22); } }
   function footerAt(W, H, issuer, sig, ink, serif){ ctx.textAlign='center'; ctx.fillStyle=ink; ctx.font='16px '+serif; ctx.fillText('Issued by '+issuer, W/2, H-130); ctx.fillStyle=ink; ctx.font='italic 18px '+serif; ctx.fillText(sig, W/2, H-70); ctx.strokeStyle='#999'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(W/2-110,H-92); ctx.lineTo(W/2+110,H-92); ctx.stroke(); ctx.fillStyle='#888'; ctx.font='13px Arial'; ctx.fillText('Authorized Signature', W/2, H-55); }
   function nameLeft(W, y, sz, name, ink, sans){ ctx.textAlign='left'; ctx.fillStyle=ink; ctx.font='bold '+sz+'px '+sans; ctx.fillText(name, 70, y); }
   function sigLineLeft(W, H, sig, ink, sans){ ctx.textAlign='left'; ctx.fillStyle=ink; ctx.font='italic 18px '+sans; ctx.fillText(sig, 70, H-80); ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(70,H-98); ctx.lineTo(320,H-98); ctx.stroke(); }
@@ -330,8 +344,8 @@
     var t = TEMPLATES[selectedTpl];
     var W = canvas.width, H = canvas.height;
     var ink = t.ink, accent = t.accent, soft = t.accentSoft;
-    var serif = t.serif ? 'Georgia, serif' : 'Trebuchet MS, sans-serif';
-    var sans = 'Trebuchet MS, sans-serif';
+    var serif = (window.CM_FONTS && window.CM_FONTS.display) || (t.serif ? 'Georgia, serif' : 'Trebuchet MS, sans-serif');
+    var sans = (window.CM_FONTS && window.CM_FONTS.body) || 'Trebuchet MS, sans-serif';
     var recipient = document.getElementById('recipient').value || 'Your Name';
     var course = document.getElementById('course').value || 'Your Course Name';
     var desc = document.getElementById('desc').value;
@@ -374,7 +388,7 @@
       headerAt(W,235,ink,accent,serif);
       textCenter('This certificate is proudly presented to', W/2, 330, 18, ink, serif);
       nameAt(W,395,48,recipient,ink,serif); line(W,415,accent);
-      courseBlock(W,460,505,course,accent,ink,serif); descBlock(W,555,desc,ink,serif);
+      courseBlock(W,460,505,course,accent,ink,serif); descBlock(W,555,desc,ink,sans);
       footerAt(W,H,issuer,sig,ink,serif);
     } else if(t.layout === 'framed'){
       ctx.fillStyle=accent; ctx.beginPath(); ctx.arc(W/2,120,40,0,Math.PI*2); ctx.fill(); ctx.strokeStyle='#fff'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(W/2,120,28,0,Math.PI*2); ctx.stroke(); ctx.fillStyle='#fff'; ctx.font='bold 26px '+serif; ctx.fillText('★',W/2,131);
@@ -409,7 +423,7 @@
       headerAt(W,240,ink,accent,serif);
       textCenter('This certificate is proudly presented to', W/2, 330, 18, ink, serif);
       nameAt(W,400,52,recipient,ink,serif); line(W,425,accent);
-      courseBlock(W,470,515,course,accent,ink,serif); descBlock(W,565,desc,ink,serif);
+      courseBlock(W,470,515,course,accent,ink,serif); descBlock(W,565,desc,ink,sans);
       footerAt(W,H,issuer,sig,ink,serif);
     } else if(t.layout === 'banner'){
       headerAt(W,190,ink,accent,serif);
@@ -417,14 +431,14 @@
       ctx.fillStyle=accent; ctx.fillRect(0,300,W,96); ctx.fillStyle='#fff'; ctx.font='bold 40px '+serif; ctx.fillText(recipient, W/2, 362);
       ctx.fillStyle=ink; ctx.font='20px '+serif; ctx.fillText('for successfully completing', W/2, 440);
       ctx.fillStyle=accent; ctx.font='bold 30px '+serif; ctx.fillText(course, W/2, 490);
-      descBlock(W,545,desc,ink,serif);
+      descBlock(W,545,desc,ink,sans);
       footerAt(W,H,issuer,sig,ink,serif);
     } else if(t.layout === 'corners'){
       ctx.fillStyle=accent; ctx.font='26px '+serif; ctx.fillText('✦', W/2, 165);
       headerAt(W,240,ink,accent,serif);
       textCenter('This certificate is proudly presented to', W/2, 330, 18, ink, serif);
       nameAt(W,398,50,recipient,ink,serif); line(W,420,accent);
-      courseBlock(W,465,510,course,accent,ink,serif); descBlock(W,560,desc,ink,serif);
+      courseBlock(W,465,510,course,accent,ink,serif); descBlock(W,560,desc,ink,sans);
       footerAt(W,H,issuer,sig,ink,serif);
     } else if(t.layout === 'block'){
       ctx.fillStyle=accent; ctx.fillRect(0,0,90,H);
@@ -707,6 +721,38 @@
   }
   document.getElementById('certType').addEventListener('change', applyCertType);
   renderWordingChips(CERT_TYPES.completion);
+
+  // ---------- Font style selector ----------
+  // display = names / headings (serif, script); body = descriptions / labels (readable)
+  var FONT_OPTIONS = {
+    classic:   { label: 'Classic — Georgia',            display: 'Georgia, serif',                             body: 'Trebuchet MS, sans-serif' },
+    times:     { label: 'Formal — Times New Roman',     display: '"Times New Roman", Times, serif',            body: 'Arial, Helvetica, sans-serif' },
+    garamond:  { label: 'Book — EB Garamond',           display: '"EB Garamond", Georgia, serif',              body: '"Jost", "Trebuchet MS", sans-serif' },
+    playfair:  { label: 'Elegant — Playfair Display',   display: '"Playfair Display", Georgia, serif',         body: '"Jost", "Trebuchet MS", sans-serif' },
+    cormorant: { label: 'Refined — Cormorant Garamond', display: '"Cormorant Garamond", Georgia, serif',       body: '"Montserrat", "Trebuchet MS", sans-serif' },
+    cinzel:    { label: 'Diploma — Cinzel',             display: '"Cinzel", "Times New Roman", serif',         body: '"Jost", "Trebuchet MS", sans-serif' },
+    script:    { label: 'Calligraphy — Great Vibes',    display: '"Great Vibes", "Brush Script MT", cursive',  body: '"Playfair Display", Georgia, serif' },
+    modern:    { label: 'Modern — Montserrat',          display: '"Montserrat", "Trebuchet MS", sans-serif',   body: '"Montserrat", sans-serif' }
+  };
+  function refreshThumbs(){
+    var cur = selectedTpl;
+    buildThumbs();
+    selectedTpl = cur;
+    document.querySelectorAll('#tplGrid .tpl').forEach(function(x, idx){
+      x.className = 'tpl' + (idx === cur ? ' active' : '') + (TEMPLATES[idx].unlocked ? '' : ' locked');
+      var img = x.querySelector('img');
+      if (img && thumbs[idx]) img.src = thumbs[idx];
+    });
+    render();
+  }
+  function applyFont(){
+    var o = FONT_OPTIONS[document.getElementById('fontSel').value] || FONT_OPTIONS.classic;
+    window.CM_FONTS = { display: o.display, body: o.body };
+    refreshThumbs();
+  }
+  document.getElementById('fontSel').addEventListener('change', applyFont);
+  applyFont();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ applyFont(); });
 
   // re-render on input
   ['recipient','course','desc','issuer','date','signature','borderColor','textColor'].forEach(function(id){

@@ -354,7 +354,8 @@
   // ---- main entry ----
   function drawPremium(ctx, t, W, H, c) {
     var ink = t.ink, ac = t.accent, gold = t.gold || '#d4af37';
-    var serif = 'Georgia, serif', sans = 'Trebuchet MS, sans-serif';
+    var serif = (window.CM_FONTS && window.CM_FONTS.display) || 'Georgia, serif';
+    var sans = (window.CM_FONTS && window.CM_FONTS.body) || 'Trebuchet MS, sans-serif';
 
     if (c.mode === 'card') { drawCard(ctx, t, W, H, c, ink, ac, gold, serif, sans); return; }
 
@@ -382,7 +383,7 @@
         ctx.strokeStyle = gold; ctx.globalAlpha = 0.6; ctx.lineWidth = 1;
         ctx.beginPath(); ctx.moveTo(W / 2 - 160, 350); ctx.lineTo(W / 2 + 160, 350); ctx.stroke();
         ctx.globalAlpha = 1;
-        if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.75; ctx.font = 'italic 17px ' + serif; wrapLines(ctx, body, W / 2, 400, 660, 25, 'center', 4); ctx.globalAlpha = 1; }
+        if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.75; ctx.font = 'italic 17px ' + sans; wrapLines(ctx, body, W / 2, 400, 660, 25, 'center', 4); ctx.globalAlpha = 1; }
         ctx.fillStyle = ink; ctx.globalAlpha = 0.6; ctx.font = '16px ' + serif; ctx.fillText(meta, W / 2, H - 150); ctx.globalAlpha = 1;
         ctx.fillStyle = ink; ctx.globalAlpha = 0.75; ctx.font = '15px ' + serif; ctx.fillText(footer, W / 2, H - 120); ctx.globalAlpha = 1;
         sigAt(ctx, W / 2, H - 70, sig, c.sigLabel, ink);
@@ -398,7 +399,7 @@
         ctx.fillStyle = gold; ctx.font = 'italic 24px ' + serif; ctx.fillText(sub, W / 2, 345);
         ctx.fillStyle = gold; ctx.font = 'bold 14px ' + sans;
         ctx.fillText('— ' + kicker + ' —', W / 2, 200);
-        if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.72; ctx.font = '17px ' + serif; wrapLines(ctx, body, W / 2, 400, 620, 26, 'center', 5); ctx.globalAlpha = 1; }
+        if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.72; ctx.font = '17px ' + sans; wrapLines(ctx, body, W / 2, 400, 620, 26, 'center', 5); ctx.globalAlpha = 1; }
         ctx.fillStyle = ink; ctx.globalAlpha = 0.6; ctx.font = '15px ' + serif; ctx.fillText(meta, W / 2, H - 150); ctx.globalAlpha = 1;
         ctx.fillStyle = ink; ctx.globalAlpha = 0.75; ctx.font = '15px ' + serif; ctx.fillText(footer, W / 2, H - 120); ctx.globalAlpha = 1;
         sigAt(ctx, W / 2, H - 70, sig, c.sigLabel, ink);
@@ -413,7 +414,7 @@
         ctx.fillStyle = ink; ctx.globalAlpha = 0.55; ctx.font = 'bold 14px ' + sans; ctx.fillText(kicker.toUpperCase(), W / 2, 150); ctx.globalAlpha = 1;
         ctx.fillStyle = ink; ctx.font = 'italic 56px ' + serif; ctx.fillText(name, W / 2, 300);
         ctx.fillStyle = ac; ctx.font = 'italic 25px ' + serif; ctx.fillText(sub, W / 2, 355);
-        if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = '17px ' + serif; wrapLines(ctx, body, W / 2, 405, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
+        if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = '17px ' + sans; wrapLines(ctx, body, W / 2, 405, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
         ctx.fillStyle = ink; ctx.globalAlpha = 0.6; ctx.font = '15px ' + serif; ctx.fillText(meta, W / 2, H - 150); ctx.globalAlpha = 1;
         ctx.fillStyle = ink; ctx.globalAlpha = 0.75; ctx.font = '15px ' + serif; ctx.fillText(footer, W / 2, H - 120); ctx.globalAlpha = 1;
         sigAt(ctx, W / 2, H - 70, sig, c.sigLabel, ink);
@@ -430,7 +431,7 @@
         ctx.fillStyle = '#f6f1e3'; ctx.font = 'bold 52px ' + serif; ctx.fillText(name, W / 2, 340);
         ctx.fillStyle = gold; ctx.font = 'italic 24px ' + serif; ctx.fillText(sub, W / 2, 395);
         ctx.strokeStyle = gold; ctx.globalAlpha = 0.5; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(W / 2 - 130, 425); ctx.lineTo(W / 2 + 130, 425); ctx.stroke(); ctx.globalAlpha = 1;
-        if (body) { ctx.fillStyle = '#d9e5dd'; ctx.globalAlpha = 0.85; ctx.font = '16px ' + serif; wrapLines(ctx, body, W / 2, 470, 620, 25, 'center', 4); ctx.globalAlpha = 1; }
+        if (body) { ctx.fillStyle = '#d9e5dd'; ctx.globalAlpha = 0.85; ctx.font = '16px ' + sans; wrapLines(ctx, body, W / 2, 470, 620, 25, 'center', 4); ctx.globalAlpha = 1; }
         ctx.fillStyle = '#b8cdbf'; ctx.globalAlpha = 0.75; ctx.font = '15px ' + serif; ctx.fillText(meta, W / 2, H - 150); ctx.globalAlpha = 1;
         ctx.fillStyle = '#b8cdbf'; ctx.globalAlpha = 0.85; ctx.font = '15px ' + serif; ctx.fillText(footer, W / 2, H - 120); ctx.globalAlpha = 1;
         sigAt(ctx, W / 2, H - 70, sig, c.sigLabel, '#d9e5dd');
@@ -443,7 +444,7 @@
         medal(ctx, W / 2, 200, 46, gold);
         ctx.fillStyle = ink; ctx.font = 'bold 45px ' + serif; ctx.fillText(name, W / 2, 310);
         ctx.fillStyle = ac; ctx.font = 'italic 24px ' + serif; ctx.fillText(sub, W / 2, 362);
-        if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = '17px ' + serif; wrapLines(ctx, body, W / 2, 410, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
+        if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = '17px ' + sans; wrapLines(ctx, body, W / 2, 410, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
         ctx.fillStyle = ink; ctx.globalAlpha = 0.6; ctx.font = '15px ' + serif; ctx.fillText(meta, W / 2, H - 150); ctx.globalAlpha = 1;
         ctx.fillStyle = ink; ctx.globalAlpha = 0.75; ctx.font = '15px ' + serif; ctx.fillText(footer, W / 2, H - 120); ctx.globalAlpha = 1;
         sigAt(ctx, W / 2, H - 70, sig, c.sigLabel, ink);
@@ -458,7 +459,7 @@
         ctx.fillStyle = ink; ctx.font = 'bold 15px ' + sans; ctx.fillText(kicker.toUpperCase(), W / 2, 310);
         ctx.fillStyle = ink; ctx.font = 'bold 48px ' + serif; ctx.fillText(name, W / 2, 385);
         ctx.fillStyle = ac; ctx.font = 'italic 23px ' + serif; ctx.fillText(sub, W / 2, 435);
-        if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = '17px ' + serif; wrapLines(ctx, body, W / 2, 480, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
+        if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = '17px ' + sans; wrapLines(ctx, body, W / 2, 480, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
         ctx.fillStyle = ink; ctx.globalAlpha = 0.6; ctx.font = '15px ' + serif; ctx.fillText(meta, W / 2, H - 150); ctx.globalAlpha = 1;
         ctx.fillStyle = ink; ctx.globalAlpha = 0.75; ctx.font = '15px ' + serif; ctx.fillText(footer, W / 2, H - 120); ctx.globalAlpha = 1;
         sigAt(ctx, W / 2, H - 70, sig, c.sigLabel, ink);
@@ -480,7 +481,7 @@
         metalText(ctx, name, W / 2, 355, 'italic 54px ' + serif, goldGrad);
         ctx.fillStyle = ink; ctx.font = 'italic 24px ' + serif; ctx.fillText(sub, W / 2, 410);
         ornateDivider(ctx, W / 2, 440, gold);
-        if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = 'italic 17px ' + serif; wrapLines(ctx, body, W / 2, 480, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
+        if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = 'italic 17px ' + sans; wrapLines(ctx, body, W / 2, 480, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
         ctx.fillStyle = ink; ctx.globalAlpha = 0.55; ctx.font = '16px ' + serif; ctx.fillText(meta, W / 2, H - 150); ctx.globalAlpha = 1;
         ctx.fillStyle = ink; ctx.globalAlpha = 0.75; ctx.font = '15px ' + serif; ctx.fillText(footer, W / 2, H - 120); ctx.globalAlpha = 1;
         sigAt(ctx, W / 2, H - 70, sig, c.sigLabel, ink);
@@ -497,7 +498,7 @@
         ctx.fillStyle = ink; ctx.font = 'bold 50px ' + serif; ctx.fillText(name, W / 2, 360);
         ctx.fillStyle = gold; ctx.font = 'italic 24px ' + serif; ctx.fillText(sub, W / 2, 415);
         ornateDivider(ctx, W / 2, 445, gold);
-        if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = '17px ' + serif; wrapLines(ctx, body, W / 2, 485, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
+        if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = '17px ' + sans; wrapLines(ctx, body, W / 2, 485, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
         ctx.fillStyle = ink; ctx.globalAlpha = 0.55; ctx.font = '15px ' + serif; ctx.fillText(meta, W / 2, H - 150); ctx.globalAlpha = 1;
         ctx.fillStyle = ink; ctx.globalAlpha = 0.75; ctx.font = '15px ' + serif; ctx.fillText(footer, W / 2, H - 120); ctx.globalAlpha = 1;
         sigAt(ctx, W / 2, H - 70, sig, c.sigLabel, ink);
@@ -517,7 +518,7 @@
         ctx.fillStyle = ink; ctx.font = 'italic 56px ' + serif; ctx.fillText(name, W / 2, 350);
         ctx.fillStyle = ac; ctx.font = 'italic 24px ' + serif; ctx.fillText(sub, W / 2, 400);
         ornateDivider(ctx, W / 2, 430, gold);
-        if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = '17px ' + serif; wrapLines(ctx, body, W / 2, 475, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
+        if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = '17px ' + sans; wrapLines(ctx, body, W / 2, 475, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
         ctx.fillStyle = ink; ctx.globalAlpha = 0.55; ctx.font = '15px ' + serif; ctx.fillText(meta, W / 2, H - 150); ctx.globalAlpha = 1;
         ctx.fillStyle = ink; ctx.globalAlpha = 0.75; ctx.font = '15px ' + serif; ctx.fillText(footer, W / 2, H - 120); ctx.globalAlpha = 1;
         sigAt(ctx, W / 2, H - 70, sig, c.sigLabel, ink);
@@ -538,7 +539,7 @@
         ctx.fillStyle = 'rgba(245,245,240,0.92)'; ctx.font = 'bold 15px ' + sans; ctx.fillText(kicker.toUpperCase(), W / 2, 315);
         metalText(ctx, name, W / 2, 395, 'bold 54px ' + serif, goldGrad);
         ctx.fillStyle = 'rgba(212,175,55,0.95)'; ctx.font = 'italic 24px ' + serif; ctx.fillText(sub, W / 2, 450);
-        if (body) { ctx.fillStyle = 'rgba(230,230,225,0.7)'; ctx.font = '16px ' + serif; wrapLines(ctx, body, W / 2, 495, 620, 25, 'center', 4); }
+        if (body) { ctx.fillStyle = 'rgba(230,230,225,0.7)'; ctx.font = '16px ' + sans; wrapLines(ctx, body, W / 2, 495, 620, 25, 'center', 4); }
         ctx.fillStyle = 'rgba(210,210,205,0.6)'; ctx.font = '15px ' + serif; ctx.fillText(meta, W / 2, H - 150);
         ctx.fillStyle = 'rgba(230,230,225,0.85)'; ctx.font = '15px ' + serif; ctx.fillText(footer, W / 2, H - 120);
         sigAt(ctx, W / 2, H - 70, sig, c.sigLabel, 'rgba(230,230,225,0.9)');
@@ -559,7 +560,7 @@
         ctx.fillStyle = ink; ctx.font = 'bold 50px ' + serif; ctx.fillText(name, W / 2, 350);
         ctx.fillStyle = gold; ctx.font = 'italic 24px ' + serif; ctx.fillText(sub, W / 2, 405);
         ornateDivider(ctx, W / 2, 435, gold);
-        if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = '17px ' + serif; wrapLines(ctx, body, W / 2, 478, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
+        if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = '17px ' + sans; wrapLines(ctx, body, W / 2, 478, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
         ctx.fillStyle = ink; ctx.globalAlpha = 0.55; ctx.font = '15px ' + serif; ctx.fillText(meta, W / 2, H - 150); ctx.globalAlpha = 1;
         ctx.fillStyle = ink; ctx.globalAlpha = 0.75; ctx.font = '15px ' + serif; ctx.fillText(footer, W / 2, H - 120); ctx.globalAlpha = 1;
         sigAt(ctx, W / 2, H - 70, sig, c.sigLabel, ink);
@@ -575,7 +576,7 @@
         metalText(ctx, name, W / 2, 365, 'italic 54px ' + serif, goldGrad);
         ctx.fillStyle = ink; ctx.font = 'italic 24px ' + serif; ctx.fillText(sub, W / 2, 420);
         ornateDivider(ctx, W / 2, 450, gold);
-        if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = '17px ' + serif; wrapLines(ctx, body, W / 2, 490, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
+        if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = '17px ' + sans; wrapLines(ctx, body, W / 2, 490, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
         ctx.fillStyle = ink; ctx.globalAlpha = 0.55; ctx.font = '15px ' + serif; ctx.fillText(meta, W / 2, H - 150); ctx.globalAlpha = 1;
         ctx.fillStyle = ink; ctx.globalAlpha = 0.75; ctx.font = '15px ' + serif; ctx.fillText(footer, W / 2, H - 120); ctx.globalAlpha = 1;
         sigAt(ctx, W / 2, H - 70, sig, c.sigLabel, ink);
@@ -588,7 +589,7 @@
         metalText(ctx, name, W / 2, 330, 'italic 56px ' + serif, goldGrad);
         ctx.fillStyle = '#8a7a5c'; ctx.font = 'italic 24px ' + serif; ctx.fillText(sub, W / 2, 385);
         ctx.strokeStyle = gold; ctx.globalAlpha = 0.6; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(W / 2 - 140, 415); ctx.lineTo(W / 2 + 140, 415); ctx.stroke(); ctx.globalAlpha = 1;
-        if (body) { ctx.fillStyle = '#5c5548'; ctx.globalAlpha = 0.75; ctx.font = '17px ' + serif; wrapLines(ctx, body, W / 2, 455, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
+        if (body) { ctx.fillStyle = '#5c5548'; ctx.globalAlpha = 0.75; ctx.font = '17px ' + sans; wrapLines(ctx, body, W / 2, 455, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
         ctx.fillStyle = '#5c5548'; ctx.globalAlpha = 0.6; ctx.font = '15px ' + serif; ctx.fillText(meta, W / 2, H - 150); ctx.globalAlpha = 1;
         ctx.fillStyle = '#5c5548'; ctx.globalAlpha = 0.8; ctx.font = '15px ' + serif; ctx.fillText(footer, W / 2, H - 120); ctx.globalAlpha = 1;
         sigAt(ctx, W / 2, H - 70, sig, c.sigLabel, '#5c5548');
@@ -608,7 +609,7 @@
         ctx.fillStyle = ink; ctx.font = 'bold 50px ' + serif; ctx.fillText(name, W / 2, 355);
         ctx.fillStyle = gold; ctx.font = 'italic 24px ' + serif; ctx.fillText(sub, W / 2, 410);
         ornateDivider(ctx, W / 2, 440, gold);
-        if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = '17px ' + serif; wrapLines(ctx, body, W / 2, 482, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
+        if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = '17px ' + sans; wrapLines(ctx, body, W / 2, 482, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
         ctx.fillStyle = ink; ctx.globalAlpha = 0.55; ctx.font = '15px ' + serif; ctx.fillText(meta, W / 2, H - 150); ctx.globalAlpha = 1;
         ctx.fillStyle = ink; ctx.globalAlpha = 0.75; ctx.font = '15px ' + serif; ctx.fillText(footer, W / 2, H - 120); ctx.globalAlpha = 1;
         sigAt(ctx, W / 2, H - 70, sig, c.sigLabel, ink);
@@ -627,7 +628,7 @@
         metalText(ctx, name, W / 2, 330, 'italic 56px ' + serif, roseGoldGrad);
         ctx.fillStyle = 'rgba(140,100,70,0.9)'; ctx.font = 'italic 24px ' + serif; ctx.fillText(sub, W / 2, 385);
         ctx.strokeStyle = 'rgba(184,138,92,0.6)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(W / 2 - 140, 415); ctx.lineTo(W / 2 + 140, 415); ctx.stroke();
-        if (body) { ctx.fillStyle = 'rgba(100,72,58,0.75)'; ctx.font = '17px ' + serif; wrapLines(ctx, body, W / 2, 455, 620, 26, 'center', 4); }
+        if (body) { ctx.fillStyle = 'rgba(100,72,58,0.75)'; ctx.font = '17px ' + sans; wrapLines(ctx, body, W / 2, 455, 620, 26, 'center', 4); }
         ctx.fillStyle = 'rgba(120,90,60,0.6)'; ctx.font = '15px ' + serif; ctx.fillText(meta, W / 2, H - 150);
         ctx.fillStyle = 'rgba(120,90,60,0.8)'; ctx.font = '15px ' + serif; ctx.fillText(footer, W / 2, H - 120);
         sigAt(ctx, W / 2, H - 70, sig, c.sigLabel, 'rgba(120,90,60,0.85)');
@@ -648,7 +649,7 @@
         ctx.fillStyle = '#f6ecdf'; ctx.font = 'italic 52px ' + serif; ctx.fillText(name, W / 2, 350);
         ctx.fillStyle = gold; ctx.font = 'italic 24px ' + serif; ctx.fillText(sub, W / 2, 405);
         ornateDivider(ctx, W / 2, 435, gold);
-        if (body) { ctx.fillStyle = '#e8d5cd'; ctx.globalAlpha = 0.8; ctx.font = '16px ' + serif; wrapLines(ctx, body, W / 2, 478, 620, 25, 'center', 4); ctx.globalAlpha = 1; }
+        if (body) { ctx.fillStyle = '#e8d5cd'; ctx.globalAlpha = 0.8; ctx.font = '16px ' + sans; wrapLines(ctx, body, W / 2, 478, 620, 25, 'center', 4); ctx.globalAlpha = 1; }
         ctx.fillStyle = '#e0c9c0'; ctx.globalAlpha = 0.7; ctx.font = '15px ' + serif; ctx.fillText(meta, W / 2, H - 150); ctx.globalAlpha = 1;
         ctx.fillStyle = '#e8d5cd'; ctx.globalAlpha = 0.9; ctx.font = '15px ' + serif; ctx.fillText(footer, W / 2, H - 120); ctx.globalAlpha = 1;
         sigAt(ctx, W / 2, H - 70, sig, c.sigLabel, '#f6ecdf');
