@@ -47,6 +47,12 @@
   .tpl span{font-weight:bold;}
   .locked{position:relative;}
   .locked .lock{position:absolute;top:4px;right:6px;background:#e74c3c;color:#fff;border-radius:50%;width:20px;height:20px;font-size:12px;line-height:20px;text-align:center;opacity:.9;}
+  .wording{margin-top:6px;}
+  .wording-label{font-size:12px;color:#7a8ea8;font-weight:bold;margin:10px 0 6px;}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;}
+  .chip{background:#eef5ff;border:1px solid #d6e2f0;color:#2c6ab3;border-radius:16px;padding:6px 12px;font-size:12px;cursor:pointer;transition:.15s;text-align:left;line-height:1.35;}
+  .chip:hover{background:#dcebff;border-color:#3a7bd5;}
+  .chip.active{background:#3a7bd5;color:#fff;border-color:#3a7bd5;}
   footer{background:#2c3e50;color:#a8bdc9;padding:24px 0;text-align:center;font-size:13px;margin-top:50px;}
   footer a{color:#7ec8e3;text-decoration:none;}
   #paywall{display:none;position:fixed;inset:0;background:rgba(30,60,80,.7);z-index:30;align-items:center;justify-content:center;}
@@ -93,12 +99,29 @@
       <div class="tpl-grid" id="tplGrid"></div>
 
       <h2 style="margin-top:20px;">2. Add Your Details</h2>
+      <label>Certificate Type</label>
+      <select id="certType">
+        <option value="completion">Certificate of Completion</option>
+        <option value="award">Award</option>
+        <option value="achievement">Certificate of Achievement</option>
+        <option value="honor">Certificate of Honor</option>
+        <option value="recognition">Certificate of Recognition</option>
+        <option value="appreciation">Certificate of Appreciation</option>
+        <option value="participation">Certificate of Participation</option>
+        <option value="graduation">Graduation Certificate</option>
+        <option value="teacher">Teacher Appreciation</option>
+        <option value="volunteer">Volunteer Certificate</option>
+      </select>
       <label>Recipient Name</label>
       <input type="text" id="recipient" placeholder="e.g. Sarah Johnson">
-      <label>Course / Award Title</label>
+      <label id="courseLabel">Course / Award Title</label>
       <input type="text" id="course" placeholder="e.g. Advanced Web Development">
       <label>Description (optional)</label>
       <textarea id="desc" placeholder="e.g. For successfully completing the full course curriculum with distinction."></textarea>
+      <div class="wording">
+        <div class="wording-label">✨ Ready-made wording — pick a style that fits:</div>
+        <div class="chips" id="wordingChips"></div>
+      </div>
       <label>Issuer / Organization</label>
       <input type="text" id="issuer" placeholder="e.g. SkillBridge Academy">
       <label>Date</label>
@@ -553,6 +576,97 @@
       if(code) unlockViaApi(code);
     }
   })();
+
+  // ---------- Certificate type wording library ----------
+  // Each type has its own wording STYLE so certificates never read the same.
+  var CERT_TYPES = {
+    completion: { courseLabel: 'Course / Program', desc: 'For successfully completing the full course curriculum with distinction.', wordings: [
+      'For successfully completing the full course curriculum with distinction.',
+      'For the successful completion of all coursework and the final assessment.',
+      'For completing every module with dedication and demonstrating mastery of the subject.',
+      'In recognition of the discipline and skill shown throughout the program.'
+    ]},
+    award: { courseLabel: 'Award / Achievement', desc: 'In recognition of outstanding performance and exceptional achievement.', wordings: [
+      'In recognition of outstanding performance and exceptional achievement.',
+      'For excellence, dedication and a proven record of results.',
+      'Awarded for going above and beyond and delivering measurable impact.',
+      'In honor of exceptional skill, initiative and professional excellence.'
+    ]},
+    achievement: { courseLabel: 'Achievement', desc: 'For exceptional effort and outstanding achievement.', wordings: [
+      'For exceptional effort and outstanding achievement.',
+      'In recognition of remarkable progress and consistent excellence.',
+      'For reaching a milestone of achievement through hard work and commitment.',
+      'In honor of outstanding achievement and dedication to excellence.'
+    ]},
+    honor: { courseLabel: 'Honor / Distinction', desc: 'In recognition of outstanding merit and distinction.', wordings: [
+      'In recognition of outstanding merit and distinction.',
+      'For academic excellence, integrity and exemplary conduct.',
+      'In honor of achievements that set the highest standard.',
+      'For exceptional performance that brings honor to the institution.'
+    ]},
+    recognition: { courseLabel: 'Recognition', desc: 'In recognition of an outstanding contribution and commitment.', wordings: [
+      'In recognition of an outstanding contribution and commitment.',
+      'For dedicated service and a lasting, positive impact.',
+      'In appreciation of the significant value brought to the organization.',
+      'For leadership, teamwork and a record of meaningful contribution.'
+    ]},
+    appreciation: { courseLabel: 'Appreciation', desc: 'With sincere gratitude for your invaluable contribution.', wordings: [
+      'With sincere gratitude for your invaluable contribution.',
+      'In heartfelt appreciation of your dedication, generosity and support.',
+      'Thank you for the time, effort and care you have given so freely.',
+      'With deep appreciation for making a real difference.'
+    ]},
+    participation: { courseLabel: 'Event / Program', desc: 'In recognition of valuable participation in the event.', wordings: [
+      'In recognition of valuable participation in the event.',
+      'For active participation and meaningful engagement throughout.',
+      'For joining, contributing and being part of a successful program.',
+      'For your involvement and the energy you brought to the occasion.'
+    ]},
+    graduation: { courseLabel: 'Program / Degree', desc: 'For successfully completing the program of study.', wordings: [
+      'For successfully completing the program of study.',
+      'In recognition of the successful completion of all graduation requirements.',
+      'For the dedication and perseverance shown in earning this milestone.',
+      'Congratulations on the completion of this program and all it represents.'
+    ]},
+    teacher: { courseLabel: 'For / In Recognition of', desc: 'For inspiring a love of learning and making every student feel seen.', wordings: [
+      'For inspiring a love of learning and making every student feel seen.',
+      'For every extra hour, every patient explanation and every student who felt welcome.',
+      'In heartfelt appreciation of your dedication to teaching and to each of us.',
+      'For turning a classroom into a place students looked forward to entering.'
+    ]},
+    volunteer: { courseLabel: 'Service / Project', desc: 'With sincere gratitude for your generous gift of time and service.', wordings: [
+      'With sincere gratitude for your generous gift of time and service.',
+      'In recognition of many hours of dedicated volunteer service.',
+      'For showing up again and again and making our community better every time.',
+      'In appreciation of the impact you made through your volunteer work.'
+    ]}
+  };
+  function renderWordingChips(t){
+    var box = document.getElementById('wordingChips');
+    box.innerHTML = '';
+    t.wordings.forEach(function(w, i){
+      var c = document.createElement('button');
+      c.type = 'button';
+      c.className = 'chip' + (i === 0 ? ' active' : '');
+      c.textContent = w;
+      c.onclick = function(){
+        document.getElementById('desc').value = w;
+        Array.prototype.forEach.call(box.children, function(x){ x.className = 'chip'; });
+        c.className = 'chip active';
+        render();
+      };
+      box.appendChild(c);
+    });
+  }
+  function applyCertType(){
+    var t = CERT_TYPES[document.getElementById('certType').value] || CERT_TYPES.completion;
+    document.getElementById('courseLabel').textContent = t.courseLabel;
+    document.getElementById('desc').value = t.desc;
+    renderWordingChips(t);
+    render();
+  }
+  document.getElementById('certType').addEventListener('change', applyCertType);
+  renderWordingChips(CERT_TYPES.completion);
 
   // re-render on input
   ['recipient','course','desc','issuer','date','signature','borderColor','textColor'].forEach(function(id){
