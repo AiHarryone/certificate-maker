@@ -104,6 +104,7 @@
 </footer>
 
 <script src="tpl-engine.js"></script>
+<script src="premium.js"></script>
 <script>
 window.TOOL_TEMPLATES = [
   {id:'gold',  name:'Gold',  layout:'warm',  bg:'#fdf8ee', ink:'#3d3324', accent:'#b08d2e', gold:'#d6c060', serif:true},
@@ -115,7 +116,12 @@ window.TOOL_TEMPLATES = [
   {id:'terra', name:'Terra', layout:'flourish', bg:'#fbf5f0', ink:'#3d2b1f', accent:'#c15f3c', gold:'#e0b28a', serif:true},
   {id:'midnight',name:'Midnight', layout:'dark', bg:'#0f1f3d', ink:'#eef2f8', accent:'#e8c14a', gold:'#e8c14a', serif:true, dark:true},
   {id:'wine',  name:'Wine',  layout:'dark',  bg:'#3b0d1f', ink:'#f3e3e7', accent:'#fbbf24', gold:'#fbbf24', serif:true, dark:true},
-  {id:'forest',name:'Forest',layout:'dark',  bg:'#0d1f15', ink:'#e5efe7', accent:'#d4af37', gold:'#d4af37', serif:true, dark:true}
+  {id:'forest',name:'Forest',layout:'dark',  bg:'#0d1f15', ink:'#e5efe7', accent:'#d4af37', gold:'#d4af37', serif:true, dark:true},
+  {id:'pfoil',  name:'Gold Foil',     premium:'foil',    layout:'premium', bg:'#fbf7ec', ink:'#2b2115', accent:'#b8912f', gold:'#d4af37', serif:true},
+  {id:'pdeco',  name:'Art Deco',      premium:'deco',    layout:'premium', bg:'#faf6ec', ink:'#12294a', accent:'#b8912f', gold:'#c9a227', serif:true},
+  {id:'pbloom', name:'Watercolor',    premium:'bloom',   layout:'premium', bg:'#fdfbf7', ink:'#4a2f3d', accent:'#c27f8f', gold:'#c9a227', bloom2:'#a7b8a4', bloom3:'#d9c6a9', serif:true},
+  {id:'pemerald',name:'Emerald Royale',premium:'emerald', layout:'premium', bg:'#0d3b2a', ink:'#f6f1e3', accent:'#c9a227', gold:'#d4af37', serif:true, dark:true}
+
 ];
 (function(){
   var FREE_TRIES = 1;
@@ -143,7 +149,9 @@ window.TOOL_TEMPLATES = [
     ctx.textAlign = 'center';
 
     ctx.fillStyle = t.bg; ctx.fillRect(0,0,W,H);
-    if(t.layout === 'warm'){
+    if (t.premium) {
+      drawPremium(ctx, t, W, H, { mode:'portrait', kicker:'THANK YOU', title:msg, subtitle:to, body:'', meta:'', footer:from, sig:'', sigLabel:'' });
+    } else if(t.layout === 'warm'){
       ctx.strokeStyle = ac; ctx.lineWidth = 6; ctx.strokeRect(26,26,W-52,H-52);
       ctx.strokeStyle = gold; ctx.lineWidth = 2; ctx.strokeRect(36,36,W-72,H-72);
       ctx.fillStyle = ac; ctx.fillRect(0,0,W,14);

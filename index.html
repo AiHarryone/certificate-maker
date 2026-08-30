@@ -176,6 +176,7 @@
   <br><br>Also by the same person: <a href="https://aiharryone.github.io/pixelfix/">PixelFix</a> — 9 free browser photo tools · <a href="https://aiharryone.github.io/kdp-launch-kit/">KDP Launch Kit</a> — tools for Amazon KDP authors
 </footer>
 
+<script src="premium.js"></script>
 <script>
 (function(){
   // ---------- Templates ----------
@@ -191,7 +192,14 @@
     {id:'botanical',name:'Botanical',   layout:'corners',   bg:'#f7faf5', ink:'#1f2e1c', accent:'#5a8f52', accentSoft:'#e4ede0', serif:true,  signature:'sprig',  unlocked:false},
     {id:'asym',     name:'Bauhaus',     layout:'block',     bg:'#ffffff', ink:'#18181b', accent:'#e11d48', accentSoft:'#ffe4e6', serif:false, signature:'slab',   unlocked:false},
     {id:'letterpress',name:'Letterpress',layout:'vintage',  bg:'#f6f0e3', ink:'#3a2c1c', accent:'#8c6a3f', accentSoft:'#e9ddc4', serif:true,  signature:'ornate', unlocked:false},
-    {id:'playful',  name:'Playful',     layout:'confetti',  bg:'#fffbf0', ink:'#3d3a2e', accent:'#f59e0b', accentSoft:'#fef3c7', serif:false, signature:'dots',   unlocked:false}
+    {id:'playful',  name:'Playful',     layout:'confetti',  bg:'#fffbf0', ink:'#3d3a2e', accent:'#f59e0b', accentSoft:'#fef3c7', serif:false, signature:'dots',   unlocked:false},
+    // ═══ Premium Collection (shared renderer premium.js) — customers pay for these ═══
+    {id:'foil',     name:'Gold Foil',     premium:'foil',     layout:'premium', bg:'#fbf7ec', ink:'#2b2115', accent:'#b8912f', gold:'#d4af37', accentSoft:'#f6ecd2', serif:true,  signature:'foil', unlocked:false},
+    {id:'deco',     name:'Art Deco',      premium:'deco',     layout:'premium', bg:'#faf6ec', ink:'#12294a', accent:'#b8912f', gold:'#c9a227', accentSoft:'#efe7d2', serif:true,  signature:'sunburst', unlocked:false},
+    {id:'bloom',    name:'Watercolor',    premium:'bloom',    layout:'premium', bg:'#fdfbf7', ink:'#4a2f3d', accent:'#c27f8f', gold:'#c9a227', accentSoft:'#f3e3e7', bloom2:'#a7b8a4', bloom3:'#d9c6a9', serif:true, signature:'wash', unlocked:false},
+    {id:'emerald',  name:'Emerald Royale',premium:'emerald',  layout:'premium', bg:'#0d3b2a', ink:'#f6f1e3', accent:'#c9a227', gold:'#d4af37', accentSoft:'#123c2d', serif:true,  signature:'laurel', unlocked:false},
+    {id:'medal',    name:'Ribbon & Medal',premium:'medal',    layout:'premium', bg:'#fbf8f1', ink:'#1e2a44', accent:'#9f1d1d', gold:'#d4af37', accentSoft:'#f5e8e8', ribbonColor:'#9f1d1d', serif:true, signature:'medal', unlocked:false},
+    {id:'ceremony', name:'Ceremony',      premium:'ceremony', layout:'premium', bg:'#fdfbf6', ink:'#5b1f1f', accent:'#8c6a3f', gold:'#c9a227', accentSoft:'#f0e9dc', serif:true,  signature:'pediment', unlocked:false}
   ];
   var FREE_TPLS = 1; // number of free templates
   var PREMIUM_PRICE = 9.99;
@@ -298,6 +306,21 @@
     var date = (document.getElementById('date').value || '') + '';
     ctx.textAlign = 'center';
 
+    // ---- Premium Collection (shared renderer premium.js; fills its own background) ----
+    if (t.premium) {
+      drawPremium(ctx, t, W, H, {
+        mode: 'portrait',
+        kicker: 'CERTIFICATE OF COMPLETION',
+        title: recipient,
+        subtitle: course,
+        body: desc,
+        meta: 'Issued by ' + issuer + (date ? '  •  ' + date : ''),
+        footer: '',
+        sig: sig,
+        sigLabel: 'Authorized Signature'
+      });
+    } else {
+
     // ---- background ----
     if(t.layout === 'dark'){ var dg=ctx.createLinearGradient(0,0,W,H); dg.addColorStop(0,t.bg); dg.addColorStop(1,'#0a101d'); ctx.fillStyle=dg; ctx.fillRect(0,0,W,H); }
     else { ctx.fillStyle = t.bg; ctx.fillRect(0,0,W,H); }
@@ -397,6 +420,7 @@
       ctx.fillStyle='#6b7280'; ctx.font='15px '+sans; ctx.fillText('Awarded by '+issuer, W/2, H-120);
       ctx.fillStyle='#94a3b8'; ctx.font='14px '+sans; ctx.fillText(sig, W/2, H-80);
     }
+    } // end Premium-else
 
     // date at bottom (for layouts that include it via footer, others already placed)
     if(t.layout === 'centered' || t.layout === 'dark' || t.layout === 'banner' || t.layout === 'corners' || t.layout === 'vintage'){
@@ -407,7 +431,7 @@
     // watermark if locked — full-page repeated diagonal
     var wm = document.getElementById('wmText');
     if(locked){
-      drawWatermark(ctx, W, H, t.layout === 'dark');
+      drawWatermark(ctx, W, H, t.layout === 'dark' || t.premium === 'emerald');
       wm.textContent = '🔒 Free version — watermark will appear on download. Unlock to remove.';
       wm.style.display = 'block';
     } else {

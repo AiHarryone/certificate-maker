@@ -103,6 +103,7 @@
 </footer>
 
 <script src="tpl-engine.js"></script>
+<script src="premium.js"></script>
 <script>
 window.TOOL_TEMPLATES = [
   {id:'blue',   name:'Blue',   layout:'band',    bg:'#ffffff', ink:'#1e2a44', accent:'#1d4ed8', gold:'#93b4f0', dark:false},
@@ -114,7 +115,12 @@ window.TOOL_TEMPLATES = [
   {id:'black',  name:'Black Gold', layout:'dark', bg:'#0b0b0d', ink:'#e8e8e8', accent:'#d4af37', gold:'#d4af37', dark:true},
   {id:'navyG',  name:'Navy Gold',  layout:'dark', bg:'#101b2e', ink:'#e6ecf5', accent:'#d4af37', gold:'#d4af37', dark:true},
   {id:'slate',  name:'Slate',  layout:'modern',  bg:'#ffffff', ink:'#1e293b', accent:'#334155', gold:'#94a3b8', dark:false},
-  {id:'rose',   name:'Rose',   layout:'modern',  bg:'#ffffff', ink:'#402f33', accent:'#e11d48', gold:'#f2b8c0', dark:false}
+  {id:'rose',   name:'Rose',   layout:'modern',  bg:'#ffffff', ink:'#402f33', accent:'#e11d48', gold:'#f2b8c0', dark:false},
+  {id:'pfoil',  name:'Gold Foil',     premium:'foil',    layout:'premium', bg:'#fbf7ec', ink:'#2b2115', accent:'#b8912f', gold:'#d4af37', serif:true},
+  {id:'pdeco',  name:'Art Deco',      premium:'deco',    layout:'premium', bg:'#faf6ec', ink:'#12294a', accent:'#b8912f', gold:'#c9a227', serif:true},
+  {id:'pbloom', name:'Watercolor',    premium:'bloom',   layout:'premium', bg:'#fdfbf7', ink:'#4a2f3d', accent:'#c27f8f', gold:'#c9a227', bloom2:'#a7b8a4', bloom3:'#d9c6a9', serif:true},
+  {id:'pemerald',name:'Emerald Royale',premium:'emerald', layout:'premium', bg:'#0d3b2a', ink:'#f6f1e3', accent:'#c9a227', gold:'#d4af37', serif:true, dark:true}
+
 ];
 (function(){
   var FREE_TRIES = 1;
@@ -136,7 +142,9 @@ window.TOOL_TEMPLATES = [
     var org = document.getElementById('org').value || '';
 
     ctx.fillStyle = t.bg; ctx.fillRect(0,0,W,H);
-    if(t.layout === 'band'){
+    if (t.premium) {
+      drawPremium(ctx, t, W, H, { mode:'card', kicker:org, title:name, subtitle:role, body:org, meta:'', footer:'', sig:'', sigLabel:'' });
+    } else if(t.layout === 'band'){
       ctx.fillStyle = ac; ctx.fillRect(0,0,W,110);
       ctx.textAlign = 'center';
       ctx.fillStyle = '#fff'; ctx.font = 'bold 34px '+sans; ctx.fillText(truncate(org, W-80), W/2, 70);
