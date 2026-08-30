@@ -113,16 +113,16 @@
 <script src="tpl-engine.js"></script>
 <script>
 window.TOOL_TEMPLATES = [
-  {id:'red',   name:'Red',   style:'classic', c1:'#fff8f0', c2:'#ffffff', accent:'#e74c3c', dark:false},
-  {id:'blue',  name:'Blue',  style:'classic', c1:'#eef4ff', c2:'#ffffff', accent:'#3a7bd5', dark:false},
-  {id:'green', name:'Green', style:'classic', c1:'#f0fdf4', c2:'#ffffff', accent:'#16a34a', dark:false},
-  {id:'gold',  name:'Gold',  style:'bordered', c1:'#fdf6e3', c2:'#ffffff', accent:'#c9a227', dark:false},
-  {id:'purple',name:'Purple',style:'bordered', c1:'#faf5ff', c2:'#ffffff', accent:'#7c3aed', dark:false},
-  {id:'slate', name:'Slate', style:'minimal', c1:'#f8fafc', c2:'#ffffff', accent:'#334155', dark:false},
-  {id:'sunset',name:'Sunset',style:'gradient', c1:'#ffedd5', c2:'#fecdd3', accent:'#ea580c', dark:false},
-  {id:'ocean', name:'Ocean', style:'gradient', c1:'#cffafe', c2:'#e0f2fe', accent:'#0369a1', dark:false},
-  {id:'midnight',name:'Midnight', style:'dark', c1:'#0f1f3d', c2:'#1a2f52', accent:'#e8c14a', dark:true},
-  {id:'charcoal',name:'Charcoal', style:'dark', c1:'#111827', c2:'#1f2937', accent:'#fbbf24', dark:true}
+  {id:'red',   name:'Red',   layout:'classic', bg:'#fff8f0', ink:'#2b2b2b', accent:'#e74c3c', gold:'#f5a89a', serif:true},
+  {id:'blue',  name:'Blue',  layout:'classic', bg:'#f0f6ff', ink:'#22303f', accent:'#1d4ed8', gold:'#93b4f0', serif:true},
+  {id:'green', name:'Green', layout:'classic', bg:'#f2faf4', ink:'#1c3326', accent:'#16a34a', gold:'#8ad0a0', serif:true},
+  {id:'gold',  name:'Gold',  layout:'vintage', bg:'#141414', ink:'#f3e8c8', accent:'#d4af37', gold:'#e8c86a', serif:true, dark:true},
+  {id:'navy',  name:'Navy',  layout:'vintage', bg:'#0f1f3d', ink:'#e6ebf7', accent:'#e8c86a', gold:'#c9a227', serif:true, dark:true},
+  {id:'slate', name:'Slate', layout:'minimal', bg:'#ffffff', ink:'#111827', accent:'#334155', gold:'#94a3b8', serif:false},
+  {id:'mint',  name:'Mint',  layout:'minimal', bg:'#ffffff', ink:'#064e3b', accent:'#059669', gold:'#a7f3d0', serif:false},
+  {id:'sunset',name:'Sunset',layout:'gradient',bg:'#ffedd5', ink:'#431407', accent:'#ea580c', gold:'#fdba74', serif:false},
+  {id:'ocean', name:'Ocean', layout:'gradient',bg:'#e0f2fe', ink:'#0c4a6e', accent:'#0369a1', gold:'#7dd3fc', serif:false},
+  {id:'purple',name:'Purple',layout:'gradient',bg:'#f3e8ff', ink:'#3b0764', accent:'#7c3aed', gold:'#c4b5fd', serif:false}
 ];
 (function(){
   var FREE_TRIES = 1;
@@ -132,16 +132,13 @@ window.TOOL_TEMPLATES = [
   var ctx = canvas.getContext('2d');
   window.onTplChange = function(){ render(); };
 
-  function truncate(s, maxW){
-    s = String(s||''); if(ctx.measureText(s).width <= maxW) return s;
-    while(s.length > 1 && ctx.measureText(s+'…').width > maxW) s = s.slice(0,-1);
-    return s + '…';
-  }
+  function truncate(s, maxW){ s=String(s||''); if(ctx.measureText(s).width<=maxW) return s; while(s.length>1 && ctx.measureText(s+'…').width>maxW) s=s.slice(0,-1); return s+'…'; }
 
   function render(){
     var t = tpl();
     var W = canvas.width, H = canvas.height;
-    var ac = t.accent, dark = t.dark;
+    var ink = t.ink, ac = t.accent, gold = t.gold||ac, dark = t.dark;
+    var serif = 'Georgia, serif', sans = 'Trebuchet MS, sans-serif';
     var ev = document.getElementById('event').value || 'EVENT';
     var date = document.getElementById('date').value, time = document.getElementById('time').value;
     var venue = document.getElementById('venue').value || '';
@@ -149,42 +146,51 @@ window.TOOL_TEMPLATES = [
     var price = document.getElementById('price').value || '';
     ctx.textAlign = 'center';
 
-    if(t.style === 'dark'){
-      var dg = ctx.createLinearGradient(0,0,W,H); dg.addColorStop(0,t.c1); dg.addColorStop(1,t.c2);
-      ctx.fillStyle = dg; ctx.fillRect(0,0,W,H);
-    } else {
-      ctx.fillStyle = t.c1; ctx.fillRect(0,0,W,H);
-      if(t.style === 'gradient'){
-        var gg = ctx.createLinearGradient(0,0,W,0); gg.addColorStop(0,t.c1); gg.addColorStop(1,t.c2);
-        ctx.fillStyle = gg; ctx.fillRect(0,0,W,H);
-      }
-    }
-    if(t.style === 'classic'){ ctx.fillStyle = ac; ctx.fillRect(0,0,W,12); ctx.fillRect(0,H-12,W,12); }
-    if(t.style === 'bordered'){ ctx.strokeStyle = ac; ctx.lineWidth = 5; ctx.strokeRect(20,20,W-40,H-40); }
-    if(t.style === 'minimal'){ ctx.strokeStyle = ac; ctx.lineWidth = 1.5; ctx.strokeRect(26,26,W-52,H-52); }
-    if(t.style === 'dark'){ ctx.strokeStyle = 'rgba(201,162,39,.4)'; ctx.lineWidth = 1.5; ctx.strokeRect(22,22,W-44,H-44); }
+    if(t.layout === 'gradient'){ var g=ctx.createLinearGradient(0,0,W,0); g.addColorStop(0,t.bg); g.addColorStop(1,'#ffffff'); ctx.fillStyle=g; ctx.fillRect(0,0,W,H); }
+    else { ctx.fillStyle=t.bg; ctx.fillRect(0,0,W,H); }
 
-    ctx.fillStyle = ac; ctx.font = 'bold 74px Trebuchet MS, sans-serif';
-    ctx.fillText(truncate(ev, W-140), W/2, 180);
-    ctx.fillStyle = dark ? '#cbd5e1' : '#7a8ea8'; ctx.font = 'bold 30px Trebuchet MS, sans-serif';
-    ctx.fillText('A D M I T   O N E', W/2, 240);
-    ctx.fillStyle = dark ? '#f1f5f9' : '#2c3e50'; ctx.font = '36px Trebuchet MS, sans-serif';
-    ctx.fillText(date + '  •  ' + time, W/2, 330);
-    ctx.fillStyle = dark ? '#94a3b8' : '#5a7ea0'; ctx.font = '30px Trebuchet MS, sans-serif';
-    ctx.fillText(truncate(venue, W-160), W/2, 390);
-    ctx.setLineDash([12,10]); ctx.strokeStyle = dark ? '#334155' : '#cbd7e4'; ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.moveTo(80, 440); ctx.lineTo(W-80, 440); ctx.stroke(); ctx.setLineDash([]);
-    ctx.fillStyle = dark ? '#f1f5f9' : '#34495e'; ctx.font = 'bold 32px Trebuchet MS, sans-serif';
-    ctx.fillText('No. ' + no, W/2, 510);
-    ctx.fillStyle = ac; ctx.font = 'bold 44px Trebuchet MS, sans-serif';
-    ctx.fillText(price, W/2, 575);
+    if(t.layout === 'classic'){
+      ctx.fillStyle = ac; ctx.fillRect(0,0,W,12); ctx.fillRect(0,H-12,W,12);
+      ctx.fillStyle = ac; ctx.font='bold 74px '+serif; ctx.fillText(truncate(ev, W-140), W/2, 180);
+      ctx.fillStyle = ink; ctx.font='bold 28px '+sans; ctx.fillText('A D M I T   O N E', W/2, 240);
+      ctx.fillStyle = ink; ctx.font='36px '+serif; ctx.fillText(date + '  •  ' + time, W/2, 330);
+      ctx.fillStyle = '#5a7ea0'; ctx.font='30px '+serif; ctx.fillText(truncate(venue, W-160), W/2, 390);
+      ctx.setLineDash([12,10]); ctx.strokeStyle='#cbd7e4'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(80,440); ctx.lineTo(W-80,440); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = ink; ctx.font='bold 30px '+sans; ctx.fillText('No. '+no, W/2, 510);
+      ctx.fillStyle = ac; ctx.font='bold 44px '+serif; ctx.fillText(price, W/2, 575);
+    } else if(t.layout === 'vintage'){
+      ctx.strokeStyle = gold; ctx.lineWidth = 2; ctx.strokeRect(22,22,W-44,H-44);
+      ctx.strokeStyle = 'rgba(212,175,55,.3)'; ctx.lineWidth = 1; ctx.strokeRect(32,32,W-64,H-64);
+      ctx.fillStyle = gold; ctx.font='24px '+serif; ctx.fillText('★', W/2, 90);
+      ctx.fillStyle = gold; ctx.font='bold 60px '+serif; ctx.fillText(truncate(ev, W-160), W/2, 200);
+      ctx.fillStyle = ink; ctx.font='bold 24px '+sans; ctx.fillText('ADMIT ONE', W/2, 260);
+      ctx.fillStyle = ink; ctx.font='32px '+serif; ctx.fillText(date + '  •  ' + time, W/2, 340);
+      ctx.fillStyle = gold; ctx.font='26px '+serif; ctx.fillText(truncate(venue, W-160), W/2, 400);
+      ctx.setLineDash([10,10]); ctx.strokeStyle='rgba(232,200,106,.4)'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(90,450); ctx.lineTo(W-90,450); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = ink; ctx.font='26px '+sans; ctx.fillText('No. '+no, W/2, 500);
+      ctx.fillStyle = gold; ctx.font='bold 40px '+serif; ctx.fillText(price, W/2, 560);
+    } else if(t.layout === 'minimal'){
+      ctx.strokeStyle = '#e5e7eb'; ctx.lineWidth = 1; ctx.strokeRect(30,30,W-60,H-60);
+      ctx.fillStyle = '#9ca3af'; ctx.font='13px '+sans; ctx.fillText('EVENT TICKET', W/2, 140);
+      ctx.fillStyle = ink; ctx.font='bold 62px '+sans; ctx.fillText(truncate(ev, W-160), W/2, 250);
+      ctx.fillStyle = '#6b7280'; ctx.font='26px '+sans; ctx.fillText(date + '  ·  ' + time, W/2, 340);
+      ctx.fillStyle = ac; ctx.font='24px '+sans; ctx.fillText(truncate(venue, W-160), W/2, 400);
+      ctx.strokeStyle='#e5e7eb'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(100,460); ctx.lineTo(W-100,460); ctx.stroke();
+      ctx.fillStyle = '#9ca3af'; ctx.font='20px '+sans; ctx.fillText('No. '+no, W/2, 510);
+      ctx.fillStyle = ac; ctx.font='bold 38px '+sans; ctx.fillText(price, W/2, 570);
+    } else { // gradient
+      ctx.fillStyle = ac; ctx.font='bold 70px '+sans; ctx.fillText(truncate(ev, W-140), W/2, 190);
+      ctx.fillStyle = ink; ctx.font='bold 26px '+sans; ctx.fillText('A D M I T   O N E', W/2, 250);
+      ctx.fillStyle = ink; ctx.font='34px '+sans; ctx.fillText(date + '  •  ' + time, W/2, 340);
+      ctx.fillStyle = ac; ctx.font='28px '+sans; ctx.fillText(truncate(venue, W-160), W/2, 400);
+      ctx.setLineDash([12,10]); ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(80,450); ctx.lineTo(W-80,450); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = ink; ctx.font='28px '+sans; ctx.fillText('No. '+no, W/2, 510);
+      ctx.fillStyle = ac; ctx.font='bold 42px '+sans; ctx.fillText(price, W/2, 575);
+    }
 
     var wm = document.getElementById('wmText');
-    if(locked){
-      drawWatermark(ctx, W, H, dark);
-      wm.textContent = '🔒 Free version — watermark will appear on download. Unlock to remove.';
-      wm.style.display = 'block';
-    } else { wm.style.display = 'none'; }
+    if(locked){ drawWatermark(ctx, W, H, dark); wm.textContent='🔒 Free version — watermark will appear on download. Unlock to remove.'; wm.style.display='block'; }
+    else { wm.style.display='none'; }
   }
 
   function showPaywall(){ document.getElementById('paywall').style.display = 'flex'; }
