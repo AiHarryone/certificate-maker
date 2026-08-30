@@ -43,6 +43,7 @@
   .tpl:hover{border-color:#3a7bd5;background:#eef5ff;}
   .tpl.active{border-color:#3a7bd5;background:#eef5ff;box-shadow:0 2px 8px rgba(58,123,213,.2);}
   .tpl .swatch{display:block;width:100%;height:40px;border-radius:5px;margin-bottom:6px;}
+  .tpl .tpl-img{display:block;width:100%;height:66px;object-fit:cover;border-radius:5px;margin-bottom:6px;border:1px solid #d6e2f0;}
   .tpl span{font-weight:bold;}
   .locked{position:relative;}
   .locked .lock{position:absolute;top:4px;right:6px;background:#e74c3c;color:#fff;border-radius:50%;width:20px;height:20px;font-size:12px;line-height:20px;text-align:center;opacity:.9;}
@@ -205,12 +206,24 @@
   var canvas = document.getElementById('previewCanvas');
   var ctx = canvas.getContext('2d');
 
-  // ---------- Build template grid ----------
+  // ---------- Build template grid with real design thumbnails ----------
+  var thumbs = [];
+  function buildThumbs(){
+    var i;
+    for(i=0;i<TEMPLATES.length;i++){
+      selectedTpl = i;
+      render();
+      thumbs[i] = canvas.toDataURL('image/png');
+    }
+    selectedTpl = 0;
+    render();
+  }
   var grid = document.getElementById('tplGrid');
+  buildThumbs();
   TEMPLATES.forEach(function(t, i){
     var d = document.createElement('div');
     d.className = 'tpl' + (i===0?' active':'') + (t.unlocked?'':' locked');
-    d.innerHTML = '<span class="swatch" style="background:linear-gradient(135deg,'+(t.bg||'#fff')+','+(t.accentSoft||t.accent||'#fff')+');"></span><span>'+t.name+'</span>' + (t.unlocked?'':'<div class="lock">🔒</div>');
+    d.innerHTML = '<img class="tpl-img" src="'+(thumbs[i]||'')+'" alt="'+t.name+'"><span>'+t.name+'</span>' + (t.unlocked?'':'<div class="lock">🔒</div>');
     d.onclick = function(){
       if(locked && !t.unlocked && tries >= FREE_TRIES){
         showPaywall();
