@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="msvalidate.01" content="E62785F51D89A3BD3AFBB2BC2BB07BF9">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Thank-You Card Maker — Free Printable Thank You Cards</title>
-<meta name="description" content="Make a thank-you card free: teacher, gift, mentor and appreciation cards. Edit in your browser, download a print-ready PNG. Nothing uploaded.">
+<title>Thank-You Card Maker — 10 Templates, Free Printable Cards</title>
+<meta name="description" content="Make a thank-you card free: 10 templates for teacher, gift, mentor and appreciation cards. Edit in your browser, download a print-ready PNG. Nothing uploaded.">
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
   body{font-family:'Trebuchet MS','Segoe UI',sans-serif;background:#f4f7fb;color:#2c3e50;line-height:1.6;}
@@ -24,13 +24,18 @@
   label{display:block;font-weight:bold;margin:12px 0 5px;color:#34495e;font-size:14px;}
   input[type=text],textarea{width:100%;padding:10px;border:2px solid #d6e2f0;border-radius:8px;font-size:14px;background:#fff;font-family:inherit;}
   textarea{min-height:80px;resize:vertical;}
-  input[type=color]{width:50px;height:38px;border:2px solid #d6e2f0;border-radius:8px;padding:2px;background:#fff;}
   .row{display:flex;gap:10px;}
   .row > div{flex:1;}
   .btn{display:inline-block;background:#3a7bd5;color:#fff;border:none;padding:12px 26px;border-radius:30px;font-size:16px;font-weight:bold;cursor:pointer;margin-top:16px;}
   .btn:hover{background:#2c6ab3;}
   .btn.green{background:#27ae60;}
   .btn.green:hover{background:#1f9b52;}
+  .tpl-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:6px 0 4px;}
+  @media(max-width:600px){.tpl-grid{grid-template-columns:repeat(3,1fr);}}
+  .tpl{background:#f4f7fb;border:2px solid #d6e2f0;border-radius:8px;padding:8px;text-align:center;cursor:pointer;font-size:11px;color:#34495e;transition:.2s;}
+  .tpl:hover{border-color:#3a7bd5;background:#eef5ff;}
+  .tpl.active{border-color:#3a7bd5;background:#eef5ff;box-shadow:0 2px 8px rgba(58,123,213,.2);}
+  .tpl .swatch{display:block;width:100%;height:34px;border-radius:5px;margin-bottom:5px;}
   .preview-wrap{background:#fff;border-radius:14px;padding:22px;box-shadow:0 4px 14px rgba(58,123,213,.1);}
   .preview-wrap h2{color:#3a7bd5;font-size:18px;margin-bottom:14px;}
   #previewCanvas{width:100%;height:auto;border:1px solid #d6e2f0;border-radius:8px;background:#fff;}
@@ -59,22 +64,20 @@
 </header>
 
 <div class="wrap">
-  <h1>Thank-You Card Maker — Free</h1>
-  <p class="sub">Teacher, gift, mentor and appreciation cards. Edit in your browser, download a print-ready PNG. Your first card is free.</p>
+  <h1>Thank-You Card Maker — 10 Templates</h1>
+  <p class="sub">Teacher, gift, mentor and appreciation cards. Pick a template, write a note, download a print-ready PNG. Your first card is free.</p>
 
   <div class="layout">
     <div class="panel">
-      <h2>Card Details</h2>
+      <h2>Choose a Template</h2>
+      <div class="tpl-grid" id="tplGrid"></div>
+      <h2 style="margin-top:14px;">Card Details</h2>
       <label>To</label>
       <input type="text" id="to" value="Dear Mrs. Anderson," oninput="render()">
       <label>Message</label>
       <textarea id="message" oninput="render()">Thank you so much for everything. Your kindness and patience meant the world to us.</textarea>
       <label>From</label>
       <input type="text" id="from" value="With love, The Johnson Family" oninput="render()">
-      <div class="row">
-        <div><label>Accent</label><input type="color" id="accent" value="#e8a020" oninput="render()"></div>
-        <div><label>Background</label><input type="color" id="bgColor" value="#fdf8ee" oninput="render()"></div>
-      </div>
       <button class="btn green" id="downloadBtn">⬇ Download PNG</button>
       <div class="watermark" id="wmText"></div>
     </div>
@@ -89,7 +92,7 @@
 <div id="paywall">
   <div class="box">
     <h2>Unlock Unlimited Cards</h2>
-    <p class="small">Your first card is free. Unlock unlimited thank-you cards and <b>no watermark</b> for a one-time <b>$9.99</b> — no subscription.</p>
+    <p class="small">Your first card is free. Unlock all 10 templates, unlimited thank-you cards and <b>no watermark</b> for a one-time <b>$9.99</b> — no subscription.</p>
     <p class="price">$9.99 <span class="small" style="font-size:14px;">one-time</span></p>
     <a class="btn" href="https://creem.io/product/prod_1N2wmJ4rxVYibfIFlUPu25" target="_blank" rel="noopener" style="display:block;width:100%;text-align:center;background:#3a7bd5;color:#fff;text-decoration:none;margin-top:8px;">Get Unlimited Access — $9.99</a>
     <p class="small" style="margin:12px 0 4px;">One payment, lifetime access to all tools. Already purchased? Enter your unlock code:</p>
@@ -102,13 +105,27 @@
   Made for teachers, trainers and creators who value beautiful designs. Questions? Contact: Ai_harryone@outlook.com · <a href="index.html">Certificate Maker</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a>
 </footer>
 
+<script src="tpl-engine.js"></script>
 <script>
+window.TOOL_TEMPLATES = [
+  {id:'gold',  name:'Gold',  style:'warm',  c1:'#fdf8ee', c2:'#ffffff', accent:'#e8a020', dark:false},
+  {id:'rose',  name:'Rose',  style:'warm',  c1:'#fff5fa', c2:'#ffffff', accent:'#ec4899', dark:false},
+  {id:'blue',  name:'Blue',  style:'warm',  c1:'#eef4ff', c2:'#ffffff', accent:'#3a7bd5', dark:false},
+  {id:'slate', name:'Slate', style:'minimal', c1:'#f8fafc', c2:'#ffffff', accent:'#334155', dark:false},
+  {id:'mint',  name:'Mint',  style:'minimal', c1:'#f0fdf4', c2:'#ffffff', accent:'#059669', dark:false},
+  {id:'lavender',name:'Lavender', style:'minimal', c1:'#faf5ff', c2:'#ffffff', accent:'#7c3aed', dark:false},
+  {id:'blush', name:'Blush', style:'flourish', c1:'#fff5fa', c2:'#ffffff', accent:'#be185d', dark:false},
+  {id:'goldf', name:'Gold F', style:'flourish', c1:'#fdf6e3', c2:'#ffffff', accent:'#8a6d1f', dark:false},
+  {id:'midnight',name:'Midnight', style:'dark', c1:'#0f1f3d', c2:'#1a2f52', accent:'#e8c14a', dark:true},
+  {id:'wine',  name:'Wine',  style:'dark',  c1:'#3b0d1f', c2:'#5b1026', accent:'#fbbf24', dark:true}
+];
 (function(){
   var FREE_TRIES = 1;
   var tries = parseInt(localStorage.getItem('certmaker_tries') || '0', 10);
   var locked = !localStorage.getItem('certmaker_unlocked');
   var canvas = document.getElementById('previewCanvas');
   var ctx = canvas.getContext('2d');
+  window.onTplChange = function(){ render(); };
 
   function wrapText(text, x, y, maxW, lineH, maxLines){
     var words = String(text).split(' '), line = '', lines = 0;
@@ -121,25 +138,37 @@
   }
 
   function render(){
+    var t = tpl();
     var W = canvas.width, H = canvas.height;
-    var bg = document.getElementById('bgColor').value;
-    var ac = document.getElementById('accent').value;
-    ctx.fillStyle = bg; ctx.fillRect(0,0,W,H);
-    // border + corner accent
-    ctx.strokeStyle = ac; ctx.lineWidth = 6; ctx.strokeRect(26,26,W-52,H-52);
-    ctx.fillStyle = ac; ctx.fillRect(0,0,W,14);
-    // "Thank You" heading
-    ctx.fillStyle = ac; ctx.textAlign = 'center';
-    ctx.font = 'italic bold 92px Georgia, serif'; ctx.fillText('Thank You', W/2, 190);
-    // to
-    ctx.fillStyle = '#34495e'; ctx.font = 'italic 34px Georgia, serif';
-    ctx.fillText(document.getElementById('to').value || '', W/2, 280);
-    // message
-    ctx.fillStyle = '#2c3e50'; ctx.font = '30px Georgia, serif';
-    wrapText(document.getElementById('message').value || '', W/2, 380, W-180, 46, 6);
-    // from
-    ctx.fillStyle = '#5a7ea0'; ctx.font = 'italic 32px Georgia, serif';
-    ctx.fillText(document.getElementById('from').value || '', W/2, 610);
+    var ac = t.accent, dark = t.dark;
+    var to = document.getElementById('to').value || '';
+    var msg = document.getElementById('message').value || '';
+    var from = document.getElementById('from').value || '';
+    ctx.textAlign = 'center';
+    var serif = 'Georgia, serif';
+
+    if(t.style === 'dark'){
+      var dg = ctx.createLinearGradient(0,0,W,H); dg.addColorStop(0,t.c1); dg.addColorStop(1,t.c2);
+      ctx.fillStyle = dg; ctx.fillRect(0,0,W,H);
+    } else {
+      ctx.fillStyle = t.c1; ctx.fillRect(0,0,W,H);
+    }
+    if(t.style === 'warm'){ ctx.strokeStyle = ac; ctx.lineWidth = 6; ctx.strokeRect(26,26,W-52,H-52); ctx.fillStyle = ac; ctx.fillRect(0,0,W,14); }
+    if(t.style === 'minimal'){ ctx.strokeStyle = ac; ctx.lineWidth = 1.5; ctx.strokeRect(36,36,W-72,H-72); }
+    if(t.style === 'flourish'){ ctx.strokeStyle = ac; ctx.lineWidth = 3; ctx.strokeRect(24,24,W-48,H-48); ctx.strokeStyle = ac; ctx.lineWidth = 6;
+      ctx.beginPath(); ctx.moveTo(48,66); ctx.arcTo(48,48,66,48,6); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(W-66,48); ctx.arcTo(W-48,48,W-48,66,6); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(48,H-66); ctx.arcTo(48,H-48,66,H-48,6); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(W-66,H-48); ctx.arcTo(W-48,H-48,W-48,H-66,6); ctx.stroke(); }
+    if(t.style === 'dark'){ ctx.strokeStyle = 'rgba(201,162,39,.4)'; ctx.lineWidth = 1.5; ctx.strokeRect(26,26,W-52,H-52); }
+
+    ctx.fillStyle = ac; ctx.font = 'italic bold 92px '+serif; ctx.fillText('Thank You', W/2, 190);
+    ctx.fillStyle = dark ? '#cbd5e1' : '#34495e'; ctx.font = 'italic 34px '+serif;
+    ctx.fillText(to, W/2, 280);
+    ctx.fillStyle = dark ? '#f1f5f9' : '#2c3e50'; ctx.font = '30px '+serif;
+    wrapText(msg, W/2, 380, W-180, 46, 6);
+    ctx.fillStyle = dark ? '#94a3b8' : '#5a7ea0'; ctx.font = 'italic 32px '+serif;
+    ctx.fillText(from, W/2, 610);
 
     var wm = document.getElementById('wmText');
     if(locked){

@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="msvalidate.01" content="E62785F51D89A3BD3AFBB2BC2BB07BF9">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Invitation Card Maker — Free Birthday, Wedding &amp; Party Invitations</title>
-<meta name="description" content="Make a free invitation card online: birthday, wedding, baby shower and party invitations. Edit in your browser, download a print-ready PNG. Nothing uploaded.">
+<title>Invitation Card Maker — 10 Templates, Free Birthday, Wedding &amp; Party Invitations</title>
+<meta name="description" content="Make a free invitation card online: 10 beautiful templates for birthday, wedding, baby shower and party invitations. Edit in your browser, download a print-ready PNG. Nothing uploaded.">
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
   body{font-family:'Trebuchet MS','Segoe UI',sans-serif;background:#f4f7fb;color:#2c3e50;line-height:1.6;}
@@ -24,14 +24,18 @@
   label{display:block;font-weight:bold;margin:12px 0 5px;color:#34495e;font-size:14px;}
   input[type=text],textarea{width:100%;padding:10px;border:2px solid #d6e2f0;border-radius:8px;font-size:14px;background:#fff;font-family:inherit;}
   textarea{min-height:70px;resize:vertical;}
-  input[type=color]{width:50px;height:38px;border:2px solid #d6e2f0;border-radius:8px;padding:2px;background:#fff;}
   .row{display:flex;gap:10px;}
   .row > div{flex:1;}
   .btn{display:inline-block;background:#3a7bd5;color:#fff;border:none;padding:12px 26px;border-radius:30px;font-size:16px;font-weight:bold;cursor:pointer;margin-top:16px;}
   .btn:hover{background:#2c6ab3;}
   .btn.green{background:#27ae60;}
   .btn.green:hover{background:#1f9b52;}
-  .btn.ghost{background:#fff;color:#3a7bd5;border:2px solid #3a7bd5;}
+  .tpl-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:6px 0 4px;}
+  @media(max-width:600px){.tpl-grid{grid-template-columns:repeat(3,1fr);}}
+  .tpl{background:#f4f7fb;border:2px solid #d6e2f0;border-radius:8px;padding:8px;text-align:center;cursor:pointer;font-size:11px;color:#34495e;transition:.2s;}
+  .tpl:hover{border-color:#3a7bd5;background:#eef5ff;}
+  .tpl.active{border-color:#3a7bd5;background:#eef5ff;box-shadow:0 2px 8px rgba(58,123,213,.2);}
+  .tpl .swatch{display:block;width:100%;height:34px;border-radius:5px;margin-bottom:5px;}
   .preview-wrap{background:#fff;border-radius:14px;padding:22px;box-shadow:0 4px 14px rgba(58,123,213,.1);}
   .preview-wrap h2{color:#3a7bd5;font-size:18px;margin-bottom:14px;}
   #previewCanvas{width:100%;height:auto;border:1px solid #d6e2f0;border-radius:8px;background:#fff;}
@@ -53,19 +57,21 @@
     <div class="logo">🏆 Certificate Maker</div>
     <nav>
       <a href="index.html">Certificate Maker</a>
-      <a href="certificate-of-completion-template.html">Templates</a>
+      <a href="invitation-card-maker.html">Invitations</a>
       <a href="privacy.html">Privacy</a>
     </nav>
   </div>
 </header>
 
 <div class="wrap">
-  <h1>Invitation Card Maker — Free</h1>
-  <p class="sub">Birthday, wedding, baby shower and party invitations. Edit in your browser, download a print-ready PNG. Your first card is free.</p>
+  <h1>Invitation Card Maker — 10 Templates</h1>
+  <p class="sub">Birthday, wedding, baby shower and party invitations. Pick a template, edit the details, download a print-ready PNG. Your first card is free.</p>
 
   <div class="layout">
     <div class="panel">
-      <h2>Invitation Details</h2>
+      <h2>Choose a Template</h2>
+      <div class="tpl-grid" id="tplGrid"></div>
+      <h2 style="margin-top:14px;">Invitation Details</h2>
       <label>Event Title</label>
       <input type="text" id="title" value="You're Invited!" oninput="render()">
       <label>Message</label>
@@ -76,10 +82,6 @@
       </div>
       <label>Location</label>
       <input type="text" id="location" value="123 Celebration Ave" oninput="render()">
-      <div class="row">
-        <div><label>Background</label><input type="color" id="bgColor" value="#eef2ff" oninput="render()"></div>
-        <div><label>Accent</label><input type="color" id="accent" value="#3a7bd5" oninput="render()"></div>
-      </div>
       <div class="save-actions">
         <button class="btn green" id="downloadBtn">⬇ Download PNG</button>
       </div>
@@ -96,7 +98,7 @@
 <div id="paywall">
   <div class="box">
     <h2>Unlock Unlimited Invitations</h2>
-    <p class="small">Your first card is free. Unlock unlimited invitations, more styles and <b>no watermark</b> for a one-time <b>$9.99</b> — no subscription.</p>
+    <p class="small">Your first card is free. Unlock all 10 templates, unlimited invitations and <b>no watermark</b> for a one-time <b>$9.99</b> — no subscription.</p>
     <p class="price">$9.99 <span class="small" style="font-size:14px;">one-time</span></p>
     <a class="btn" href="https://creem.io/product/prod_1N2wmJ4rxVYibfIFlUPu25" target="_blank" rel="noopener" style="display:block;width:100%;text-align:center;background:#3a7bd5;color:#fff;text-decoration:none;margin-top:8px;">Get Unlimited Access — $9.99</a>
     <p class="small" style="margin:12px 0 4px;">One payment, lifetime access to all tools. Already purchased? Enter your unlock code:</p>
@@ -109,43 +111,87 @@
   Made for teachers, trainers and creators who value beautiful designs. Questions? Contact: Ai_harryone@outlook.com · <a href="index.html">Certificate Maker</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a>
 </footer>
 
+<script src="tpl-engine.js"></script>
 <script>
+window.TOOL_TEMPLATES = [
+  {id:'classic', name:'Classic', style:'centered', c1:'#eef2ff', c2:'#ffffff', accent:'#3a7bd5', dark:false},
+  {id:'rose',    name:'Rose',    style:'centered', c1:'#fdf2f8', c2:'#ffffff', accent:'#ec4899', dark:false},
+  {id:'lavender',name:'Lavender',style:'centered', c1:'#f3e8ff', c2:'#ffffff', accent:'#8b5cf6', dark:false},
+  {id:'gold',    name:'Gold',    style:'bordered', c1:'#fdf6e3', c2:'#fffdf8', accent:'#c9a227', dark:false},
+  {id:'navy',    name:'Navy',    style:'bordered', c1:'#eef4ff', c2:'#ffffff', accent:'#1e3a5f', dark:false},
+  {id:'slate',   name:'Slate',   style:'minimal',  c1:'#f8fafc', c2:'#ffffff', accent:'#334155', dark:false},
+  {id:'mint',    name:'Mint',    style:'minimal',  c1:'#f0fdf4', c2:'#ffffff', accent:'#059669', dark:false},
+  {id:'blush',   name:'Blush',   style:'flourish', c1:'#fff5fa', c2:'#ffffff', accent:'#be185d', dark:false},
+  {id:'midnight',name:'Midnight',style:'dark',     c1:'#0f1f3d', c2:'#1a2f52', accent:'#e8c14a', dark:true},
+  {id:'emerald', name:'Emerald', style:'dark',     c1:'#0b3d2e', c2:'#14532d', accent:'#fbbf24', dark:true}
+];
 (function(){
-  var PREMIUM_PRICE = 9.99;
   var FREE_TRIES = 1;
   var tries = parseInt(localStorage.getItem('certmaker_tries') || '0', 10);
   var locked = !localStorage.getItem('certmaker_unlocked');
-
   var canvas = document.getElementById('previewCanvas');
   var ctx = canvas.getContext('2d');
+  window.onTplChange = function(){ render(); };
+
+  function wrapText(text, x, y, maxW, lineH, maxLines){
+    var words = String(text).split(' '), line = '', lines = 0;
+    for(var i=0;i<words.length;i++){
+      var test = line + (line ? ' ' : '') + words[i];
+      if(ctx.measureText(test).width > maxW && line){ ctx.fillText(line, x, y); line = words[i]; y += lineH; lines++; if(lines >= maxLines) return; }
+      else line = test;
+    }
+    ctx.fillText(line, x, y);
+  }
 
   function render(){
+    var t = tpl();
     var W = canvas.width, H = canvas.height;
-    var bg = document.getElementById('bgColor').value;
-    var ac = document.getElementById('accent').value;
+    var ac = t.accent, dark = t.dark;
+    var title = document.getElementById('title').value || 'You\'re Invited!';
+    var msg = document.getElementById('message').value || '';
+    var date = document.getElementById('date').value, time = document.getElementById('time').value;
+    var loc = document.getElementById('location').value;
+    ctx.textAlign = 'center';
+
     // background
-    var grad = ctx.createLinearGradient(0,0,W,H);
-    grad.addColorStop(0, bg); grad.addColorStop(1, '#ffffff');
-    ctx.fillStyle = grad; ctx.fillRect(0,0,W,H);
-    // accent frame
-    ctx.strokeStyle = ac; ctx.lineWidth = 8; ctx.strokeRect(24,24,W-48,H-48);
-    ctx.strokeStyle = bg; ctx.lineWidth = 3; ctx.strokeRect(38,38,W-76,H-76);
-    // top flourish
-    ctx.fillStyle = ac; ctx.fillRect(24,24,W-48,10);
+    if(t.style === 'dark'){
+      var dg = ctx.createLinearGradient(0,0,W,H); dg.addColorStop(0,t.c1); dg.addColorStop(1,t.c2);
+      ctx.fillStyle = dg; ctx.fillRect(0,0,W,H);
+    } else {
+      var grad = ctx.createLinearGradient(0,0,W,H); grad.addColorStop(0,t.c1); grad.addColorStop(1,t.c2);
+      ctx.fillStyle = grad; ctx.fillRect(0,0,W,H);
+    }
+    // frame
+    if(t.style === 'bordered'){
+      ctx.strokeStyle = ac; ctx.lineWidth = 6; ctx.strokeRect(26,26,W-52,H-52);
+      ctx.strokeStyle = ac; ctx.lineWidth = 1; ctx.strokeRect(36,36,W-72,H-72);
+      ctx.fillStyle = ac; ctx.fillRect(0,0,W,12); ctx.fillRect(0,H-12,W,12);
+    } else if(t.style === 'minimal'){
+      ctx.strokeStyle = ac; ctx.lineWidth = 1.5; ctx.strokeRect(34,34,W-68,H-68);
+    } else if(t.style === 'flourish'){
+      ctx.strokeStyle = ac; ctx.lineWidth = 3; ctx.strokeRect(24,24,W-48,H-48);
+      ctx.strokeStyle = ac; ctx.lineWidth = 6;
+      ctx.beginPath(); ctx.moveTo(46,64); ctx.arcTo(46,46,64,46,6); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(W-64,46); ctx.arcTo(W-46,46,W-46,64,6); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(46,H-64); ctx.arcTo(46,H-46,64,H-46,6); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(W-64,H-46); ctx.arcTo(W-46,H-46,W-46,H-64,6); ctx.stroke();
+    } else {
+      ctx.strokeStyle = ac; ctx.lineWidth = 8; ctx.strokeRect(24,24,W-48,H-48);
+      ctx.strokeStyle = t.c1; ctx.lineWidth = 3; ctx.strokeRect(38,38,W-76,H-76);
+    }
     // title
-    ctx.fillStyle = ac; ctx.textAlign = 'center';
-    ctx.font = 'bold 84px Georgia, serif'; ctx.fillText(document.getElementById('title').value || 'You\'re Invited!', W/2, 240);
+    ctx.fillStyle = ac; ctx.font = 'bold 84px Georgia, serif';
+    wrapText(title, W/2, 250, W-160, 96, 3);
     // message
-    ctx.fillStyle = '#34495e'; ctx.font = 'italic 30px Georgia, serif';
-    wrapText(document.getElementById('message').value || '', W/2, 330, W-180, 44, 4);
+    ctx.fillStyle = dark ? '#cbd5e1' : '#34495e'; ctx.font = 'italic 30px Georgia, serif';
+    wrapText(msg, W/2, 350, W-180, 44, 4);
     // details
     ctx.fillStyle = ac; ctx.font = 'bold 40px Georgia, serif';
-    ctx.fillText(document.getElementById('date').value, W/2, 520);
-    ctx.fillText(document.getElementById('time').value, W/2, 575);
-    ctx.fillStyle = '#5a7ea0'; ctx.font = '28px Georgia, serif';
-    ctx.fillText(document.getElementById('location').value, W/2, 625);
+    ctx.fillText(date, W/2, 520);
+    ctx.fillText(time, W/2, 575);
+    ctx.fillStyle = dark ? '#94a3b8' : '#5a7ea0'; ctx.font = '28px Georgia, serif';
+    ctx.fillText(loc, W/2, 625);
 
-    // watermark
     var wm = document.getElementById('wmText');
     if(locked){
       ctx.font = 'bold 26px Arial'; ctx.fillStyle = 'rgba(231,76,60,0.25)';
@@ -154,43 +200,14 @@
       wm.style.display = 'block';
     } else { wm.style.display = 'none'; }
   }
-  function wrapText(text, x, y, maxW, lineH, maxLines){
-    var words = String(text).split(' ');
-    var line = '', lines = 0;
-    for(var i=0;i<words.length;i++){
-      var test = line + (line ? ' ' : '') + words[i];
-      if(ctx.measureText(test).width > maxW && line){
-        ctx.fillText(line, x, y); line = words[i]; y += lineH; lines++;
-        if(lines >= maxLines) return;
-      } else line = test;
-    }
-    ctx.fillText(line, x, y);
-  }
 
   function showPaywall(){ document.getElementById('paywall').style.display = 'flex'; }
-  function download(){
-    render();
-    var link = document.createElement('a');
-    link.download = 'invitation.png';
-    link.href = canvas.toDataURL('image/png');
-    link.click();
-  }
-
+  function download(){ render(); var l=document.createElement('a'); l.download='invitation.png'; l.href=canvas.toDataURL('image/png'); l.click(); }
   function unlockViaApi(code){
-    var UNLOCK_API = 'https://certificate-maker-unlock.aiharryone.workers.dev';
-    return fetch(UNLOCK_API + '/unlock', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ key: code }) })
+    return fetch('https://certificate-maker-unlock.aiharryone.workers.dev/unlock', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ key: code }) })
       .then(function(r){return r.json().catch(function(){return {};});})
-      .then(function(data){
-        if(data.ok){
-          localStorage.setItem('certmaker_unlocked','1'); locked = false;
-          document.getElementById('paywall').style.display = 'none';
-          document.getElementById('wmText').style.display = 'none';
-          render(); alert('Unlocked! Enjoy unlimited invitations.'); return true;
-        }
-        return false;
-      });
+      .then(function(data){ if(data.ok){ localStorage.setItem('certmaker_unlocked','1'); locked=false; document.getElementById('paywall').style.display='none'; document.getElementById('wmText').style.display='none'; render(); alert('Unlocked! Enjoy unlimited invitations.'); return true; } return false; });
   }
-
   document.getElementById('downloadBtn').addEventListener('click', function(){
     if(locked && tries >= FREE_TRIES){ showPaywall(); return; }
     download();
@@ -200,10 +217,8 @@
     var v = document.getElementById('unlockInput').value.trim();
     if(!v){ alert('Please enter your unlock code.'); return; }
     var btn = this; btn.disabled = true; btn.textContent = 'Checking…';
-    unlockViaApi(v).then(function(ok){
-      btn.disabled = false; btn.textContent = 'Unlock';
-      if(!ok) alert('Invalid unlock code. Check your purchase email.');
-    }).catch(function(){ btn.disabled=false; btn.textContent='Unlock'; alert('Could not verify code. Please try again.'); });
+    unlockViaApi(v).then(function(ok){ btn.disabled=false; btn.textContent='Unlock'; if(!ok) alert('Invalid unlock code. Check your purchase email.'); })
+      .catch(function(){ btn.disabled=false; btn.textContent='Unlock'; alert('Could not verify code. Please try again.'); });
   });
   render();
 })();

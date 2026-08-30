@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="msvalidate.01" content="E62785F51D89A3BD3AFBB2BC2BB07BF9">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Diploma Maker — Free Formal Diploma Generator</title>
-<meta name="description" content="Make a formal diploma free: graduation, programs and certificates with elegant wording. Edit in your browser, download a print-ready PNG. Nothing uploaded.">
+<title>Diploma Maker — 10 Templates, Free Formal Diploma Generator</title>
+<meta name="description" content="Make a formal diploma free: 10 elegant templates for graduation, programs and courses. Edit in your browser, download a print-ready PNG. Nothing uploaded.">
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
   body{font-family:'Trebuchet MS','Segoe UI',sans-serif;background:#f4f7fb;color:#2c3e50;line-height:1.6;}
@@ -23,13 +23,18 @@
   .panel h2{color:#3a7bd5;font-size:18px;margin-bottom:14px;}
   label{display:block;font-weight:bold;margin:12px 0 5px;color:#34495e;font-size:14px;}
   input[type=text]{width:100%;padding:10px;border:2px solid #d6e2f0;border-radius:8px;font-size:14px;background:#fff;font-family:inherit;}
-  input[type=color]{width:50px;height:38px;border:2px solid #d6e2f0;border-radius:8px;padding:2px;background:#fff;}
   .row{display:flex;gap:10px;}
   .row > div{flex:1;}
   .btn{display:inline-block;background:#3a7bd5;color:#fff;border:none;padding:12px 26px;border-radius:30px;font-size:16px;font-weight:bold;cursor:pointer;margin-top:16px;}
   .btn:hover{background:#2c6ab3;}
   .btn.green{background:#27ae60;}
   .btn.green:hover{background:#1f9b52;}
+  .tpl-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:6px 0 4px;}
+  @media(max-width:600px){.tpl-grid{grid-template-columns:repeat(3,1fr);}}
+  .tpl{background:#f4f7fb;border:2px solid #d6e2f0;border-radius:8px;padding:8px;text-align:center;cursor:pointer;font-size:11px;color:#34495e;transition:.2s;}
+  .tpl:hover{border-color:#3a7bd5;background:#eef5ff;}
+  .tpl.active{border-color:#3a7bd5;background:#eef5ff;box-shadow:0 2px 8px rgba(58,123,213,.2);}
+  .tpl .swatch{display:block;width:100%;height:34px;border-radius:5px;margin-bottom:5px;}
   .preview-wrap{background:#fff;border-radius:14px;padding:22px;box-shadow:0 4px 14px rgba(58,123,213,.1);}
   .preview-wrap h2{color:#3a7bd5;font-size:18px;margin-bottom:14px;}
   #previewCanvas{width:100%;height:auto;border:1px solid #d6e2f0;border-radius:8px;background:#fff;}
@@ -58,12 +63,14 @@
 </header>
 
 <div class="wrap">
-  <h1>Diploma Maker — Free</h1>
-  <p class="sub">A formal diploma with a seal, for programs, graduations and courses. Edit in your browser, download a print-ready PNG. Your first diploma is free.</p>
+  <h1>Diploma Maker — 10 Templates</h1>
+  <p class="sub">A formal diploma with a seal, for programs, graduations and courses. Pick a template, edit the details, download a print-ready PNG. Your first diploma is free.</p>
 
   <div class="layout">
     <div class="panel">
-      <h2>Diploma Details</h2>
+      <h2>Choose a Template</h2>
+      <div class="tpl-grid" id="tplGrid"></div>
+      <h2 style="margin-top:14px;">Diploma Details</h2>
       <label>Recipient Name</label>
       <input type="text" id="name" value="Alex Morgan" oninput="render()">
       <label>Degree / Program</label>
@@ -72,7 +79,6 @@
       <input type="text" id="institution" value="State University" oninput="render()">
       <div class="row">
         <div><label>Date</label><input type="text" id="date" value="May 15, 2026" oninput="render()"></div>
-        <div><label>Accent</label><input type="color" id="accent" value="#6a1b9a" oninput="render()"></div>
       </div>
       <button class="btn green" id="downloadBtn">⬇ Download PNG</button>
       <div class="watermark" id="wmText"></div>
@@ -88,7 +94,7 @@
 <div id="paywall">
   <div class="box">
     <h2>Unlock Unlimited Diplomas</h2>
-    <p class="small">Your first diploma is free. Unlock unlimited diplomas and <b>no watermark</b> for a one-time <b>$9.99</b> — no subscription.</p>
+    <p class="small">Your first diploma is free. Unlock all 10 templates, unlimited diplomas and <b>no watermark</b> for a one-time <b>$9.99</b> — no subscription.</p>
     <p class="price">$9.99 <span class="small" style="font-size:14px;">one-time</span></p>
     <a class="btn" href="https://creem.io/product/prod_1N2wmJ4rxVYibfIFlUPu25" target="_blank" rel="noopener" style="display:block;width:100%;text-align:center;background:#3a7bd5;color:#fff;text-decoration:none;margin-top:8px;">Get Unlimited Access — $9.99</a>
     <p class="small" style="margin:12px 0 4px;">One payment, lifetime access to all tools. Already purchased? Enter your unlock code:</p>
@@ -101,53 +107,93 @@
   Made for teachers, trainers and creators who value beautiful designs. Questions? Contact: Ai_harryone@outlook.com · <a href="index.html">Certificate Maker</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a>
 </footer>
 
+<script src="tpl-engine.js"></script>
 <script>
+window.TOOL_TEMPLATES = [
+  {id:'royal',   name:'Royal',   style:'formal', c1:'#fdf6e3', c2:'#fffdf8', accent:'#6a1b9a', dark:false},
+  {id:'navy',    name:'Navy',    style:'formal', c1:'#fdf6e3', c2:'#fffdf8', accent:'#1e3a5f', dark:false},
+  {id:'green',   name:'Green',   style:'formal', c1:'#fdf6e3', c2:'#fffdf8', accent:'#1b5e20', dark:false},
+  {id:'gold',    name:'Gold',    style:'seal',   c1:'#fdf6e3', c2:'#fffdf8', accent:'#8a6d1f', dark:false},
+  {id:'crimson', name:'Crimson', style:'seal',   c1:'#fdf6e3', c2:'#fffdf8', accent:'#b71c1c', dark:false},
+  {id:'slate',   name:'Slate',   style:'minimal',c1:'#f8fafc', c2:'#ffffff', accent:'#334155', dark:false},
+  {id:'mint',    name:'Mint',    style:'minimal',c1:'#f0fdf4', c2:'#ffffff', accent:'#059669', dark:false},
+  {id:'teal',    name:'Teal',    style:'minimal',c1:'#ecfeff', c2:'#ffffff', accent:'#0d9488', dark:false},
+  {id:'midnight',name:'Midnight',style:'dark',   c1:'#0f1f3d', c2:'#1a2f52', accent:'#e8c14a', dark:true},
+  {id:'emerald', name:'Emerald', style:'dark',   c1:'#0b3d2e', c2:'#14532d', accent:'#fbbf24', dark:true}
+];
 (function(){
   var FREE_TRIES = 1;
   var tries = parseInt(localStorage.getItem('certmaker_tries') || '0', 10);
   var locked = !localStorage.getItem('certmaker_unlocked');
   var canvas = document.getElementById('previewCanvas');
   var ctx = canvas.getContext('2d');
+  window.onTplChange = function(){ render(); };
+
+  function truncate(s, maxW){
+    s = String(s||''); if(ctx.measureText(s).width <= maxW) return s;
+    while(s.length > 1 && ctx.measureText(s+'…').width > maxW) s = s.slice(0,-1);
+    return s + '…';
+  }
 
   function render(){
+    var t = tpl();
     var W = canvas.width, H = canvas.height;
-    var ac = document.getElementById('accent').value;
+    var ac = t.accent, dark = t.dark;
     var name = document.getElementById('name').value || 'Your Name';
     var program = document.getElementById('program').value || '';
     var institution = document.getElementById('institution').value || '';
     var date = document.getElementById('date').value || '';
-    // paper background
-    ctx.fillStyle = '#fdfcf8'; ctx.fillRect(0,0,W,H);
-    // outer border
-    ctx.strokeStyle = ac; ctx.lineWidth = 14; ctx.strokeRect(28,28,W-56,H-56);
-    ctx.strokeStyle = '#c9a227'; ctx.lineWidth = 3; ctx.strokeRect(50,50,W-100,H-100);
-    // seal (top right)
-    ctx.fillStyle = '#c9a227'; ctx.beginPath(); ctx.arc(W-110,110,46,0,Math.PI*2); ctx.fill();
-    ctx.fillStyle = '#fff'; ctx.font = 'bold 30px Georgia, serif'; ctx.textAlign = 'center';
-    ctx.fillText('★', W-110, 120);
-    // heading
-    ctx.fillStyle = ac; ctx.textAlign = 'center';
-    ctx.font = 'bold 58px Georgia, serif'; ctx.fillText('DIPLOMA', W/2, 200);
-    ctx.fillStyle = '#5a7ea0'; ctx.font = '28px Georgia, serif';
-    ctx.fillText('This certifies that', W/2, 260);
-    // recipient
-    ctx.fillStyle = '#2c3e50'; ctx.font = 'bold 78px Georgia, serif';
-    ctx.fillText(truncate(name, W-180), W/2, 370);
-    // program line
-    ctx.fillStyle = '#34495e'; ctx.font = 'italic 38px Georgia, serif';
-    ctx.fillText('has successfully completed the requirements of', W/2, 440);
-    ctx.fillStyle = ac; ctx.font = 'bold 46px Georgia, serif';
-    ctx.fillText(truncate(program, W-180), W/2, 510);
-    // institution + date
-    ctx.fillStyle = '#5a7ea0'; ctx.font = '32px Georgia, serif';
-    ctx.fillText('at ' + truncate(institution, W-180), W/2, 575);
-    ctx.fillStyle = '#8a9bb0'; ctx.font = '26px Georgia, serif';
-    ctx.fillText(date, W/2, 625);
-    // signature line
-    ctx.strokeStyle = '#8a9bb0'; ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.moveTo(W/2-200, 655); ctx.lineTo(W/2-40, 655); ctx.stroke();
-    ctx.fillStyle = '#8a9bb0'; ctx.font = '22px Georgia, serif';
-    ctx.fillText('Registrar', W/2-120, 680);
+    ctx.textAlign = 'center';
+    var serif = 'Georgia, serif';
+
+    if(t.style === 'dark'){
+      var dg = ctx.createLinearGradient(0,0,W,H); dg.addColorStop(0,t.c1); dg.addColorStop(1,t.c2);
+      ctx.fillStyle = dg; ctx.fillRect(0,0,W,H);
+    } else { ctx.fillStyle = '#fdfcf8'; ctx.fillRect(0,0,W,H); }
+
+    // borders
+    if(t.style === 'seal' || t.style === 'formal'){
+      ctx.strokeStyle = ac; ctx.lineWidth = 14; ctx.strokeRect(28,28,W-56,H-56);
+      ctx.strokeStyle = '#c9a227'; ctx.lineWidth = 3; ctx.strokeRect(50,50,W-100,H-100);
+    } else if(t.style === 'minimal'){
+      ctx.strokeStyle = ac; ctx.lineWidth = 1.5; ctx.strokeRect(36,36,W-72,H-72);
+      ctx.fillStyle = ac; ctx.fillRect(0,0,W,5);
+    } else { // dark
+      ctx.strokeStyle = ac; ctx.lineWidth = 2; ctx.strokeRect(26,26,W-52,H-52);
+      ctx.strokeStyle = 'rgba(201,162,39,.4)'; ctx.lineWidth = 1; ctx.strokeRect(34,34,W-68,H-68);
+    }
+
+    // seal / emblem
+    if(t.style === 'seal'){
+      ctx.fillStyle = ac; ctx.beginPath(); ctx.arc(W-110,110,46,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.font = 'bold 28px '+serif; ctx.fillText('★', W-110, 120);
+    } else if(t.style === 'formal'){
+      ctx.fillStyle = '#c9a227'; ctx.beginPath(); ctx.arc(W-110,110,46,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.font = 'bold 28px '+serif; ctx.fillText('★', W-110, 120);
+    } else if(t.style === 'minimal'){
+      ctx.fillStyle = ac; ctx.font = '26px '+serif; ctx.fillText('✦', W-110, 130);
+    } else {
+      ctx.fillStyle = ac; ctx.font = '26px '+serif; ctx.fillText('✦', W-110, 130);
+    }
+
+    var headY = (t.style === 'minimal') ? 150 : 200;
+    ctx.fillStyle = ac; ctx.font = 'bold 58px '+serif; ctx.fillText('DIPLOMA', W/2, headY);
+    ctx.fillStyle = dark ? '#cbd5e1' : '#5a7ea0'; ctx.font = '28px '+serif;
+    ctx.fillText('This certifies that', W/2, headY+60);
+    ctx.fillStyle = dark ? '#f1f5f9' : '#2c3e50'; ctx.font = 'bold 78px '+serif;
+    ctx.fillText(truncate(name, W-180), W/2, headY+170);
+    ctx.fillStyle = dark ? '#cbd5e1' : '#34495e'; ctx.font = 'italic 38px '+serif;
+    ctx.fillText('has successfully completed the requirements of', W/2, headY+240);
+    ctx.fillStyle = ac; ctx.font = 'bold 46px '+serif;
+    ctx.fillText(truncate(program, W-180), W/2, headY+310);
+    ctx.fillStyle = dark ? '#94a3b8' : '#5a7ea0'; ctx.font = '32px '+serif;
+    ctx.fillText('at ' + truncate(institution, W-180), W/2, headY+375);
+    ctx.fillStyle = dark ? '#94a3b8' : '#8a9bb0'; ctx.font = '26px '+serif;
+    ctx.fillText(date, W/2, headY+425);
+    ctx.strokeStyle = dark ? '#64748b' : '#8a9bb0'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(W/2-200, headY+455); ctx.lineTo(W/2-40, headY+455); ctx.stroke();
+    ctx.fillStyle = dark ? '#94a3b8' : '#8a9bb0'; ctx.font = '22px '+serif;
+    ctx.fillText('Registrar', W/2-120, headY+480);
 
     var wm = document.getElementById('wmText');
     if(locked){
@@ -157,18 +203,9 @@
       wm.style.display = 'block';
     } else { wm.style.display = 'none'; }
   }
-  function truncate(s, maxW){
-    s = String(s||''); if(ctx.measureText(s).width <= maxW) return s;
-    while(s.length > 1 && ctx.measureText(s+'…').width > maxW) s = s.slice(0,-1);
-    return s + '…';
-  }
 
   function showPaywall(){ document.getElementById('paywall').style.display = 'flex'; }
-  function download(){
-    render();
-    var link = document.createElement('a'); link.download = 'diploma.png';
-    link.href = canvas.toDataURL('image/png'); link.click();
-  }
+  function download(){ render(); var l=document.createElement('a'); l.download='diploma.png'; l.href=canvas.toDataURL('image/png'); l.click(); }
   function unlockViaApi(code){
     return fetch('https://certificate-maker-unlock.aiharryone.workers.dev/unlock', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ key: code }) })
       .then(function(r){return r.json().catch(function(){return {};});})

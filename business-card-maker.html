@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="msvalidate.01" content="E62785F51D89A3BD3AFBB2BC2BB07BF9">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Business Card Maker — Free Professional Business Cards</title>
-<meta name="description" content="Make a business card free: name, title, company and contact. Edit in your browser, download a print-ready PNG. Nothing uploaded.">
+<title>Business Card Maker — 10 Templates, Free Professional Cards</title>
+<meta name="description" content="Make a business card free: 10 professional templates for name, title, company and contact. Edit in your browser, download a print-ready PNG. Nothing uploaded.">
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
   body{font-family:'Trebuchet MS','Segoe UI',sans-serif;background:#f4f7fb;color:#2c3e50;line-height:1.6;}
@@ -23,13 +23,18 @@
   .panel h2{color:#3a7bd5;font-size:18px;margin-bottom:14px;}
   label{display:block;font-weight:bold;margin:12px 0 5px;color:#34495e;font-size:14px;}
   input[type=text]{width:100%;padding:10px;border:2px solid #d6e2f0;border-radius:8px;font-size:14px;background:#fff;font-family:inherit;}
-  input[type=color]{width:50px;height:38px;border:2px solid #d6e2f0;border-radius:8px;padding:2px;background:#fff;}
   .row{display:flex;gap:10px;}
   .row > div{flex:1;}
   .btn{display:inline-block;background:#3a7bd5;color:#fff;border:none;padding:12px 26px;border-radius:30px;font-size:16px;font-weight:bold;cursor:pointer;margin-top:16px;}
   .btn:hover{background:#2c6ab3;}
   .btn.green{background:#27ae60;}
   .btn.green:hover{background:#1f9b52;}
+  .tpl-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:6px 0 4px;}
+  @media(max-width:600px){.tpl-grid{grid-template-columns:repeat(3,1fr);}}
+  .tpl{background:#f4f7fb;border:2px solid #d6e2f0;border-radius:8px;padding:8px;text-align:center;cursor:pointer;font-size:11px;color:#34495e;transition:.2s;}
+  .tpl:hover{border-color:#3a7bd5;background:#eef5ff;}
+  .tpl.active{border-color:#3a7bd5;background:#eef5ff;box-shadow:0 2px 8px rgba(58,123,213,.2);}
+  .tpl .swatch{display:block;width:100%;height:34px;border-radius:5px;margin-bottom:5px;}
   .preview-wrap{background:#fff;border-radius:14px;padding:22px;box-shadow:0 4px 14px rgba(58,123,213,.1);}
   .preview-wrap h2{color:#3a7bd5;font-size:18px;margin-bottom:14px;}
   #previewCanvas{width:100%;height:auto;border:1px solid #d6e2f0;border-radius:8px;background:#fff;}
@@ -58,12 +63,14 @@
 </header>
 
 <div class="wrap">
-  <h1>Business Card Maker — Free</h1>
-  <p class="sub">A clean, professional business card in 30 seconds. Edit in your browser, download a print-ready PNG. Your first card is free.</p>
+  <h1>Business Card Maker — 10 Templates</h1>
+  <p class="sub">A clean, professional business card in 30 seconds. Pick a template, edit the details, download a print-ready PNG. Your first card is free.</p>
 
   <div class="layout">
     <div class="panel">
-      <h2>Business Card Details</h2>
+      <h2>Choose a Template</h2>
+      <div class="tpl-grid" id="tplGrid"></div>
+      <h2 style="margin-top:14px;">Business Card Details</h2>
       <label>Name</label>
       <input type="text" id="name" value="Sarah Johnson" oninput="render()">
       <label>Title</label>
@@ -76,9 +83,6 @@
       </div>
       <label>Website</label>
       <input type="text" id="website" value="acme.studio" oninput="render()">
-      <div class="row">
-        <div><label>Accent</label><input type="color" id="accent" value="#3a7bd5" oninput="render()"></div>
-      </div>
       <button class="btn green" id="downloadBtn">⬇ Download PNG</button>
       <div class="watermark" id="wmText"></div>
     </div>
@@ -93,7 +97,7 @@
 <div id="paywall">
   <div class="box">
     <h2>Unlock Unlimited Business Cards</h2>
-    <p class="small">Your first card is free. Unlock unlimited business cards and <b>no watermark</b> for a one-time <b>$9.99</b> — no subscription.</p>
+    <p class="small">Your first card is free. Unlock all 10 templates, unlimited business cards and <b>no watermark</b> for a one-time <b>$9.99</b> — no subscription.</p>
     <p class="price">$9.99 <span class="small" style="font-size:14px;">one-time</span></p>
     <a class="btn" href="https://creem.io/product/prod_1N2wmJ4rxVYibfIFlUPu25" target="_blank" rel="noopener" style="display:block;width:100%;text-align:center;background:#3a7bd5;color:#fff;text-decoration:none;margin-top:8px;">Get Unlimited Access — $9.99</a>
     <p class="small" style="margin:12px 0 4px;">One payment, lifetime access to all tools. Already purchased? Enter your unlock code:</p>
@@ -106,44 +110,75 @@
   Made for teachers, trainers and creators who value beautiful designs. Questions? Contact: Ai_harryone@outlook.com · <a href="index.html">Certificate Maker</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a>
 </footer>
 
+<script src="tpl-engine.js"></script>
 <script>
+window.TOOL_TEMPLATES = [
+  {id:'blue',   name:'Blue',   style:'band',  c1:'#eef4ff', c2:'#ffffff', accent:'#3a7bd5', dark:false},
+  {id:'navy',   name:'Navy',   style:'band',  c1:'#eef4ff', c2:'#ffffff', accent:'#1e3a5f', dark:false},
+  {id:'teal',   name:'Teal',   style:'band',  c1:'#ecfdf5', c2:'#ffffff', accent:'#0d9488', dark:false},
+  {id:'gold',   name:'Gold',   style:'bordered', c1:'#fdf6e3', c2:'#ffffff', accent:'#c9a227', dark:false},
+  {id:'rose',   name:'Rose',   style:'bordered', c1:'#fdf2f8', c2:'#ffffff', accent:'#e11d48', dark:false},
+  {id:'slate',  name:'Slate',  style:'minimal', c1:'#f8fafc', c2:'#ffffff', accent:'#334155', dark:false},
+  {id:'mint',   name:'Mint',   style:'minimal', c1:'#f0fdf4', c2:'#ffffff', accent:'#059669', dark:false},
+  {id:'sunset', name:'Sunset', style:'gradient', c1:'#ffedd5', c2:'#fef3c7', accent:'#ea580c', dark:false},
+  {id:'midnight',name:'Midnight', style:'dark', c1:'#0f1f3d', c2:'#1a2f52', accent:'#e8c14a', dark:true},
+  {id:'charcoal',name:'Charcoal', style:'dark', c1:'#111827', c2:'#1f2937', accent:'#fbbf24', dark:true}
+];
 (function(){
   var FREE_TRIES = 1;
   var tries = parseInt(localStorage.getItem('certmaker_tries') || '0', 10);
   var locked = !localStorage.getItem('certmaker_unlocked');
   var canvas = document.getElementById('previewCanvas');
   var ctx = canvas.getContext('2d');
+  window.onTplChange = function(){ render(); };
+
+  function truncate(s, maxW){
+    s = String(s||''); if(ctx.measureText(s).width <= maxW) return s;
+    while(s.length > 1 && ctx.measureText(s+'…').width > maxW) s = s.slice(0,-1);
+    return s + '…';
+  }
 
   function render(){
+    var t = tpl();
     var W = canvas.width, H = canvas.height;
-    var ac = document.getElementById('accent').value;
+    var ac = t.accent, dark = t.dark;
     var name = document.getElementById('name').value || 'Your Name';
     var title = document.getElementById('title').value || '';
     var company = document.getElementById('company').value || '';
     var phone = document.getElementById('phone').value || '';
     var email = document.getElementById('email').value || '';
     var website = document.getElementById('website').value || '';
-    // card background
-    ctx.fillStyle = '#ffffff'; ctx.fillRect(0,0,W,H);
-    // accent side band
-    ctx.fillStyle = ac; ctx.fillRect(0,0,36,H);
-    // name + title
     ctx.textAlign = 'left';
-    ctx.fillStyle = '#2c3e50'; ctx.font = 'bold 84px Trebuchet MS, sans-serif';
-    ctx.fillText(truncate(name, W-140), 90, 210);
-    ctx.fillStyle = '#5a7ea0'; ctx.font = '40px Trebuchet MS, sans-serif';
-    ctx.fillText(truncate(title, W-140), 92, 275);
-    // company
+
+    if(t.style === 'dark'){
+      var dg = ctx.createLinearGradient(0,0,W,H); dg.addColorStop(0,t.c1); dg.addColorStop(1,t.c2);
+      ctx.fillStyle = dg; ctx.fillRect(0,0,W,H);
+    } else {
+      ctx.fillStyle = '#fff'; ctx.fillRect(0,0,W,H);
+      if(t.style === 'gradient'){
+        var gg = ctx.createLinearGradient(0,0,W,0); gg.addColorStop(0,t.c1); gg.addColorStop(1,t.c2);
+        ctx.fillStyle = gg; ctx.fillRect(0,0,W,H);
+      }
+    }
+    if(t.style === 'band'){ ctx.fillStyle = ac; ctx.fillRect(0,0,36,H); }
+    if(t.style === 'bordered'){ ctx.strokeStyle = ac; ctx.lineWidth = 5; ctx.strokeRect(18,18,W-36,H-36); }
+    if(t.style === 'minimal'){ ctx.strokeStyle = ac; ctx.lineWidth = 1.5; ctx.strokeRect(24,24,W-48,H-48); }
+    if(t.style === 'dark'){ ctx.strokeStyle = 'rgba(201,162,39,.4)'; ctx.lineWidth = 1.5; ctx.strokeRect(22,22,W-44,H-44); }
+
+    var x = (t.style === 'band') ? 90 : 70;
+    var darkText = dark ? '#f1f5f9' : '#2c3e50';
+    ctx.fillStyle = darkText; ctx.font = 'bold 84px Trebuchet MS, sans-serif';
+    ctx.fillText(truncate(name, W-x-80), x, 210);
+    ctx.fillStyle = dark ? '#cbd5e1' : '#5a7ea0'; ctx.font = '40px Trebuchet MS, sans-serif';
+    ctx.fillText(truncate(title, W-x-80), x+2, 275);
     ctx.fillStyle = ac; ctx.font = 'bold 42px Trebuchet MS, sans-serif';
-    ctx.fillText(truncate(company, W-140), 92, 350);
-    // divider
-    ctx.strokeStyle = '#d6e2f0'; ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.moveTo(90, 400); ctx.lineTo(W-90, 400); ctx.stroke();
-    // contact
-    ctx.fillStyle = '#34495e'; ctx.font = '30px Trebuchet MS, sans-serif';
-    ctx.fillText(phone, 92, 465);
-    ctx.fillText(email, 92, 515);
-    ctx.fillStyle = '#5a7ea0'; ctx.fillText(website, 92, 555);
+    ctx.fillText(truncate(company, W-x-80), x+2, 350);
+    ctx.strokeStyle = dark ? '#334155' : '#d6e2f0'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(x, 400); ctx.lineTo(W-70, 400); ctx.stroke();
+    ctx.fillStyle = dark ? '#cbd5e1' : '#34495e'; ctx.font = '30px Trebuchet MS, sans-serif';
+    ctx.fillText(phone, x, 465);
+    ctx.fillText(email, x, 515);
+    ctx.fillStyle = dark ? '#94a3b8' : '#5a7ea0'; ctx.fillText(website, x, 555);
 
     var wm = document.getElementById('wmText');
     if(locked){
@@ -153,18 +188,9 @@
       wm.style.display = 'block';
     } else { wm.style.display = 'none'; }
   }
-  function truncate(s, maxW){
-    s = String(s||''); if(ctx.measureText(s).width <= maxW) return s;
-    while(s.length > 1 && ctx.measureText(s+'…').width > maxW) s = s.slice(0,-1);
-    return s + '…';
-  }
 
   function showPaywall(){ document.getElementById('paywall').style.display = 'flex'; }
-  function download(){
-    render();
-    var link = document.createElement('a'); link.download = 'business-card.png';
-    link.href = canvas.toDataURL('image/png'); link.click();
-  }
+  function download(){ render(); var l=document.createElement('a'); l.download='business-card.png'; l.href=canvas.toDataURL('image/png'); l.click(); }
   function unlockViaApi(code){
     return fetch('https://certificate-maker-unlock.aiharryone.workers.dev/unlock', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ key: code }) })
       .then(function(r){return r.json().catch(function(){return {};});})
