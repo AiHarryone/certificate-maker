@@ -25,3 +25,21 @@ window.TPL = { selected: 0 };
   else build();
 })();
 function tpl() { return (window.TOOL_TEMPLATES || [])[window.TPL.selected] || {}; }
+// Repeated diagonal watermark across the whole canvas (classic tiled look).
+function drawWatermark(ctx, W, H, dark) {
+  ctx.save();
+  ctx.globalAlpha = 0.1;
+  ctx.font = 'bold 42px Arial';
+  ctx.fillStyle = dark ? '#ffffff' : '#1e293b';
+  ctx.textAlign = 'center';
+  ctx.translate(W / 2, H / 2);
+  ctx.rotate(-Math.PI / 5);
+  var step = 200;
+  var span = Math.max(W, H) * 1.3;
+  for (var x = -span; x < span; x += step) {
+    for (var y = -span; y < span; y += step) {
+      ctx.fillText('PREMIUM', x, y);
+    }
+  }
+  ctx.restore();
+}

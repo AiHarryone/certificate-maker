@@ -194,8 +194,7 @@ window.TOOL_TEMPLATES = [
 
     var wm = document.getElementById('wmText');
     if(locked){
-      ctx.font = 'bold 26px Arial'; ctx.fillStyle = 'rgba(231,76,60,0.25)';
-      ctx.save(); ctx.translate(W/2, H-40); ctx.fillText('PREMIUM', 0, 0); ctx.restore();
+      drawWatermark(ctx, W, H, dark);
       wm.textContent = '🔒 Free version — watermark will appear on download. Unlock to remove.';
       wm.style.display = 'block';
     } else { wm.style.display = 'none'; }
