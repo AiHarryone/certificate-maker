@@ -131,6 +131,22 @@ window.TOOL_TEMPLATES = [
   var FREE_TRIES = 1;
   var tries = parseInt(localStorage.getItem('certmaker_tries') || '0', 10);
   var locked = !localStorage.getItem('certmaker_unlocked');
+  var LIC_API = 'https://certificate-maker-unlock.aiharryone.workers.dev';
+  function saveLicense(key, instanceId){ try { localStorage.setItem('certmaker_license', JSON.stringify({ key: key, instanceId: instanceId || '' })); } catch(e){} }
+  function loadLicense(){ try { return JSON.parse(localStorage.getItem('certmaker_license') || 'null'); } catch(e){ return null; } }
+  (function(){
+    var lic = loadLicense();
+    if (!lic || !lic.key) return;
+    fetch(LIC_API + '/validate', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ key: lic.key, instanceId: lic.instanceId || '' }) })
+      .then(function(r){ return r.json().catch(function(){ return {}; }); })
+      .then(function(d){
+        if (d.ok){ localStorage.setItem('certmaker_unlocked','1'); try{saveLicense(code, data.instanceId);}catch(e){} locked=false;
+          var w=document.getElementById('wmText'); if(w) w.style.display='none';
+          var p=document.getElementById('paywall'); if(p) p.style.display='none'; render(); }
+      })
+      .catch(function(){});
+  })();
+
   var canvas = document.getElementById('previewCanvas');
   var ctx = canvas.getContext('2d');
   window.onTplChange = function(){ render(); };

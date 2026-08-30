@@ -534,9 +534,22 @@
   }
 
   // ---------- Unlock ----------
+  var UNLOCK_API = 'https://certificate-maker-unlock.aiharryone.workers.dev';
+  // Persist the activated instance so a key is never re-activated (device slots are finite).
+  function saveLicense(key, instanceId){
+    try { localStorage.setItem('certmaker_license', JSON.stringify({ key: key, instanceId: instanceId || '' })); } catch(e){}
+  }
+  function loadLicense(){
+    try { return JSON.parse(localStorage.getItem('certmaker_license') || 'null'); } catch(e){ return null; }
+  }
+  function setUnlocked(on){
+    locked = !on;
+    if(on){ localStorage.setItem('certmaker_unlocked','1'); } else { localStorage.removeItem('certmaker_unlocked'); }
+    document.getElementById('paywall').style.display = on ? 'none' : '';
+    document.getElementById('wmText').style.display = on ? 'none' : 'block';
+    render();
+  }
   function unlockViaApi(code){
-    // Backend unlock endpoint (Cloudflare Worker or local)
-    var UNLOCK_API = 'https://certificate-maker-unlock.aiharryone.workers.dev';
     return fetch(UNLOCK_API + '/unlock', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
@@ -544,17 +557,30 @@
     }).then(function(r){return r.json().catch(function(){return {};});})
       .then(function(data){
         if(data.ok){
-          localStorage.setItem('certmaker_unlocked','1');
-          locked = false;
-          document.getElementById('paywall').style.display = 'none';
-          document.getElementById('wmText').style.display = 'none';
-          render();
+          saveLicense(code, data.instanceId);
+          setUnlocked(true);
           alert('Unlocked! Enjoy premium templates.');
-          return true;
+          return data;
         }
-        return false;
+        return data;
       });
   }
+  // Reuse a stored license on load via /validate — never re-activate the same key.
+  (function(){
+    var lic = loadLicense();
+    if (!lic || !lic.key) return;
+    fetch(UNLOCK_API + '/validate', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({ key: lic.key, instanceId: lic.instanceId || '' })
+    }).then(function(r){ return r.json().catch(function(){ return {}; }); })
+      .then(function(d){
+        if (d.ok) { setUnlocked(true); }
+        else if (d.status) { setUnlocked(false); } // explicitly expired/disabled/inactive
+        /* service/network error -> keep local state as-is (lenient for paid users) */
+      })
+      .catch(function(){});
+  })();
 
   // ---------- Events ----------
   document.getElementById('downloadBtn').addEventListener('click', function(){
@@ -577,9 +603,9 @@
     var v = document.getElementById('unlockInput').value.trim();
     if(!v){ alert('Please enter your unlock code.'); return; }
     var btn = this; btn.disabled = true; btn.textContent = 'Checking…';
-    unlockViaApi(v).then(function(ok){
+    unlockViaApi(v).then(function(d){
       btn.disabled = false; btn.textContent = 'Unlock';
-      if(!ok) alert('Invalid unlock code. Check your purchase email.');
+      if(!(d && d.ok)) alert((d && d.error) || 'Invalid unlock code. Check your purchase email.');
     }).catch(function(){ btn.disabled=false; btn.textContent='Unlock'; alert('Could not verify code. Please try again.'); });
   });
   // URL ?unlock= param
