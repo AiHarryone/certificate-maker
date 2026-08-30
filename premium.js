@@ -351,6 +351,23 @@
     ctx.restore(); ctx.globalAlpha = 1;
   }
 
+  // Shrink a font until the text fits within maxW (prevents long names clipping
+  // on narrow canvases like the flyer's 800px width).
+  function fitFont(ctx, text, font, maxW) {
+    ctx.font = font;
+    if (!text || ctx.measureText(text).width <= maxW) return font;
+    var m = String(font).match(/(\d+)px/);
+    if (!m) return font;
+    var size = parseInt(m[1], 10);
+    while (size > 12) {
+      size -= 2;
+      var f2 = String(font).replace(/(\d+)px/, size + 'px');
+      ctx.font = f2;
+      if (ctx.measureText(text).width <= maxW) return f2;
+    }
+    return font;
+  }
+
   // ---- tool premium helpers (round 4) ----
   function scallop(ctx, W, H, color) {
     ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.globalAlpha = 0.75;
@@ -411,7 +428,7 @@
         ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = 'bold 15px ' + sans;
         ctx.fillText(kicker, W / 2, 130);
         ctx.globalAlpha = 1;
-        foilText(ctx, name, W / 2, 250, 'bold 58px ' + serif);
+        foilText(ctx, name, W / 2, 250, fitFont(ctx, name, 'bold 58px ' + serif, W - 120));
         ctx.fillStyle = gold; ctx.font = 'italic 26px ' + serif; ctx.fillText(sub, W / 2, 320);
         ctx.strokeStyle = gold; ctx.globalAlpha = 0.6; ctx.lineWidth = 1;
         ctx.beginPath(); ctx.moveTo(W / 2 - 160, 350); ctx.lineTo(W / 2 + 160, 350); ctx.stroke();
@@ -428,7 +445,7 @@
         sunburst(ctx, W / 2, 118, 26, 82, 24, gold);
         ctx.fillStyle = gold; ctx.beginPath(); ctx.arc(W / 2, 118, 22, 0, Math.PI * 2); ctx.fill();
         ctx.fillStyle = t.bg; ctx.font = 'bold 20px ' + serif; ctx.fillText('★', W / 2, 127);
-        ctx.fillStyle = ink; ctx.font = 'bold 44px ' + serif; ctx.fillText(name, W / 2, 290);
+        ctx.fillStyle = ink; ctx.font = fitFont(ctx, name, 'bold 44px ' + serif, W - 120); ctx.fillText(name, W / 2, 290);
         ctx.fillStyle = gold; ctx.font = 'italic 24px ' + serif; ctx.fillText(sub, W / 2, 345);
         ctx.fillStyle = gold; ctx.font = 'bold 14px ' + sans;
         ctx.fillText('— ' + kicker + ' —', W / 2, 200);
@@ -445,7 +462,7 @@
         wash(ctx, W * 0.5, H * 0.9, 360, t.bloom3 || '#d9c6a9', 0.1);
         ctx.strokeStyle = gold; ctx.globalAlpha = 0.65; ctx.lineWidth = 1; ctx.strokeRect(34, 34, W - 68, H - 68); ctx.globalAlpha = 1;
         ctx.fillStyle = ink; ctx.globalAlpha = 0.55; ctx.font = 'bold 14px ' + sans; ctx.fillText(kicker.toUpperCase(), W / 2, 150); ctx.globalAlpha = 1;
-        ctx.fillStyle = ink; ctx.font = 'italic 56px ' + serif; ctx.fillText(name, W / 2, 300);
+        ctx.fillStyle = ink; ctx.font = fitFont(ctx, name, 'italic 56px ' + serif, W - 120); ctx.fillText(name, W / 2, 300);
         ctx.fillStyle = ac; ctx.font = 'italic 25px ' + serif; ctx.fillText(sub, W / 2, 355);
         if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = '17px ' + sans; wrapLines(ctx, body, W / 2, 405, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
         ctx.fillStyle = ink; ctx.globalAlpha = 0.6; ctx.font = '15px ' + serif; ctx.fillText(meta, W / 2, H - 150); ctx.globalAlpha = 1;
@@ -461,7 +478,7 @@
         ctx.strokeStyle = gold; ctx.globalAlpha = 0.4; ctx.lineWidth = 1; ctx.strokeRect(42, 42, W - 84, H - 84); ctx.globalAlpha = 1;
         laurel(ctx, W / 2, 170, 64, gold);
         ctx.fillStyle = gold; ctx.font = 'bold 15px ' + sans; ctx.fillText(kicker.toUpperCase(), W / 2, 250);
-        ctx.fillStyle = '#f6f1e3'; ctx.font = 'bold 52px ' + serif; ctx.fillText(name, W / 2, 340);
+        ctx.fillStyle = '#f6f1e3'; ctx.font = fitFont(ctx, name, 'bold 52px ' + serif, W - 120); ctx.fillText(name, W / 2, 340);
         ctx.fillStyle = gold; ctx.font = 'italic 24px ' + serif; ctx.fillText(sub, W / 2, 395);
         ctx.strokeStyle = gold; ctx.globalAlpha = 0.5; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(W / 2 - 130, 425); ctx.lineTo(W / 2 + 130, 425); ctx.stroke(); ctx.globalAlpha = 1;
         if (body) { ctx.fillStyle = '#d9e5dd'; ctx.globalAlpha = 0.85; ctx.font = '16px ' + sans; wrapLines(ctx, body, W / 2, 470, 620, 25, 'center', 4); ctx.globalAlpha = 1; }
@@ -475,7 +492,7 @@
         ctx.strokeStyle = gold; ctx.globalAlpha = 0.5; ctx.lineWidth = 1; ctx.strokeRect(30, 30, W - 60, H - 60); ctx.globalAlpha = 1;
         ribbon(ctx, W / 2, 92, 210, t.ribbonColor || '#9f1d1d', gold);
         medal(ctx, W / 2, 200, 46, gold);
-        ctx.fillStyle = ink; ctx.font = 'bold 45px ' + serif; ctx.fillText(name, W / 2, 310);
+        ctx.fillStyle = ink; ctx.font = fitFont(ctx, name, 'bold 45px ' + serif, W - 120); ctx.fillText(name, W / 2, 310);
         ctx.fillStyle = ac; ctx.font = 'italic 24px ' + serif; ctx.fillText(sub, W / 2, 362);
         if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = '17px ' + sans; wrapLines(ctx, body, W / 2, 410, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
         ctx.fillStyle = ink; ctx.globalAlpha = 0.6; ctx.font = '15px ' + serif; ctx.fillText(meta, W / 2, H - 150); ctx.globalAlpha = 1;
@@ -490,7 +507,7 @@
         pediment(ctx, W, 70, gold);
         medal(ctx, W / 2, 240, 34, gold);
         ctx.fillStyle = ink; ctx.font = 'bold 15px ' + sans; ctx.fillText(kicker.toUpperCase(), W / 2, 310);
-        ctx.fillStyle = ink; ctx.font = 'bold 48px ' + serif; ctx.fillText(name, W / 2, 385);
+        ctx.fillStyle = ink; ctx.font = fitFont(ctx, name, 'bold 48px ' + serif, W - 120); ctx.fillText(name, W / 2, 385);
         ctx.fillStyle = ac; ctx.font = 'italic 23px ' + serif; ctx.fillText(sub, W / 2, 435);
         if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = '17px ' + sans; wrapLines(ctx, body, W / 2, 480, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
         ctx.fillStyle = ink; ctx.globalAlpha = 0.6; ctx.font = '15px ' + serif; ctx.fillText(meta, W / 2, H - 150); ctx.globalAlpha = 1;
@@ -511,7 +528,7 @@
         ornateCorner(ctx, W - 32, H - 32, -1, -1, 64, gold);
         goldSeal(ctx, W / 2, 175, 36, gold);
         ctx.fillStyle = ink; ctx.font = 'bold 15px ' + serif; ctx.fillText(kicker.toUpperCase(), W / 2, 260);
-        metalText(ctx, name, W / 2, 355, 'italic 54px ' + serif, goldGrad);
+        metalText(ctx, name, W / 2, 355, fitFont(ctx, name, 'italic 54px ' + serif, W - 120), goldGrad);
         ctx.fillStyle = ink; ctx.font = 'italic 24px ' + serif; ctx.fillText(sub, W / 2, 410);
         ornateDivider(ctx, W / 2, 440, gold);
         if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = 'italic 17px ' + sans; wrapLines(ctx, body, W / 2, 480, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
@@ -528,7 +545,7 @@
         ribbonBanner(ctx, W / 2, 140, 190, t.ribbon || '#9f1d1d', gold, 'CERTIFICATE');
         goldSeal(ctx, W / 2, 215, 30, gold);
         ctx.fillStyle = ink; ctx.font = 'bold 15px ' + serif; ctx.fillText(kicker.toUpperCase(), W / 2, 275);
-        ctx.fillStyle = ink; ctx.font = 'bold 50px ' + serif; ctx.fillText(name, W / 2, 360);
+        ctx.fillStyle = ink; ctx.font = fitFont(ctx, name, 'bold 50px ' + serif, W - 120); ctx.fillText(name, W / 2, 360);
         ctx.fillStyle = gold; ctx.font = 'italic 24px ' + serif; ctx.fillText(sub, W / 2, 415);
         ornateDivider(ctx, W / 2, 445, gold);
         if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = '17px ' + sans; wrapLines(ctx, body, W / 2, 485, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
@@ -548,7 +565,7 @@
         ctx.strokeStyle = gold; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(W / 2, 180, 25, 0, Math.PI * 2); ctx.stroke();
         ctx.fillStyle = '#fff'; ctx.font = 'bold 18px Georgia, serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('★', W / 2, 182); ctx.textBaseline = 'alphabetic';
         ctx.fillStyle = ink; ctx.font = 'bold 15px ' + serif; ctx.fillText(kicker.toUpperCase(), W / 2, 255);
-        ctx.fillStyle = ink; ctx.font = 'italic 56px ' + serif; ctx.fillText(name, W / 2, 350);
+        ctx.fillStyle = ink; ctx.font = fitFont(ctx, name, 'italic 56px ' + serif, W - 120); ctx.fillText(name, W / 2, 350);
         ctx.fillStyle = ac; ctx.font = 'italic 24px ' + serif; ctx.fillText(sub, W / 2, 400);
         ornateDivider(ctx, W / 2, 430, gold);
         if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = '17px ' + sans; wrapLines(ctx, body, W / 2, 475, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
@@ -570,7 +587,7 @@
         });
         goldSeal(ctx, W / 2, 230, 40, gold);
         ctx.fillStyle = 'rgba(245,245,240,0.92)'; ctx.font = 'bold 15px ' + sans; ctx.fillText(kicker.toUpperCase(), W / 2, 315);
-        metalText(ctx, name, W / 2, 395, 'bold 54px ' + serif, goldGrad);
+        metalText(ctx, name, W / 2, 395, fitFont(ctx, name, 'bold 54px ' + serif, W - 120), goldGrad);
         ctx.fillStyle = 'rgba(212,175,55,0.95)'; ctx.font = 'italic 24px ' + serif; ctx.fillText(sub, W / 2, 450);
         if (body) { ctx.fillStyle = 'rgba(230,230,225,0.7)'; ctx.font = '16px ' + sans; wrapLines(ctx, body, W / 2, 495, 620, 25, 'center', 4); }
         ctx.fillStyle = 'rgba(210,210,205,0.6)'; ctx.font = '15px ' + serif; ctx.fillText(meta, W / 2, H - 150);
@@ -590,7 +607,7 @@
         laurelWreath(ctx, W / 2, 175, 56, gold);
         goldSeal(ctx, W / 2, 175, 22, gold);
         ctx.fillStyle = t.accent; ctx.font = 'bold 15px ' + sans; ctx.fillText(kicker.toUpperCase(), W / 2, 260);
-        ctx.fillStyle = ink; ctx.font = 'bold 50px ' + serif; ctx.fillText(name, W / 2, 350);
+        ctx.fillStyle = ink; ctx.font = fitFont(ctx, name, 'bold 50px ' + serif, W - 120); ctx.fillText(name, W / 2, 350);
         ctx.fillStyle = gold; ctx.font = 'italic 24px ' + serif; ctx.fillText(sub, W / 2, 405);
         ornateDivider(ctx, W / 2, 435, gold);
         if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = '17px ' + sans; wrapLines(ctx, body, W / 2, 478, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
@@ -606,7 +623,7 @@
         ctx.strokeStyle = gold; ctx.globalAlpha = 0.5; ctx.lineWidth = 1; ctx.strokeRect(44, 44, W - 88, H - 88); ctx.globalAlpha = 1;
         goldSeal(ctx, W / 2, 180, 44, gold);
         ctx.fillStyle = gold; ctx.font = 'bold 15px ' + sans; ctx.fillText(kicker.toUpperCase(), W / 2, 275);
-        metalText(ctx, name, W / 2, 365, 'italic 54px ' + serif, goldGrad);
+        metalText(ctx, name, W / 2, 365, fitFont(ctx, name, 'italic 54px ' + serif, W - 120), goldGrad);
         ctx.fillStyle = ink; ctx.font = 'italic 24px ' + serif; ctx.fillText(sub, W / 2, 420);
         ornateDivider(ctx, W / 2, 450, gold);
         if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = '17px ' + sans; wrapLines(ctx, body, W / 2, 490, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
@@ -619,7 +636,7 @@
         marbleBg(ctx, W, H, t.bg, t.vein || '#c8b896');
         ctx.strokeStyle = gold; ctx.globalAlpha = 0.75; ctx.lineWidth = 1.5; ctx.strokeRect(34, 34, W - 68, H - 68); ctx.globalAlpha = 1;
         ctx.fillStyle = '#8a7a5c'; ctx.font = 'bold 15px ' + sans; ctx.fillText(kicker.toUpperCase(), W / 2, 200);
-        metalText(ctx, name, W / 2, 330, 'italic 56px ' + serif, goldGrad);
+        metalText(ctx, name, W / 2, 330, fitFont(ctx, name, 'italic 56px ' + serif, W - 120), goldGrad);
         ctx.fillStyle = '#8a7a5c'; ctx.font = 'italic 24px ' + serif; ctx.fillText(sub, W / 2, 385);
         ctx.strokeStyle = gold; ctx.globalAlpha = 0.6; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(W / 2 - 140, 415); ctx.lineTo(W / 2 + 140, 415); ctx.stroke(); ctx.globalAlpha = 1;
         if (body) { ctx.fillStyle = '#5c5548'; ctx.globalAlpha = 0.75; ctx.font = '17px ' + sans; wrapLines(ctx, body, W / 2, 455, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
@@ -639,7 +656,7 @@
         ornateCorner(ctx, W - 46, H - 46, -1, -1, 42, gold);
         laurelWreath(ctx, W / 2, 180, 54, gold);
         ctx.fillStyle = t.accent; ctx.font = 'bold 15px ' + sans; ctx.fillText(kicker.toUpperCase(), W / 2, 265);
-        ctx.fillStyle = ink; ctx.font = 'bold 50px ' + serif; ctx.fillText(name, W / 2, 355);
+        ctx.fillStyle = ink; ctx.font = fitFont(ctx, name, 'bold 50px ' + serif, W - 120); ctx.fillText(name, W / 2, 355);
         ctx.fillStyle = gold; ctx.font = 'italic 24px ' + serif; ctx.fillText(sub, W / 2, 410);
         ornateDivider(ctx, W / 2, 440, gold);
         if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = '17px ' + sans; wrapLines(ctx, body, W / 2, 482, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
@@ -658,7 +675,7 @@
         ornateCorner(ctx, 38, H - 38, 1, -1, 44, 'rgba(184,138,92,0.75)');
         ornateCorner(ctx, W - 38, H - 38, -1, -1, 44, 'rgba(184,138,92,0.75)');
         ctx.fillStyle = 'rgba(120,90,60,0.65)'; ctx.font = 'bold 15px ' + sans; ctx.fillText(kicker.toUpperCase(), W / 2, 200);
-        metalText(ctx, name, W / 2, 330, 'italic 56px ' + serif, roseGoldGrad);
+        metalText(ctx, name, W / 2, 330, fitFont(ctx, name, 'italic 56px ' + serif, W - 120), roseGoldGrad);
         ctx.fillStyle = 'rgba(140,100,70,0.9)'; ctx.font = 'italic 24px ' + serif; ctx.fillText(sub, W / 2, 385);
         ctx.strokeStyle = 'rgba(184,138,92,0.6)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(W / 2 - 140, 415); ctx.lineTo(W / 2 + 140, 415); ctx.stroke();
         if (body) { ctx.fillStyle = 'rgba(100,72,58,0.75)'; ctx.font = '17px ' + sans; wrapLines(ctx, body, W / 2, 455, 620, 26, 'center', 4); }
@@ -679,7 +696,7 @@
         ornateCorner(ctx, W - 32, H - 32, -1, -1, 56, gold);
         laurelWreath(ctx, W / 2, 175, 58, gold);
         ctx.fillStyle = gold; ctx.font = 'bold 15px ' + sans; ctx.fillText(kicker.toUpperCase(), W / 2, 260);
-        ctx.fillStyle = '#f6ecdf'; ctx.font = 'italic 52px ' + serif; ctx.fillText(name, W / 2, 350);
+        ctx.fillStyle = '#f6ecdf'; ctx.font = fitFont(ctx, name, 'italic 52px ' + serif, W - 120); ctx.fillText(name, W / 2, 350);
         ctx.fillStyle = gold; ctx.font = 'italic 24px ' + serif; ctx.fillText(sub, W / 2, 405);
         ornateDivider(ctx, W / 2, 435, gold);
         if (body) { ctx.fillStyle = '#e8d5cd'; ctx.globalAlpha = 0.8; ctx.font = '16px ' + sans; wrapLines(ctx, body, W / 2, 478, 620, 25, 'center', 4); ctx.globalAlpha = 1; }
@@ -700,7 +717,7 @@
         [[58, 58], [W - 58, 58], [58, H - 58], [W - 58, H - 58]].forEach(function (p) { ctx.beginPath(); ctx.arc(p[0], p[1], 4, 0, Math.PI * 2); ctx.fill(); });
         roundel(ctx, W / 2, 170, 40, ink);
         ctx.fillStyle = ink; ctx.globalAlpha = 0.85; ctx.font = 'bold 15px ' + serif; ctx.fillText(kicker.toUpperCase(), W / 2, 265); ctx.globalAlpha = 1;
-        ctx.fillStyle = ink; ctx.font = 'italic 52px ' + serif; ctx.fillText(name, W / 2, 355);
+        ctx.fillStyle = ink; ctx.font = fitFont(ctx, name, 'italic 52px ' + serif, W - 120); ctx.fillText(name, W / 2, 355);
         ctx.fillStyle = ac; ctx.font = 'italic 23px ' + serif; ctx.fillText(sub, W / 2, 405);
         if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = '17px ' + sans; wrapLines(ctx, body, W / 2, 455, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
         ctx.fillStyle = ink; ctx.globalAlpha = 0.55; ctx.font = '16px ' + serif; ctx.fillText(meta, W / 2, H - 150); ctx.globalAlpha = 1;
@@ -717,7 +734,7 @@
           ctx.beginPath(); ctx.arc(p[0], p[1], 40, Math.PI * 0.4, Math.PI * 0.8); ctx.stroke();
         });
         ctx.fillStyle = ac; ctx.font = 'bold 15px ' + sans; ctx.fillText(kicker.toUpperCase(), W / 2, 190);
-        ctx.fillStyle = ink; ctx.font = 'italic 54px ' + serif; ctx.fillText(name, W / 2, 320);
+        ctx.fillStyle = ink; ctx.font = fitFont(ctx, name, 'italic 54px ' + serif, W - 120); ctx.fillText(name, W / 2, 320);
         ctx.fillStyle = ac; ctx.font = 'italic 24px ' + serif; ctx.fillText(sub, W / 2, 375);
         ctx.strokeStyle = ac; ctx.globalAlpha = 0.5; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(W / 2 - 140, 405); ctx.lineTo(W / 2 + 140, 405); ctx.stroke(); ctx.globalAlpha = 1;
         if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = '17px ' + sans; wrapLines(ctx, body, W / 2, 450, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
@@ -732,7 +749,7 @@
         ctx.strokeStyle = gold; ctx.globalAlpha = 0.3; ctx.lineWidth = 1; ctx.strokeRect(42, 42, W - 84, H - 84); ctx.globalAlpha = 1;
         flowerCluster(ctx, W / 2, 170, ac);
         ctx.fillStyle = ink; ctx.globalAlpha = 0.6; ctx.font = 'bold 14px ' + sans; ctx.fillText(kicker.toUpperCase(), W / 2, 265); ctx.globalAlpha = 1;
-        ctx.fillStyle = ink; ctx.font = 'italic 50px ' + serif; ctx.fillText(name, W / 2, 355);
+        ctx.fillStyle = ink; ctx.font = fitFont(ctx, name, 'italic 50px ' + serif, W - 120); ctx.fillText(name, W / 2, 355);
         ctx.fillStyle = '#5a7d4e'; ctx.font = 'italic 23px ' + serif; ctx.fillText(sub, W / 2, 405);
         if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = '17px ' + sans; wrapLines(ctx, body, W / 2, 455, 620, 26, 'center', 4); ctx.globalAlpha = 1; }
         ctx.fillStyle = ink; ctx.globalAlpha = 0.55; ctx.font = '15px ' + serif; ctx.fillText(meta, W / 2, H - 150); ctx.globalAlpha = 1;
@@ -746,7 +763,7 @@
         ctx.fillStyle = sg2; ctx.fillRect(0, 0, W, H);
         ctx.fillStyle = 'rgba(255,240,220,0.35)'; ctx.beginPath(); ctx.arc(W * 0.5, H * 0.2, 72, 0, Math.PI * 2); ctx.fill();
         ctx.fillStyle = '#ffffff'; ctx.globalAlpha = 0.92; ctx.font = 'bold 15px ' + sans; ctx.fillText(kicker.toUpperCase(), W / 2, 235); ctx.globalAlpha = 1;
-        ctx.fillStyle = '#ffffff'; ctx.font = 'bold 54px ' + sans; ctx.fillText(name, W / 2, 335);
+        ctx.fillStyle = '#ffffff'; ctx.font = fitFont(ctx, name, 'bold 54px ' + sans, W - 120); ctx.fillText(name, W / 2, 335);
         ctx.fillStyle = 'rgba(255,255,255,0.92)'; ctx.font = 'italic 24px ' + serif; ctx.fillText(sub, W / 2, 390);
         if (body) { ctx.fillStyle = 'rgba(255,255,255,0.88)'; ctx.font = '17px ' + sans; wrapLines(ctx, body, W / 2, 445, 620, 26, 'center', 4); }
         ctx.fillStyle = 'rgba(255,255,255,0.85)'; ctx.font = '15px ' + sans; ctx.fillText(meta, W / 2, H - 150);
@@ -774,7 +791,7 @@
         ctx.fillStyle = t.bg; ctx.fillRect(0, 0, W, H);
         ctx.strokeStyle = gold; ctx.globalAlpha = 0.5; ctx.lineWidth = 1; ctx.strokeRect(60, 60, W - 120, H - 120); ctx.globalAlpha = 1;
         ctx.fillStyle = gold; ctx.font = 'bold 12px ' + sans; ctx.fillText(kicker.toUpperCase(), W / 2, 220);
-        ctx.fillStyle = ink; ctx.font = '300 46px ' + serif; ctx.fillText(name, W / 2, 330);
+        ctx.fillStyle = ink; ctx.font = fitFont(ctx, name, '300 46px ' + serif, W - 120); ctx.fillText(name, W / 2, 330);
         ctx.strokeStyle = gold; ctx.globalAlpha = 0.5; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(W / 2 - 40, 360); ctx.lineTo(W / 2 + 40, 360); ctx.stroke(); ctx.globalAlpha = 1;
         ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = 'italic 20px ' + serif; ctx.fillText(sub, W / 2, 410);
         if (body) { ctx.fillStyle = ink; ctx.globalAlpha = 0.5; ctx.font = '16px ' + sans; wrapLines(ctx, body, W / 2, 470, 620, 24, 'center', 4); ctx.globalAlpha = 1; }
@@ -802,7 +819,7 @@
           ctx.save(); ctx.translate(p[0], p[1]); ctx.rotate(Math.PI / 4); ctx.fillRect(-3.5, -3.5, 7, 7); ctx.restore();
         });
         ctx.textAlign = 'left';
-        foilTextLeft(ctx, name, 42, H * 0.42, 'bold 44px ' + serif);
+        foilTextLeft(ctx, name, 42, H * 0.42, fitFont(ctx, name, 'bold 44px ' + serif, W - 100));
         ctx.fillStyle = ink; ctx.globalAlpha = 0.8; ctx.font = '18px ' + sans; ctx.fillText(sub, 44, H * 0.42 + 38); ctx.globalAlpha = 1;
         ctx.fillStyle = ink; ctx.globalAlpha = 0.65; ctx.font = '15px ' + sans; wrapLines(ctx, body, 44, H * 0.6, W - 90, 22, 'left', 2); ctx.globalAlpha = 1;
         ctx.fillStyle = gold; ctx.globalAlpha = 0.8; ctx.font = '13px ' + sans; wrapLines(ctx, meta, 44, H - 46, W - 90, 20, 'left', 3); ctx.globalAlpha = 1;
@@ -827,7 +844,7 @@
         wash(ctx, W * 0.85, H * 0.8, 240, t.bloom2 || '#a7b8a4', 0.14);
         ctx.strokeStyle = gold; ctx.globalAlpha = 0.7; ctx.lineWidth = 1; ctx.strokeRect(18, 18, W - 36, H - 36); ctx.globalAlpha = 1;
         ctx.textAlign = 'left';
-        ctx.fillStyle = ink; ctx.font = 'italic 40px ' + serif; ctx.fillText(name, 40, H * 0.42);
+        ctx.fillStyle = ink; ctx.font = fitFont(ctx, name, 'italic 40px ' + serif, W - 100); ctx.fillText(name, 40, H * 0.42);
         ctx.fillStyle = ink; ctx.globalAlpha = 0.7; ctx.font = '17px ' + serif; ctx.fillText(sub, 40, H * 0.42 + 34); ctx.globalAlpha = 1;
         ctx.fillStyle = ink; ctx.globalAlpha = 0.65; ctx.font = '14px ' + sans; wrapLines(ctx, body, 40, H * 0.58, W - 90, 20, 'left', 3); ctx.globalAlpha = 1;
         ctx.fillStyle = ac; ctx.font = '13px ' + sans; wrapLines(ctx, meta, 40, H - 46, W - 90, 18, 'left', 3); ctx.globalAlpha = 1;
@@ -840,7 +857,7 @@
         ctx.strokeStyle = gold; ctx.globalAlpha = 0.8; ctx.lineWidth = 1.6; ctx.strokeRect(16, 16, W - 32, H - 32); ctx.globalAlpha = 1;
         ctx.textAlign = 'left';
         ctx.fillStyle = gold; ctx.font = 'bold 12px ' + sans; ctx.fillText((c.kicker || 'EST').toUpperCase(), 42, 50);
-        ctx.fillStyle = '#f6f1e3'; ctx.font = 'bold 40px ' + serif; ctx.fillText(name, 42, H * 0.42);
+        ctx.fillStyle = '#f6f1e3'; ctx.font = fitFont(ctx, name, 'bold 40px ' + serif, W - 100); ctx.fillText(name, 42, H * 0.42);
         ctx.fillStyle = gold; ctx.font = 'italic 18px ' + serif; ctx.fillText(sub, 42, H * 0.42 + 32);
         ctx.strokeStyle = gold; ctx.globalAlpha = 0.5; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(42, H * 0.5); ctx.lineTo(W - 42, H * 0.5); ctx.stroke(); ctx.globalAlpha = 1;
         ctx.fillStyle = '#c7d8cc'; ctx.font = '14px ' + sans; wrapLines(ctx, body, 42, H * 0.6, W - 100, 20, 'left', 3); ctx.globalAlpha = 1;
@@ -854,7 +871,7 @@
         ctx.strokeStyle = gold; ctx.globalAlpha = 0.8; ctx.lineWidth = 1.5; ctx.strokeRect(16, 16, W - 32, H - 32); ctx.globalAlpha = 1;
         ctx.textAlign = 'left';
         ctx.fillStyle = gold; ctx.font = 'bold 12px ' + sans; ctx.fillText((c.kicker || '').toUpperCase(), 42, 50);
-        foilTextLeft(ctx, name, 42, H * 0.42, 'bold 44px ' + serif);
+        foilTextLeft(ctx, name, 42, H * 0.42, fitFont(ctx, name, 'bold 44px ' + serif, W - 100));
         ctx.fillStyle = 'rgba(240,236,225,0.85)'; ctx.font = '18px ' + sans; ctx.fillText(sub, 44, H * 0.42 + 38);
         ctx.strokeStyle = gold; ctx.globalAlpha = 0.4; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(42, H * 0.52); ctx.lineTo(W - 42, H * 0.52); ctx.stroke(); ctx.globalAlpha = 1;
         ctx.fillStyle = 'rgba(220,216,205,0.7)'; ctx.font = '14px ' + sans; wrapLines(ctx, body, 42, H * 0.62, W - 100, 20, 'left', 3);
@@ -866,7 +883,7 @@
         ctx.fillStyle = ac; ctx.fillRect(0, 0, W, H * 0.28);
         ctx.fillStyle = ac; ctx.fillRect(0, H - 20, W, 20);
         ctx.textAlign = 'left';
-        ctx.fillStyle = ink; ctx.font = 'bold 40px ' + sans; ctx.fillText(name, 40, H * 0.42);
+        ctx.fillStyle = ink; ctx.font = fitFont(ctx, name, 'bold 40px ' + sans, W - 100); ctx.fillText(name, 40, H * 0.42);
         ctx.fillStyle = ink; ctx.globalAlpha = 0.8; ctx.font = '17px ' + sans; ctx.fillText(sub, 40, H * 0.42 + 32); ctx.globalAlpha = 1;
         ctx.fillStyle = ink; ctx.globalAlpha = 0.65; ctx.font = '14px ' + sans; wrapLines(ctx, body, 40, H * 0.58, W - 90, 20, 'left', 3); ctx.globalAlpha = 1;
         ctx.fillStyle = ac; ctx.font = '13px ' + sans; wrapLines(ctx, meta, 40, H - 44, W - 90, 18, 'left', 3);
@@ -878,7 +895,7 @@
         ctx.fillStyle = gcb; ctx.fillRect(0, 0, W, H);
         ctx.textAlign = 'left';
         ctx.fillStyle = 'rgba(255,255,255,0.7)'; ctx.font = 'bold 12px ' + sans; ctx.fillText((c.kicker || '').toUpperCase(), 42, 50);
-        ctx.fillStyle = '#ffffff'; ctx.font = 'bold 40px ' + sans; ctx.fillText(name, 42, H * 0.42);
+        ctx.fillStyle = '#ffffff'; ctx.font = fitFont(ctx, name, 'bold 40px ' + sans, W - 100); ctx.fillText(name, 42, H * 0.42);
         ctx.fillStyle = 'rgba(255,255,255,0.9)'; ctx.font = '16px ' + sans; ctx.fillText(sub, 42, H * 0.42 + 30);
         ctx.strokeStyle = 'rgba(255,255,255,0.5)'; ctx.globalAlpha = 0.5; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(42, H * 0.5); ctx.lineTo(W - 42, H * 0.5); ctx.stroke(); ctx.globalAlpha = 1;
         ctx.fillStyle = 'rgba(255,255,255,0.75)'; ctx.font = '13px ' + sans; wrapLines(ctx, body, 42, H * 0.6, W - 100, 19, 'left', 3);
@@ -889,7 +906,7 @@
         ctx.fillStyle = t.bg; ctx.fillRect(0, 0, W, H);
         ctx.textAlign = 'left';
         ctx.fillStyle = ink; ctx.globalAlpha = 0.4; ctx.font = 'bold 11px ' + sans; ctx.fillText((c.kicker || '').toUpperCase(), 44, 52); ctx.globalAlpha = 1;
-        ctx.fillStyle = ink; ctx.font = '300 34px ' + serif; ctx.fillText(name, 44, H * 0.45);
+        ctx.fillStyle = ink; ctx.font = fitFont(ctx, name, '300 34px ' + serif, W - 100); ctx.fillText(name, 44, H * 0.45);
         ctx.strokeStyle = gold; ctx.globalAlpha = 0.6; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(44, H * 0.5); ctx.lineTo(104, H * 0.5); ctx.stroke(); ctx.globalAlpha = 1;
         ctx.fillStyle = ink; ctx.globalAlpha = 0.5; ctx.font = '13px ' + sans; ctx.fillText(sub, 44, H * 0.55);
         ctx.fillStyle = ink; ctx.globalAlpha = 0.4; ctx.font = '12px ' + sans; wrapLines(ctx, body, 44, H * 0.63, W - 100, 18, 'left', 3);
