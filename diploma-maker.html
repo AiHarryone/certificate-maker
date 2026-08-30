@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="msvalidate.01" content="E62785F51D89A3BD3AFBB2BC2BB07BF9">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diploma Maker — Free Formal Diploma Generator</title>
+<meta name="description" content="Make a formal diploma free: graduation, programs and certificates with elegant wording. Edit in your browser, download a print-ready PNG. Nothing uploaded.">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Trebuchet MS','Segoe UI',sans-serif;background:#f4f7fb;color:#2c3e50;line-height:1.6;}
+  header{background:linear-gradient(135deg,#3a7bd5,#00d2ff);color:#fff;padding:20px 0;margin-bottom:30px;}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 20px;}
+  .nav{display:flex;justify-content:space-between;align-items:center;}
+  .logo{font-weight:bold;font-size:22px;}
+  .nav a{color:#fff;text-decoration:none;font-weight:bold;margin-left:20px;}
+  .nav a:hover{text-decoration:underline;}
+  h1{color:#2c3e50;margin-bottom:10px;font-size:32px;}
+  .sub{color:#7a8ea8;margin-bottom:24px;font-size:16px;}
+  .layout{display:grid;grid-template-columns:1fr 380px;gap:30px;align-items:start;}
+  @media(max-width:900px){.layout{grid-template-columns:1fr;}}
+  .panel{background:#fff;border-radius:14px;padding:22px;box-shadow:0 4px 14px rgba(58,123,213,.1);}
+  .panel h2{color:#3a7bd5;font-size:18px;margin-bottom:14px;}
+  label{display:block;font-weight:bold;margin:12px 0 5px;color:#34495e;font-size:14px;}
+  input[type=text]{width:100%;padding:10px;border:2px solid #d6e2f0;border-radius:8px;font-size:14px;background:#fff;font-family:inherit;}
+  input[type=color]{width:50px;height:38px;border:2px solid #d6e2f0;border-radius:8px;padding:2px;background:#fff;}
+  .row{display:flex;gap:10px;}
+  .row > div{flex:1;}
+  .btn{display:inline-block;background:#3a7bd5;color:#fff;border:none;padding:12px 26px;border-radius:30px;font-size:16px;font-weight:bold;cursor:pointer;margin-top:16px;}
+  .btn:hover{background:#2c6ab3;}
+  .btn.green{background:#27ae60;}
+  .btn.green:hover{background:#1f9b52;}
+  .preview-wrap{background:#fff;border-radius:14px;padding:22px;box-shadow:0 4px 14px rgba(58,123,213,.1);}
+  .preview-wrap h2{color:#3a7bd5;font-size:18px;margin-bottom:14px;}
+  #previewCanvas{width:100%;height:auto;border:1px solid #d6e2f0;border-radius:8px;background:#fff;}
+  .watermark{color:#c0392b;font-weight:bold;font-size:13px;margin-top:10px;text-align:center;}
+  footer{background:#2c3e50;color:#a8bdc9;padding:24px 0;text-align:center;font-size:13px;margin-top:50px;}
+  footer a{color:#7ec8e3;text-decoration:none;}
+  #paywall{display:none;position:fixed;inset:0;background:rgba(30,60,80,.7);z-index:30;align-items:center;justify-content:center;}
+  #paywall .box{background:#fff;border-radius:18px;padding:34px;max-width:420px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.3);}
+  #paywall h2{color:#2c3e50;margin-bottom:10px;}
+  #paywall .price{font-size:34px;color:#3a7bd5;font-weight:bold;margin:14px 0;}
+  #paywall .small{font-size:13px;color:#7a8ea8;}
+  #unlockInput{width:100%;padding:12px;border:2px solid #d6e2f0;border-radius:8px;font-size:14px;margin:10px 0;}
+  #unlockBtn{margin-top:8px;background:#27ae60;color:#fff;border:none;padding:12px 20px;border-radius:30px;font-weight:bold;cursor:pointer;width:100%;font-size:15px;}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap nav">
+    <div class="logo">🏆 Certificate Maker</div>
+    <nav>
+      <a href="index.html">Certificate Maker</a>
+      <a href="invitation-card-maker.html">Invitations</a>
+      <a href="privacy.html">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <h1>Diploma Maker — Free</h1>
+  <p class="sub">A formal diploma with a seal, for programs, graduations and courses. Edit in your browser, download a print-ready PNG. Your first diploma is free.</p>
+
+  <div class="layout">
+    <div class="panel">
+      <h2>Diploma Details</h2>
+      <label>Recipient Name</label>
+      <input type="text" id="name" value="Alex Morgan" oninput="render()">
+      <label>Degree / Program</label>
+      <input type="text" id="program" value="Bachelor of Science" oninput="render()">
+      <label>Institution</label>
+      <input type="text" id="institution" value="State University" oninput="render()">
+      <div class="row">
+        <div><label>Date</label><input type="text" id="date" value="May 15, 2026" oninput="render()"></div>
+        <div><label>Accent</label><input type="color" id="accent" value="#6a1b9a" oninput="render()"></div>
+      </div>
+      <button class="btn green" id="downloadBtn">⬇ Download PNG</button>
+      <div class="watermark" id="wmText"></div>
+    </div>
+
+    <div class="preview-wrap">
+      <h2>Live Preview</h2>
+      <canvas id="previewCanvas" width="1000" height="700"></canvas>
+    </div>
+  </div>
+</div>
+
+<div id="paywall">
+  <div class="box">
+    <h2>Unlock Unlimited Diplomas</h2>
+    <p class="small">Your first diploma is free. Unlock unlimited diplomas and <b>no watermark</b> for a one-time <b>$9.99</b> — no subscription.</p>
+    <p class="price">$9.99 <span class="small" style="font-size:14px;">one-time</span></p>
+    <a class="btn" href="https://creem.io/product/prod_1N2wmJ4rxVYibfIFlUPu25" target="_blank" rel="noopener" style="display:block;width:100%;text-align:center;background:#3a7bd5;color:#fff;text-decoration:none;margin-top:8px;">Get Unlimited Access — $9.99</a>
+    <p class="small" style="margin:12px 0 4px;">One payment, lifetime access to all tools. Already purchased? Enter your unlock code:</p>
+    <input type="text" id="unlockInput" placeholder="e.g. CERT-XXXX-2026">
+    <button id="unlockBtn">Unlock</button>
+  </div>
+</div>
+
+<footer>
+  Made for teachers, trainers and creators who value beautiful designs. Questions? Contact: Ai_harryone@outlook.com · <a href="index.html">Certificate Maker</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a>
+</footer>
+
+<script>
+(function(){
+  var FREE_TRIES = 1;
+  var tries = parseInt(localStorage.getItem('certmaker_tries') || '0', 10);
+  var locked = !localStorage.getItem('certmaker_unlocked');
+  var canvas = document.getElementById('previewCanvas');
+  var ctx = canvas.getContext('2d');
+
+  function render(){
+    var W = canvas.width, H = canvas.height;
+    var ac = document.getElementById('accent').value;
+    var name = document.getElementById('name').value || 'Your Name';
+    var program = document.getElementById('program').value || '';
+    var institution = document.getElementById('institution').value || '';
+    var date = document.getElementById('date').value || '';
+    // paper background
+    ctx.fillStyle = '#fdfcf8'; ctx.fillRect(0,0,W,H);
+    // outer border
+    ctx.strokeStyle = ac; ctx.lineWidth = 14; ctx.strokeRect(28,28,W-56,H-56);
+    ctx.strokeStyle = '#c9a227'; ctx.lineWidth = 3; ctx.strokeRect(50,50,W-100,H-100);
+    // seal (top right)
+    ctx.fillStyle = '#c9a227'; ctx.beginPath(); ctx.arc(W-110,110,46,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 30px Georgia, serif'; ctx.textAlign = 'center';
+    ctx.fillText('★', W-110, 120);
+    // heading
+    ctx.fillStyle = ac; ctx.textAlign = 'center';
+    ctx.font = 'bold 58px Georgia, serif'; ctx.fillText('DIPLOMA', W/2, 200);
+    ctx.fillStyle = '#5a7ea0'; ctx.font = '28px Georgia, serif';
+    ctx.fillText('This certifies that', W/2, 260);
+    // recipient
+    ctx.fillStyle = '#2c3e50'; ctx.font = 'bold 78px Georgia, serif';
+    ctx.fillText(truncate(name, W-180), W/2, 370);
+    // program line
+    ctx.fillStyle = '#34495e'; ctx.font = 'italic 38px Georgia, serif';
+    ctx.fillText('has successfully completed the requirements of', W/2, 440);
+    ctx.fillStyle = ac; ctx.font = 'bold 46px Georgia, serif';
+    ctx.fillText(truncate(program, W-180), W/2, 510);
+    // institution + date
+    ctx.fillStyle = '#5a7ea0'; ctx.font = '32px Georgia, serif';
+    ctx.fillText('at ' + truncate(institution, W-180), W/2, 575);
+    ctx.fillStyle = '#8a9bb0'; ctx.font = '26px Georgia, serif';
+    ctx.fillText(date, W/2, 625);
+    // signature line
+    ctx.strokeStyle = '#8a9bb0'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(W/2-200, 655); ctx.lineTo(W/2-40, 655); ctx.stroke();
+    ctx.fillStyle = '#8a9bb0'; ctx.font = '22px Georgia, serif';
+    ctx.fillText('Registrar', W/2-120, 680);
+
+    var wm = document.getElementById('wmText');
+    if(locked){
+      ctx.font = 'bold 26px Arial'; ctx.fillStyle = 'rgba(231,76,60,0.25)';
+      ctx.save(); ctx.translate(W/2, H-24); ctx.fillText('PREMIUM', 0, 0); ctx.restore();
+      wm.textContent = '🔒 Free version — watermark will appear on download. Unlock to remove.';
+      wm.style.display = 'block';
+    } else { wm.style.display = 'none'; }
+  }
+  function truncate(s, maxW){
+    s = String(s||''); if(ctx.measureText(s).width <= maxW) return s;
+    while(s.length > 1 && ctx.measureText(s+'…').width > maxW) s = s.slice(0,-1);
+    return s + '…';
+  }
+
+  function showPaywall(){ document.getElementById('paywall').style.display = 'flex'; }
+  function download(){
+    render();
+    var link = document.createElement('a'); link.download = 'diploma.png';
+    link.href = canvas.toDataURL('image/png'); link.click();
+  }
+  function unlockViaApi(code){
+    return fetch('https://certificate-maker-unlock.aiharryone.workers.dev/unlock', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ key: code }) })
+      .then(function(r){return r.json().catch(function(){return {};});})
+      .then(function(data){ if(data.ok){ localStorage.setItem('certmaker_unlocked','1'); locked=false; document.getElementById('paywall').style.display='none'; document.getElementById('wmText').style.display='none'; render(); alert('Unlocked! Enjoy unlimited diplomas.'); return true; } return false; });
+  }
+  document.getElementById('downloadBtn').addEventListener('click', function(){
+    if(locked && tries >= FREE_TRIES){ showPaywall(); return; }
+    download();
+    if(locked){ tries++; localStorage.setItem('certmaker_tries', tries); if(tries >= FREE_TRIES) showPaywall(); }
+  });
+  document.getElementById('unlockBtn').addEventListener('click', function(){
+    var v = document.getElementById('unlockInput').value.trim();
+    if(!v){ alert('Please enter your unlock code.'); return; }
+    var btn = this; btn.disabled = true; btn.textContent = 'Checking…';
+    unlockViaApi(v).then(function(ok){ btn.disabled=false; btn.textContent='Unlock'; if(!ok) alert('Invalid unlock code. Check your purchase email.'); })
+      .catch(function(){ btn.disabled=false; btn.textContent='Unlock'; alert('Could not verify code. Please try again.'); });
+  });
+  render();
+})();
+</script>
+</body>
+</html>
