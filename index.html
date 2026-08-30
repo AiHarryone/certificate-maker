@@ -5,7 +5,7 @@
 <meta name="msvalidate.01" content="E62785F51D89A3BD3AFBB2BC2BB07BF9">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Certificate Maker – Create Stunning Certificates of Completion &amp; Awards Online</title>
-<meta name="description" content="Create beautiful certificates of completion, award certificates and recognition certificates online in seconds. Free templates, instant PNG download, no sign-up required.">
+<meta name="description" content="Create beautiful certificates of completion, award certificates and recognition certificates online in seconds. Your first certificate is free; unlock all templates & watermark-free downloads for a one-time $9.99. No sign-up.">
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
   body{font-family:'Trebuchet MS','Segoe UI',sans-serif;background:#f4f7fb;color:#2c3e50;line-height:1.6;}
@@ -149,9 +149,9 @@
 <div id="paywall">
   <div class="box">
     <h2>Unlock Premium Templates &amp; Watermark-Free Downloads</h2>
-    <p class="small">Get instant access to all <b>premium certificate templates</b>, <b>no watermark</b> on downloads, and <b>unlimited designs</b>.</p>
-    <p class="price">$7 <span class="small" style="font-size:14px;">one-time</span></p>
-    <span class="btn" style="display:block;width:100%;text-align:center;background:#a0b8d0;cursor:not-allowed;" aria-disabled="true">Get Unlimited Access — Coming Soon</span>
+    <p class="small">Your first certificate is free. Unlock all <b>premium certificate templates</b>, <b>no watermark</b> on downloads, and <b>unlimited certificates</b> for a one-time <b>$9.99</b> — no subscription.</p>
+    <p class="price">$9.99 <span class="small" style="font-size:14px;">one-time</span></p>
+    <span class="btn" style="display:block;width:100%;text-align:center;background:#a0b8d0;cursor:not-allowed;" aria-disabled="true">Get Unlimited Access — $9.99 (Coming Soon)</span>
     <p class="small" style="margin:12px 0 4px;">Payments are temporarily paused while we review our store. Already purchased? Enter your unlock code:</p>
     <input type="text" id="unlockInput" placeholder="e.g. CERT-XXXX-2026">
     <button id="unlockBtn">Unlock</button>
@@ -175,7 +175,9 @@
     {id:'crimson', name:'Crimson Red', unlocked:false, c1:'#fce4ec', c2:'#ffffff', border:'#c62828', corner:'#f8bbd0'}
   ];
   var FREE_TPLS = 1; // number of free templates
-  var PREMIUM_PRICE = 7;
+  var PREMIUM_PRICE = 9.99;
+  var FREE_TRIES = 1; // 1 free certificate, then unlock
+  var tries = parseInt(localStorage.getItem('certmaker_tries') || '0', 10);
 
   var locked = !localStorage.getItem('certmaker_unlocked');
   var selectedTpl = 0;
@@ -191,7 +193,7 @@
     d.className = 'tpl' + (i===0?' active':'') + (t.unlocked?'':' locked');
     d.innerHTML = '<span class="swatch" style="background:linear-gradient(135deg,'+t.c1+','+t.c2+');"></span><span>'+t.name+'</span>' + (t.unlocked?'':'<div class="lock">🔒</div>');
     d.onclick = function(){
-      if(locked && !t.unlocked){
+      if(locked && !t.unlocked && tries >= FREE_TRIES){
         showPaywall();
         return;
       }
@@ -398,12 +400,20 @@
 
   // ---------- Events ----------
   document.getElementById('downloadBtn').addEventListener('click', function(){
-    if(locked){ showPaywall(); return; }
+    if(locked && tries >= FREE_TRIES){ showPaywall(); return; }
     download();
+    if(locked){
+      tries++; localStorage.setItem('certmaker_tries', tries);
+      if(tries >= FREE_TRIES) showPaywall(); // free try used up — offer the unlock
+    }
   });
   document.getElementById('shareBtn').addEventListener('click', function(){
-    if(locked){ showPaywall(); return; }
+    if(locked && tries >= FREE_TRIES){ showPaywall(); return; }
     share();
+    if(locked){
+      tries++; localStorage.setItem('certmaker_tries', tries);
+      if(tries >= FREE_TRIES) showPaywall();
+    }
   });
   document.getElementById('unlockBtn').addEventListener('click', function(){
     var v = document.getElementById('unlockInput').value.trim();
