@@ -179,19 +179,19 @@
 <script>
 (function(){
   // ---------- Templates ----------
-  // Each template: id, name, style (layout variant), palette, accent
-  // Styles: ribbon | seal | double | gradient | dark | minimal | ornate | flourish
+  // Each template = a distinct DESIGN DIRECTION (layout + palette + type + signature),
+  // per the frontend-design skill: no two share a layout, none are the AI-default cluster.
   var TEMPLATES = [
-    {id:'classic', name:'Classic Blue', style:'ribbon', unlocked:true,  c1:'#e8f0fe', c2:'#ffffff', border:'#3a7bd5', corner:'#d6e2f0', accent:'#2c6ab3', dark:false},
-    {id:'gold',    name:'Elegant Gold', style:'seal',    unlocked:false, c1:'#fdf6e3', c2:'#fffdf8', border:'#c9a227', corner:'#f0e6c8', accent:'#8a6d1f', dark:false},
-    {id:'green',   name:'Forest Green', style:'double',  unlocked:false, c1:'#e8f5e9', c2:'#ffffff', border:'#2e7d32', corner:'#c8e6c9', accent:'#1b5e20', dark:false},
-    {id:'royal',   name:'Royal Purple', style:'seal',    unlocked:false, c1:'#f3e5f5', c2:'#ffffff', border:'#6a1b9a', corner:'#e1bee7', accent:'#4a148c', dark:false},
-    {id:'ocean',   name:'Ocean Teal',   style:'gradient',unlocked:false, c1:'#b2ebf2', c2:'#e0f7fa', border:'#00838f', corner:'#b2ebf2', accent:'#00695c', dark:false},
-    {id:'crimson', name:'Crimson',      style:'ornate',  unlocked:false, c1:'#fce4ec', c2:'#fff8f8', border:'#c62828', corner:'#f8bbd0', accent:'#b71c1c', dark:false},
-    {id:'midnight',name:'Midnight Gold',style:'dark',    unlocked:false, c1:'#0f1f3d', c2:'#1a2f52', border:'#c9a227', corner:'#8a6d1f', accent:'#e8c14a', dark:true},
-    {id:'slate',   name:'Minimal Slate',style:'minimal', unlocked:false, c1:'#f8fafc', c2:'#ffffff', border:'#64748b', corner:'#e2e8f0', accent:'#334155', dark:false},
-    {id:'sunrise', name:'Sunrise',      style:'gradient',unlocked:false, c1:'#ffe0b2', c2:'#fff3e0', border:'#ef6c00', corner:'#ffe0b2', accent:'#e65100', dark:false},
-    {id:'rose',    name:'Rose Blush',   style:'flourish',unlocked:false, c1:'#fdf2f8', c2:'#fff5fa', border:'#ec4899', corner:'#fbcfe8', accent:'#be185d', dark:false}
+    {id:'classic', name:'Classic',      layout:'centered',  bg:'#fbfcfe', ink:'#17233b', accent:'#1d4ed8', accentSoft:'#e0e9ff', serif:true,  signature:'badge',  unlocked:true},
+    {id:'goldseal',name:'Gold Seal',    layout:'framed',    bg:'#fffdf6', ink:'#2b2115', accent:'#9a7b2d', accentSoft:'#f3e9c8', serif:true,  signature:'seal',   unlocked:false},
+    {id:'editorial',name:'Editorial',   layout:'left',      bg:'#ffffff', ink:'#10151c', accent:'#0f172a', accentSoft:'#eef2f7', serif:false, signature:'rule',   unlocked:false},
+    {id:'minimal',  name:'Minimal',     layout:'huge',      bg:'#ffffff', ink:'#171717', accent:'#2563eb', accentSoft:'#eff6ff', serif:false, signature:'label',  unlocked:false},
+    {id:'midnight', name:'Midnight',    layout:'dark',      bg:'#0d1526', ink:'#eef2f8', accent:'#d4af37', accentSoft:'#1d2942', serif:true,  signature:'line',   unlocked:false},
+    {id:'banner',   name:'Banner',      layout:'banner',    bg:'#ffffff', ink:'#20283a', accent:'#b45309', accentSoft:'#fef3c7', serif:true,  signature:'band',   unlocked:false},
+    {id:'botanical',name:'Botanical',   layout:'corners',   bg:'#f7faf5', ink:'#22301f', accent:'#4d7c46', accentSoft:'#e4ede0', serif:true,  signature:'sprig',  unlocked:false},
+    {id:'asym',     name:'Asymmetric',  layout:'block',     bg:'#ffffff', ink:'#1f2937', accent:'#c2410c', accentSoft:'#fff7ed', serif:false, signature:'slab',   unlocked:false},
+    {id:'letterpress',name:'Letterpress',layout:'vintage',  bg:'#f6f0e3', ink:'#3a2c1c', accent:'#8c6a3f', accentSoft:'#e9ddc4', serif:true,  signature:'ornate', unlocked:false},
+    {id:'playful',  name:'Playful',     layout:'confetti',  bg:'#fffbf0', ink:'#3d3a2e', accent:'#e8593c', accentSoft:'#ffe8dd', serif:false, signature:'dots',   unlocked:false}
   ];
   var FREE_TPLS = 1; // number of free templates
   var PREMIUM_PRICE = 9.99;
@@ -210,7 +210,7 @@
   TEMPLATES.forEach(function(t, i){
     var d = document.createElement('div');
     d.className = 'tpl' + (i===0?' active':'') + (t.unlocked?'':' locked');
-    d.innerHTML = '<span class="swatch" style="background:linear-gradient(135deg,'+t.c1+','+t.c2+');"></span><span>'+t.name+'</span>' + (t.unlocked?'':'<div class="lock">🔒</div>');
+    d.innerHTML = '<span class="swatch" style="background:linear-gradient(135deg,'+(t.bg||'#fff')+','+(t.accentSoft||t.accent||'#fff')+');"></span><span>'+t.name+'</span>' + (t.unlocked?'':'<div class="lock">🔒</div>');
     d.onclick = function(){
       if(locked && !t.unlocked && tries >= FREE_TRIES){
         showPaywall();
@@ -224,157 +224,172 @@
   });
 
   // ---------- Render ----------
-  function cornerCurve(W,H,pos){
-    var r = 60, o = 42, lw = 7;
-    ctx.lineWidth = lw;
-    ctx.beginPath();
-    if(pos==='tl'){ ctx.moveTo(o,r); ctx.arcTo(o,o,r,o,lw); }
-    else if(pos==='tr'){ ctx.moveTo(W-r,o); ctx.arcTo(W-o,o,W-o,r,lw); }
-    else if(pos==='bl'){ ctx.moveTo(r,H-o); ctx.arcTo(o,H-o,o,H-r,lw); }
-    else { ctx.moveTo(W-o,H-r); ctx.arcTo(W-o,H-o,W-r,H-o,lw); }
-    ctx.stroke();
+  function wrapText(txt, x, y, maxW, lh){
+    var words = String(txt).split(' '), line = '', i, test;
+    for(i=0;i<words.length;i++){
+      test = line + (line?' ':'') + words[i];
+      if(ctx.measureText(test).width > maxW && line){ ctx.fillText(line, x, y); line = words[i]; y += lh; }
+      else line = test;
+    }
+    ctx.fillText(line, x, y);
   }
+  function wrapTextLeft(txt, x, y, maxW, lh){
+    var words = String(txt).split(' '), line = '', i, test;
+    for(i=0;i<words.length;i++){
+      test = line + (line?' ':'') + words[i];
+      if(ctx.measureText(test).width > maxW && line){ ctx.fillText(line, x, y); line = words[i]; y += lh; }
+      else line = test;
+    }
+    ctx.fillText(line, x, y);
+  }
+  function headerAt(W, y, ink, accent, serif){
+    ctx.textAlign='center';
+    ctx.fillStyle = ink; ctx.font = 'bold 40px ' + serif;
+    ctx.fillText('C E R T I F I C A T E', W/2, y);
+    ctx.fillStyle = accent; ctx.font = 'italic 26px ' + serif;
+    ctx.fillText('OF COMPLETION', W/2, y+43);
+  }
+  function textCenter(txt, x, y, sz, ink, serif){ ctx.textAlign='center'; ctx.fillStyle=ink; ctx.font=sz+'px '+serif; ctx.fillText(txt, x, y); }
+  function nameAt(W, y, sz, name, ink, serif){ ctx.textAlign='center'; ctx.fillStyle=ink; ctx.font='bold '+sz+'px '+serif; ctx.fillText(name, W/2, y); }
+  function line(W, y, accent){ ctx.strokeStyle=accent; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(W/2-150,y); ctx.lineTo(W/2+150,y); ctx.stroke(); }
+  function courseBlock(W, y1, y2, course, accent, ink, serif){ ctx.textAlign='center'; ctx.fillStyle=ink; ctx.font='22px '+serif; ctx.fillText('for successfully completing', W/2, y1); ctx.fillStyle=accent; ctx.font='bold 30px '+serif; ctx.fillText(course, W/2, y2); }
+  function descBlock(W, y, desc, ink, serif){ if(desc){ ctx.textAlign='center'; ctx.fillStyle=ink; ctx.font='italic 16px '+serif; wrapText(desc, W/2, y, 700, 22); } }
+  function footerAt(W, H, issuer, sig, ink, serif){ ctx.textAlign='center'; ctx.fillStyle=ink; ctx.font='16px '+serif; ctx.fillText('Issued by '+issuer, W/2, H-130); ctx.fillStyle=ink; ctx.font='italic 18px '+serif; ctx.fillText(sig, W/2, H-70); ctx.strokeStyle='#999'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(W/2-110,H-92); ctx.lineTo(W/2+110,H-92); ctx.stroke(); ctx.fillStyle='#888'; ctx.font='13px Arial'; ctx.fillText('Authorized Signature', W/2, H-55); }
+  function nameLeft(W, y, sz, name, ink, sans){ ctx.textAlign='left'; ctx.fillStyle=ink; ctx.font='bold '+sz+'px '+sans; ctx.fillText(name, 70, y); }
+  function sigLineLeft(W, H, sig, ink, sans){ ctx.textAlign='left'; ctx.fillStyle=ink; ctx.font='italic 18px '+sans; ctx.fillText(sig, 70, H-80); ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(70,H-98); ctx.lineTo(320,H-98); ctx.stroke(); }
+  function sprig(W,H,pos,col){ ctx.strokeStyle=col; ctx.lineWidth=4; ctx.beginPath();
+    if(pos==='tl'){ ctx.moveTo(70,30); ctx.quadraticCurveTo(50,55,70,80); ctx.moveTo(60,55); ctx.quadraticCurveTo(80,55,84,40); }
+    else if(pos==='tr'){ ctx.moveTo(W-70,30); ctx.quadraticCurveTo(W-50,55,W-70,80); ctx.moveTo(W-60,55); ctx.quadraticCurveTo(W-80,55,W-84,40); }
+    else if(pos==='bl'){ ctx.moveTo(70,H-30); ctx.quadraticCurveTo(50,H-55,70,H-80); ctx.moveTo(60,H-55); ctx.quadraticCurveTo(80,H-55,84,H-40); }
+    else { ctx.moveTo(W-70,H-30); ctx.quadraticCurveTo(W-50,H-55,W-70,H-80); ctx.moveTo(W-60,H-55); ctx.quadraticCurveTo(W-80,H-55,W-84,H-40); }
+    ctx.stroke(); }
+  function Lcorner(W,H,pos){ ctx.strokeStyle=ctx.strokeStyle; ctx.lineWidth=5; ctx.beginPath();
+    if(pos==='tl'){ ctx.moveTo(44,58); ctx.lineTo(44,44); ctx.lineTo(58,44); }
+    else if(pos==='tr'){ ctx.moveTo(W-58,44); ctx.lineTo(W-44,44); ctx.lineTo(W-44,58); }
+    else if(pos==='bl'){ ctx.moveTo(44,H-58); ctx.lineTo(44,H-44); ctx.lineTo(58,H-44); }
+    else { ctx.moveTo(W-58,H-44); ctx.lineTo(W-44,H-44); ctx.lineTo(W-44,H-58); }
+    ctx.stroke(); }
+  function confetti(W,H,accent,soft){ var i, x, y, r, colors=[accent,soft,'#f59e0b','#3b82f6','#10b981']; for(i=0;i<26;i++){ x=Math.random()*W; y=Math.random()*H; r=3+Math.random()*6; ctx.fillStyle=colors[i%colors.length]; ctx.globalAlpha=.55; ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill(); } ctx.globalAlpha=1; }
 
   function render(){
     var t = TEMPLATES[selectedTpl];
     var W = canvas.width, H = canvas.height;
-    var m = 30;
-    var dark = t.dark;
-    var textColor = dark ? '#f1f5f9' : document.getElementById('textColor').value;
-    var borderColor = dark ? t.border : document.getElementById('borderColor').value;
-    var accent = t.accent || borderColor;
-    var serif = 'Georgia, serif', sans = 'Trebuchet MS, sans-serif';
+    var ink = t.ink, accent = t.accent, soft = t.accentSoft;
+    var serif = t.serif ? 'Georgia, serif' : 'Trebuchet MS, sans-serif';
+    var sans = 'Trebuchet MS, sans-serif';
+    var recipient = document.getElementById('recipient').value || 'Your Name';
+    var course = document.getElementById('course').value || 'Your Course Name';
+    var desc = document.getElementById('desc').value;
+    var issuer = document.getElementById('issuer').value || 'Your Organization';
+    var sig = document.getElementById('signature').value || 'Signature';
+    var date = (document.getElementById('date').value || '') + '';
     ctx.textAlign = 'center';
 
     // ---- background ----
-    if(t.style === 'dark'){
-      var dg = ctx.createLinearGradient(0,0,W,H); dg.addColorStop(0,t.c1); dg.addColorStop(1,t.c2);
-      ctx.fillStyle = dg; ctx.fillRect(0,0,W,H);
-    } else if(t.style === 'gradient'){
-      ctx.fillStyle = '#fff'; ctx.fillRect(0,0,W,H);
-      var gg = ctx.createLinearGradient(0,0,0,240); gg.addColorStop(0,t.c1); gg.addColorStop(1,t.c2);
-      ctx.fillStyle = gg; ctx.fillRect(0,0,W,240);
-      ctx.fillStyle = t.border; ctx.fillRect(0,240,W,4);
-    } else {
-      var grad = ctx.createLinearGradient(0,0,W,H); grad.addColorStop(0,t.c1); grad.addColorStop(1,t.c2);
-      ctx.fillStyle = grad; ctx.fillRect(0,0,W,H);
+    if(t.layout === 'dark'){ var dg=ctx.createLinearGradient(0,0,W,H); dg.addColorStop(0,t.bg); dg.addColorStop(1,'#0a101d'); ctx.fillStyle=dg; ctx.fillRect(0,0,W,H); }
+    else { ctx.fillStyle = t.bg; ctx.fillRect(0,0,W,H); }
+
+    // ---- frame / decoration per layout ----
+    if(t.layout === 'framed'){ ctx.strokeStyle=accent; ctx.lineWidth=5; ctx.strokeRect(24,24,W-48,H-48); ctx.strokeStyle=accent; ctx.lineWidth=1; ctx.strokeRect(34,34,W-68,H-68); }
+    else if(t.layout === 'left'){ ctx.strokeStyle=accent; ctx.lineWidth=1.5; ctx.strokeRect(30,30,W-60,H-60); }
+    else if(t.layout === 'huge' || t.layout === 'block'){ ctx.strokeStyle='#e5e7eb'; ctx.lineWidth=1; ctx.strokeRect(26,26,W-52,H-52); }
+    else if(t.layout === 'dark'){ ctx.strokeStyle=accent; ctx.lineWidth=2; ctx.strokeRect(26,26,W-52,H-52); ctx.strokeStyle='rgba(212,175,55,.35)'; ctx.lineWidth=1; ctx.strokeRect(35,35,W-70,H-70); }
+    else if(t.layout === 'corners'){ ctx.strokeStyle=accent; ctx.lineWidth=3; ctx.strokeRect(22,22,W-44,H-44); ctx.strokeStyle=accent; sprig(W,H,'tl',accent); sprig(W,H,'tr',accent); sprig(W,H,'bl',accent); sprig(W,H,'br',accent); }
+    else if(t.layout === 'vintage'){ ctx.strokeStyle=accent; ctx.lineWidth=4; ctx.strokeRect(26,26,W-52,H-52); ctx.strokeStyle=accent; ctx.lineWidth=1; ctx.strokeRect(36,36,W-72,H-72); ctx.strokeStyle=accent; ctx.lineWidth=6; Lcorner(W,H,'tl'); Lcorner(W,H,'tr'); Lcorner(W,H,'bl'); Lcorner(W,H,'br'); }
+    else if(t.layout === 'confetti'){ ctx.strokeStyle=accent; ctx.lineWidth=3; ctx.strokeRect(24,24,W-48,H-48); confetti(W,H,accent,soft); }
+
+    // ---- content per layout ----
+    if(t.layout === 'centered'){
+      ctx.fillStyle=accent; ctx.beginPath(); ctx.arc(W/2,140,44,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#fff'; ctx.font='bold 30px Arial'; ctx.fillText('★',W/2,150);
+      headerAt(W,235,ink,accent,serif);
+      textCenter('This certificate is proudly presented to', W/2, 330, 18, ink, serif);
+      nameAt(W,395,48,recipient,ink,serif); line(W,415,accent);
+      courseBlock(W,460,505,course,accent,ink,serif); descBlock(W,555,desc,ink,serif);
+      footerAt(W,H,issuer,sig,ink,serif);
+    } else if(t.layout === 'framed'){
+      ctx.fillStyle=accent; ctx.beginPath(); ctx.arc(W/2,120,40,0,Math.PI*2); ctx.fill(); ctx.strokeStyle='#fff'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(W/2,120,28,0,Math.PI*2); ctx.stroke(); ctx.fillStyle='#fff'; ctx.font='bold 26px '+serif; ctx.fillText('★',W/2,131);
+      headerAt(W,220,ink,accent,serif);
+      textCenter('This is to certify that', W/2, 300, 18, ink, serif);
+      nameAt(W,375,54,recipient,ink,serif); line(W,398,accent);
+      textCenter('has completed', W/2, 442, 20, ink, serif);
+      ctx.fillStyle=accent; ctx.font='bold 34px '+serif; ctx.fillText(course, W/2, 485);
+      textCenter('Issued by '+issuer + (date?'  •  '+date:''), W/2, 540, 18, ink, serif);
+      ctx.fillStyle=ink; ctx.font='italic 18px '+serif; ctx.fillText(sig, W/2, H-90); ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(W/2-110,H-112); ctx.lineTo(W/2+110,H-112); ctx.stroke();
+    } else if(t.layout === 'left'){
+      ctx.textAlign='left';
+      ctx.fillStyle=accent; ctx.font='bold 16px '+sans; ctx.fillText('C E R T I F I C A T E', 70, 120);
+      ctx.fillStyle=accent; ctx.font='italic 24px '+serif; ctx.fillText('of Completion', 70, 160);
+      ctx.fillStyle='#cbd5e1'; ctx.fillRect(70,190,120,2);
+      nameLeft(W,260,54,recipient,ink,sans);
+      ctx.fillStyle='#94a3b8'; ctx.font='20px '+sans; ctx.fillText('has successfully completed', 70, 330);
+      ctx.fillStyle=accent; ctx.font='bold 30px '+serif; ctx.fillText(course, 70, 375);
+      if(desc){ ctx.fillStyle='#64748b'; ctx.font='16px '+sans; wrapTextLeft(desc, 70, 415, W-160, 24); }
+      ctx.fillStyle='#94a3b8'; ctx.font='16px '+sans; ctx.fillText('Issued by '+issuer+(date?'  •  '+date:''), 70, H-120);
+      sigLineLeft(W,H,sig,ink,sans);
+    } else if(t.layout === 'huge'){
+      ctx.fillStyle=accent; ctx.font='bold 13px '+sans; ctx.fillText('CERTIFICATE OF COMPLETION', W/2, 160);
+      ctx.fillStyle='#e2e8f0'; ctx.fillRect(W/2-40,190,80,2);
+      nameAt(W,360,96,recipient,ink,sans);
+      ctx.fillStyle='#94a3b8'; ctx.font='18px '+sans; ctx.fillText('has completed', W/2, 430);
+      ctx.fillStyle=accent; ctx.font='bold 28px '+serif; ctx.fillText(course, W/2, 480);
+      ctx.fillStyle='#cbd5e1'; ctx.font='14px '+sans; ctx.fillText('ISSUED BY '+issuer, W/2, H-150);
+      ctx.fillStyle='#94a3b8'; ctx.font='14px '+sans; ctx.fillText(sig, W/2, H-90);
+    } else if(t.layout === 'dark'){
+      ctx.fillStyle=accent; ctx.font='26px '+serif; ctx.fillText('❖', W/2, 160);
+      headerAt(W,240,ink,accent,serif);
+      textCenter('This certificate is proudly presented to', W/2, 330, 18, ink, serif);
+      nameAt(W,400,52,recipient,ink,serif); line(W,425,accent);
+      courseBlock(W,470,515,course,accent,ink,serif); descBlock(W,565,desc,ink,serif);
+      footerAt(W,H,issuer,sig,ink,serif);
+    } else if(t.layout === 'banner'){
+      headerAt(W,190,ink,accent,serif);
+      textCenter('This certificate is proudly presented to', W/2, 250, 18, ink, serif);
+      ctx.fillStyle=accent; ctx.fillRect(0,300,W,96); ctx.fillStyle='#fff'; ctx.font='bold 40px '+serif; ctx.fillText(recipient, W/2, 362);
+      ctx.fillStyle=ink; ctx.font='20px '+serif; ctx.fillText('for successfully completing', W/2, 440);
+      ctx.fillStyle=accent; ctx.font='bold 30px '+serif; ctx.fillText(course, W/2, 490);
+      descBlock(W,545,desc,ink,serif);
+      footerAt(W,H,issuer,sig,ink,serif);
+    } else if(t.layout === 'corners'){
+      ctx.fillStyle=accent; ctx.font='26px '+serif; ctx.fillText('✦', W/2, 165);
+      headerAt(W,240,ink,accent,serif);
+      textCenter('This certificate is proudly presented to', W/2, 330, 18, ink, serif);
+      nameAt(W,398,50,recipient,ink,serif); line(W,420,accent);
+      courseBlock(W,465,510,course,accent,ink,serif); descBlock(W,560,desc,ink,serif);
+      footerAt(W,H,issuer,sig,ink,serif);
+    } else if(t.layout === 'block'){
+      ctx.fillStyle=accent; ctx.fillRect(0,0,90,H);
+      ctx.textAlign='left';
+      ctx.fillStyle=ink; ctx.font='bold 15px '+sans; ctx.fillText('CERTIFICATE', 130, 120);
+      ctx.fillStyle='#9ca3af'; ctx.font='15px '+sans; ctx.fillText('OF COMPLETION', 130, 150);
+      nameLeft(W,260,58,recipient,ink,sans);
+      ctx.fillStyle='#6b7280'; ctx.font='20px '+sans; ctx.fillText('for successfully completing', 130, 330);
+      ctx.fillStyle=accent; ctx.font='bold 30px '+serif; ctx.fillText(course, 130, 375);
+      ctx.fillStyle='#9ca3af'; ctx.font='15px '+sans; ctx.fillText('Issued by '+issuer, 130, H-120);
+      sigLineLeft(W,H,sig,ink,sans);
+    } else if(t.layout === 'vintage'){
+      ctx.fillStyle=accent; ctx.font='26px '+serif; ctx.fillText('✻', W/2, 165);
+      headerAt(W,245,ink,accent,serif);
+      textCenter('This is to certify that', W/2, 330, 18, ink, serif);
+      nameAt(W,398,52,recipient,ink,serif); line(W,420,accent);
+      courseBlock(W,465,505,course,accent,ink,serif);
+      ctx.fillStyle='#8c6a3f'; ctx.font='16px '+serif; ctx.fillText(date?('Issued this day, '+date):'', W/2, 560);
+      footerAt(W,H,issuer,sig,ink,serif);
+    } else if(t.layout === 'confetti'){
+      ctx.fillStyle=accent; ctx.font='26px '+serif; ctx.fillText('★', W/2, 150);
+      ctx.fillStyle=accent; ctx.font='bold 38px '+sans; ctx.fillText('YOU DID IT!', W/2, 230);
+      ctx.fillStyle=ink; ctx.font='16px '+sans; ctx.fillText('This certificate is awarded to', W/2, 290);
+      nameAt(W,370,58,recipient,ink,sans);
+      ctx.fillStyle=accent; ctx.font='bold 26px '+sans; ctx.fillText(course, W/2, 430);
+      descBlock(W,480,desc,ink,sans);
+      ctx.fillStyle='#6b7280'; ctx.font='15px '+sans; ctx.fillText('Awarded by '+issuer, W/2, H-120);
+      ctx.fillStyle='#94a3b8'; ctx.font='14px '+sans; ctx.fillText(sig, W/2, H-80);
     }
 
-    // ---- border styles ----
-    if(t.style === 'seal' || t.style === 'ornate'){
-      ctx.strokeStyle = borderColor; ctx.lineWidth = 4; ctx.strokeRect(18,18,W-36,H-36);
-      ctx.strokeStyle = borderColor; ctx.lineWidth = 1; ctx.strokeRect(28,28,W-56,H-56);
-      if(t.style === 'ornate'){
-        ctx.strokeStyle = accent; ctx.lineWidth = 5;
-        ctx.beginPath(); ctx.moveTo(42,56); ctx.lineTo(42,42); ctx.lineTo(56,42); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(W-56,42); ctx.lineTo(W-42,42); ctx.lineTo(W-42,56); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(42,H-56); ctx.lineTo(42,H-42); ctx.lineTo(56,H-42); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(W-56,H-42); ctx.lineTo(W-42,H-42); ctx.lineTo(W-42,H-56); ctx.stroke();
-      }
-    } else if(t.style === 'dark'){
-      ctx.strokeStyle = t.border; ctx.lineWidth = 2; ctx.strokeRect(24,24,W-48,H-48);
-      ctx.strokeStyle = 'rgba(201,162,39,.45)'; ctx.lineWidth = 1; ctx.strokeRect(33,33,W-66,H-66);
-    } else if(t.style === 'minimal'){
-      ctx.strokeStyle = borderColor; ctx.lineWidth = 1.5; ctx.strokeRect(34,34,W-68,H-68);
-    } else if(t.style === 'flourish'){
-      ctx.strokeStyle = borderColor; ctx.lineWidth = 3; ctx.strokeRect(24,24,W-48,H-48);
-      ctx.strokeStyle = accent; cornerCurve(W,H,'tl'); cornerCurve(W,H,'tr'); cornerCurve(W,H,'bl'); cornerCurve(W,H,'br');
-    } else {
-      // ribbon / double
-      ctx.strokeStyle = borderColor; ctx.lineWidth = 10; ctx.strokeRect(m/2,m/2,W-m,H-m);
-      ctx.strokeStyle = t.corner; ctx.lineWidth = 3; ctx.strokeRect(m+8,m+8,W-m-16,H-m-16);
-      if(t.style === 'ribbon'){ ctx.fillStyle = borderColor; ctx.fillRect(0,0,W,14); ctx.fillRect(0,H-14,W,14); }
+    // date at bottom (for layouts that include it via footer, others already placed)
+    if(t.layout === 'centered' || t.layout === 'dark' || t.layout === 'banner' || t.layout === 'corners' || t.layout === 'vintage'){
+      ctx.textAlign='center'; ctx.fillStyle = ink; ctx.font = '15px Georgia, serif';
+      ctx.fillText(date, W/2, H - 112);
     }
-
-    // ---- top emblem ----
-    var headY = (t.style === 'gradient' || t.style === 'dark') ? 132 : 238;
-    if(t.style === 'seal'){
-      ctx.fillStyle = accent; ctx.beginPath(); ctx.arc(W/2, 122, 42, 0, Math.PI*2); ctx.fill();
-      ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(W/2,122,30,0,Math.PI*2); ctx.stroke();
-      ctx.fillStyle = '#fff'; ctx.font = 'bold 26px '+serif; ctx.fillText('★', W/2, 132);
-    } else if(t.style === 'ribbon' || t.style === 'double'){
-      ctx.fillStyle = borderColor; ctx.beginPath(); ctx.arc(W/2, 142, 46, 0, Math.PI*2); ctx.fill();
-      ctx.fillStyle = '#fff'; ctx.font = 'bold 34px Arial'; ctx.fillText('🏆', W/2, 154);
-    } else if(t.style === 'dark'){
-      ctx.fillStyle = accent; ctx.font = '28px '+serif; ctx.fillText('❖', W/2, 160);
-    } else if(t.style === 'minimal'){
-      ctx.fillStyle = accent; ctx.fillRect(W/2-32, 128, 64, 4);
-    } else if(t.style === 'flourish'){
-      ctx.fillStyle = accent; ctx.font = '30px '+serif; ctx.fillText('✦', W/2, 160);
-    }
-
-    // ---- CERTIFICATE heading ----
-    var ff = (t.style === 'minimal' || t.style === 'dark') ? sans : serif;
-    ctx.fillStyle = (t.style === 'gradient') ? accent : textColor;
-    ctx.font = 'bold 40px ' + ff;
-    ctx.fillText('C E R T I F I C A T E', W/2, headY);
-    ctx.font = 'italic 26px ' + serif;
-    ctx.fillStyle = accent;
-    ctx.fillText('OF COMPLETION', W/2, headY+43);
-
-    // "This is proudly presented to"
-    ctx.font = '18px ' + serif;
-    ctx.fillStyle = dark ? '#cbd5e1' : '#555';
-    ctx.fillText('This certificate is proudly presented to', W/2, headY+96);
-
-    // Recipient name
-    var recipient = document.getElementById('recipient').value || 'Your Name';
-    ctx.font = 'bold 48px ' + serif;
-    ctx.fillStyle = textColor;
-    ctx.fillText(recipient, W/2, headY+160);
-
-    // decorative line under name
-    ctx.strokeStyle = accent;
-    ctx.lineWidth = 2;
-    var lineW = 300;
-    ctx.beginPath();
-    ctx.moveTo(W/2 - lineW/2, headY+180);
-    ctx.lineTo(W/2 + lineW/2, headY+180);
-    ctx.stroke();
-
-    // course
-    var course = document.getElementById('course').value || 'Your Course Name';
-    ctx.font = '22px ' + serif;
-    ctx.fillStyle = dark ? '#cbd5e1' : '#333';
-    ctx.fillText('for successfully completing', W/2, headY+225);
-    ctx.font = 'bold 30px ' + serif;
-    ctx.fillStyle = accent;
-    ctx.fillText(course, W/2, headY+270);
-
-    // description
-    var desc = document.getElementById('desc').value;
-    if(desc){
-      ctx.font = 'italic 16px ' + serif;
-      ctx.fillStyle = dark ? '#94a3b8' : '#555';
-      wrapText(desc, W/2, headY+320, 700, 22);
-    }
-
-    // issuer + date
-    ctx.font = '16px ' + serif;
-    ctx.fillStyle = dark ? '#94a3b8' : '#555';
-    var issuer = document.getElementById('issuer').value || 'Your Organization';
-    ctx.fillText('Issued by ' + issuer, W/2, H - 130);
-
-    // signature
-    var sig = document.getElementById('signature').value || 'Signature';
-    ctx.font = 'italic 18px ' + serif;
-    ctx.fillStyle = dark ? '#e2e8f0' : '#333';
-    ctx.fillText(sig, W/2, H - 70);
-    ctx.strokeStyle = dark ? '#64748b' : '#999';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(W/2 - 110, H - 92);
-    ctx.lineTo(W/2 + 110, H - 92);
-    ctx.stroke();
-    ctx.font = '13px Arial';
-    ctx.fillStyle = dark ? '#64748b' : '#888';
-    ctx.fillText('Authorized Signature', W/2, H - 55);
-
-    // date at bottom
-    var date = document.getElementById('date').value || 'August 24, 2026';
-    ctx.fillStyle = '#888';
-    ctx.font = '15px Georgia, serif';
-    ctx.fillText(date, W/2, H - 130);
 
     // watermark if locked
     var wm = document.getElementById('wmText');
