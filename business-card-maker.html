@@ -5,7 +5,7 @@
 <meta name="msvalidate.01" content="E62785F51D89A3BD3AFBB2BC2BB07BF9">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Business Card Maker — 10 Templates, Free Professional Cards</title>
-<meta name="description" content="Make a business card free: 10 professional templates for name, title, company and contact. Edit in your browser, download a print-ready PNG. Nothing uploaded.">
+<meta name="description" content="Make a business card free: 10 professional templates (minimal, letterpress black, gold foil, classic). Edit in your browser, download a print-ready PNG. Nothing uploaded.">
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
   body{font-family:'Trebuchet MS','Segoe UI',sans-serif;background:#f4f7fb;color:#2c3e50;line-height:1.6;}
@@ -112,17 +112,18 @@
 
 <script src="tpl-engine.js"></script>
 <script>
+// 4 distinct LAYOUTS: minimal(restraint) / letterpress(matte black) / foil(gold) / band(classic)
 window.TOOL_TEMPLATES = [
-  {id:'blue',   name:'Blue',   style:'band',  c1:'#eef4ff', c2:'#ffffff', accent:'#3a7bd5', dark:false},
-  {id:'navy',   name:'Navy',   style:'band',  c1:'#eef4ff', c2:'#ffffff', accent:'#1e3a5f', dark:false},
-  {id:'teal',   name:'Teal',   style:'band',  c1:'#ecfdf5', c2:'#ffffff', accent:'#0d9488', dark:false},
-  {id:'gold',   name:'Gold',   style:'bordered', c1:'#fdf6e3', c2:'#ffffff', accent:'#c9a227', dark:false},
-  {id:'rose',   name:'Rose',   style:'bordered', c1:'#fdf2f8', c2:'#ffffff', accent:'#e11d48', dark:false},
-  {id:'slate',  name:'Slate',  style:'minimal', c1:'#f8fafc', c2:'#ffffff', accent:'#334155', dark:false},
-  {id:'mint',   name:'Mint',   style:'minimal', c1:'#f0fdf4', c2:'#ffffff', accent:'#059669', dark:false},
-  {id:'sunset', name:'Sunset', style:'gradient', c1:'#ffedd5', c2:'#fef3c7', accent:'#ea580c', dark:false},
-  {id:'midnight',name:'Midnight', style:'dark', c1:'#0f1f3d', c2:'#1a2f52', accent:'#e8c14a', dark:true},
-  {id:'charcoal',name:'Charcoal', style:'dark', c1:'#111827', c2:'#1f2937', accent:'#fbbf24', dark:true}
+  {id:'wmin',  name:'White',    layout:'minimal',     bg:'#ffffff', ink:'#0a0a0a', accent:'#111827', gold:'#9ca3af', dark:false},
+  {id:'wslate',name:'Slate',    layout:'minimal',     bg:'#ffffff', ink:'#1e293b', accent:'#334155', gold:'#94a3b8', dark:false},
+  {id:'wsage', name:'Sage',     layout:'minimal',     bg:'#f7faf5', ink:'#2f3a2c', accent:'#4d6b47', gold:'#a3b594', dark:false},
+  {id:'black', name:'Black Gold', layout:'letterpress', bg:'#0b0b0d', ink:'#e8e8e8', accent:'#d4af37', gold:'#d4af37', dark:true},
+  {id:'navy',  name:'Navy Silver', layout:'letterpress', bg:'#101b2e', ink:'#e6ecf5', accent:'#c0c8d4', gold:'#c0c8d4', dark:true},
+  {id:'green', name:'Green Gold',  layout:'letterpress', bg:'#0d1f15', ink:'#e4eee6', accent:'#d4af37', gold:'#d4af37', dark:true},
+  {id:'gcream',name:'Cream Foil',  layout:'foil',     bg:'#faf6ef', ink:'#3a3328', accent:'#a8862d', gold:'#c9a227', dark:false},
+  {id:'gblush',name:'Blush Foil',  layout:'foil',     bg:'#faf0f2', ink:'#402f33', accent:'#b08b6f', gold:'#c9a227', dark:false},
+  {id:'blue',  name:'Blue Band',   layout:'band',     bg:'#ffffff', ink:'#1e2a44', accent:'#1d4ed8', gold:'#93b4f0', dark:false},
+  {id:'terra', name:'Terra Band',  layout:'band',     bg:'#ffffff', ink:'#3d2b1f', accent:'#c15f3c', gold:'#e0b28a', dark:false}
 ];
 (function(){
   var FREE_TRIES = 1;
@@ -141,7 +142,8 @@ window.TOOL_TEMPLATES = [
   function render(){
     var t = tpl();
     var W = canvas.width, H = canvas.height;
-    var ac = t.accent, dark = t.dark;
+    var ink = t.ink, ac = t.accent, gold = t.gold||ac, dark = t.dark;
+    var sans = 'Trebuchet MS, sans-serif', serif = 'Georgia, serif';
     var name = document.getElementById('name').value || 'Your Name';
     var title = document.getElementById('title').value || '';
     var company = document.getElementById('company').value || '';
@@ -150,35 +152,50 @@ window.TOOL_TEMPLATES = [
     var website = document.getElementById('website').value || '';
     ctx.textAlign = 'left';
 
-    if(t.style === 'dark'){
-      var dg = ctx.createLinearGradient(0,0,W,H); dg.addColorStop(0,t.c1); dg.addColorStop(1,t.c2);
-      ctx.fillStyle = dg; ctx.fillRect(0,0,W,H);
-    } else {
-      ctx.fillStyle = '#fff'; ctx.fillRect(0,0,W,H);
-      if(t.style === 'gradient'){
-        var gg = ctx.createLinearGradient(0,0,W,0); gg.addColorStop(0,t.c1); gg.addColorStop(1,t.c2);
-        ctx.fillStyle = gg; ctx.fillRect(0,0,W,H);
-      }
-    }
-    if(t.style === 'band'){ ctx.fillStyle = ac; ctx.fillRect(0,0,36,H); }
-    if(t.style === 'bordered'){ ctx.strokeStyle = ac; ctx.lineWidth = 5; ctx.strokeRect(18,18,W-36,H-36); }
-    if(t.style === 'minimal'){ ctx.strokeStyle = ac; ctx.lineWidth = 1.5; ctx.strokeRect(24,24,W-48,H-48); }
-    if(t.style === 'dark'){ ctx.strokeStyle = 'rgba(201,162,39,.4)'; ctx.lineWidth = 1.5; ctx.strokeRect(22,22,W-44,H-44); }
+    // background
+    ctx.fillStyle = t.bg; ctx.fillRect(0,0,W,H);
 
-    var x = (t.style === 'band') ? 90 : 70;
-    var darkText = dark ? '#f1f5f9' : '#2c3e50';
-    ctx.fillStyle = darkText; ctx.font = 'bold 84px Trebuchet MS, sans-serif';
-    ctx.fillText(truncate(name, W-x-80), x, 210);
-    ctx.fillStyle = dark ? '#cbd5e1' : '#5a7ea0'; ctx.font = '40px Trebuchet MS, sans-serif';
-    ctx.fillText(truncate(title, W-x-80), x+2, 275);
-    ctx.fillStyle = ac; ctx.font = 'bold 42px Trebuchet MS, sans-serif';
-    ctx.fillText(truncate(company, W-x-80), x+2, 350);
-    ctx.strokeStyle = dark ? '#334155' : '#d6e2f0'; ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.moveTo(x, 400); ctx.lineTo(W-70, 400); ctx.stroke();
-    ctx.fillStyle = dark ? '#cbd5e1' : '#34495e'; ctx.font = '30px Trebuchet MS, sans-serif';
-    ctx.fillText(phone, x, 465);
-    ctx.fillText(email, x, 515);
-    ctx.fillStyle = dark ? '#94a3b8' : '#5a7ea0'; ctx.fillText(website, x, 555);
+    if(t.layout === 'minimal'){
+      // restraint: generous negative space, small centered name, thin rule, muted contact
+      ctx.textAlign = 'center';
+      ctx.fillStyle = gold; ctx.font = '13px '+sans; ctx.fillText(company.toUpperCase(), W/2, 200);
+      ctx.strokeStyle = '#e5e7eb'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(W/2-40,225); ctx.lineTo(W/2+40,225); ctx.stroke();
+      ctx.fillStyle = ink; ctx.font = 'bold 40px '+serif; ctx.fillText(name, W/2, 300);
+      ctx.fillStyle = ac; ctx.font = '18px '+sans; ctx.fillText(title, W/2, 340);
+      ctx.fillStyle = '#94a3b8'; ctx.font = '15px '+sans; ctx.fillText(phone + '  ·  ' + email, W/2, 430);
+      ctx.fillStyle = '#9ca3af'; ctx.font = '14px '+sans; ctx.fillText(website, W/2, 460);
+    } else if(t.layout === 'letterpress'){
+      // blind-deboss feel on matte stock: no borders, typography only
+      ctx.textAlign = 'left';
+      ctx.fillStyle = gold; ctx.font = 'bold 15px '+sans; ctx.fillText(company.toUpperCase(), 70, 150);
+      ctx.fillStyle = ink; ctx.font = 'bold 66px '+serif; ctx.fillText(truncate(name, W-180), 70, 290);
+      ctx.fillStyle = ac; ctx.font = '26px '+sans; ctx.fillText(title, 72, 350);
+      ctx.strokeStyle = 'rgba(255,255,255,.12)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(70,410); ctx.lineTo(W-70,410); ctx.stroke();
+      ctx.fillStyle = ink; ctx.font = '20px '+sans; ctx.fillText(phone, 70, 470);
+      ctx.fillText(email, 70, 510);
+      ctx.fillStyle = ac; ctx.fillText(website, 70, 550);
+    } else if(t.layout === 'foil'){
+      // gold foil frame + monogram feel
+      ctx.strokeStyle = gold; ctx.lineWidth = 2; ctx.strokeRect(24,24,W-48,H-48);
+      ctx.strokeStyle = 'rgba(201,162,39,.35)'; ctx.lineWidth = 1; ctx.strokeRect(34,34,W-68,H-68);
+      ctx.textAlign = 'center';
+      ctx.fillStyle = gold; ctx.font = 'bold 60px '+serif; ctx.fillText(name.charAt(0), W/2, 180);
+      ctx.strokeStyle = gold; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(W/2-70,210); ctx.lineTo(W/2+70,210); ctx.stroke();
+      ctx.fillStyle = ink; ctx.font = 'bold 38px '+serif; ctx.fillText(name, W/2, 285);
+      ctx.fillStyle = ac; ctx.font = '20px '+sans; ctx.fillText(title, W/2, 330);
+      ctx.fillStyle = ink; ctx.font = '24px '+sans; ctx.fillText(company, W/2, 390);
+      ctx.fillStyle = '#6b7280'; ctx.font = '17px '+sans; ctx.fillText(phone + '  ·  ' + email, W/2, 460);
+      ctx.fillStyle = '#9ca3af'; ctx.font = '15px '+sans; ctx.fillText(website, W/2, 490);
+    } else { // band
+      ctx.fillStyle = ac; ctx.fillRect(0,0,36,H);
+      var x = 90;
+      ctx.fillStyle = ink; ctx.font = 'bold 84px '+sans; ctx.fillText(truncate(name, W-x-80), x, 210);
+      ctx.fillStyle = '#5a7ea0'; ctx.font = '40px '+sans; ctx.fillText(truncate(title, W-x-80), x+2, 275);
+      ctx.fillStyle = ac; ctx.font = 'bold 42px '+sans; ctx.fillText(truncate(company, W-x-80), x+2, 350);
+      ctx.strokeStyle = '#d6e2f0'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(x,400); ctx.lineTo(W-70,400); ctx.stroke();
+      ctx.fillStyle = '#34495e'; ctx.font = '30px '+sans; ctx.fillText(phone, x, 465); ctx.fillText(email, x, 515);
+      ctx.fillStyle = '#5a7ea0'; ctx.fillText(website, x, 555);
+    }
 
     var wm = document.getElementById('wmText');
     if(locked){

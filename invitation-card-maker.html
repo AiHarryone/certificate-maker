@@ -82,9 +82,7 @@
       </div>
       <label>Location</label>
       <input type="text" id="location" value="123 Celebration Ave" oninput="render()">
-      <div class="save-actions">
-        <button class="btn green" id="downloadBtn">⬇ Download PNG</button>
-      </div>
+      <button class="btn green" id="downloadBtn">⬇ Download PNG</button>
       <div class="watermark" id="wmText"></div>
     </div>
 
@@ -113,17 +111,18 @@
 
 <script src="tpl-engine.js"></script>
 <script>
+// 4 distinct LAYOUTS, research-informed (editorial minimalism / wax-seal jewel / classic / modern)
 window.TOOL_TEMPLATES = [
-  {id:'classic', name:'Classic', style:'centered', c1:'#eef2ff', c2:'#ffffff', accent:'#3a7bd5', dark:false},
-  {id:'rose',    name:'Rose',    style:'centered', c1:'#fdf2f8', c2:'#ffffff', accent:'#ec4899', dark:false},
-  {id:'lavender',name:'Lavender',style:'centered', c1:'#f3e8ff', c2:'#ffffff', accent:'#8b5cf6', dark:false},
-  {id:'gold',    name:'Gold',    style:'bordered', c1:'#fdf6e3', c2:'#fffdf8', accent:'#c9a227', dark:false},
-  {id:'navy',    name:'Navy',    style:'bordered', c1:'#eef4ff', c2:'#ffffff', accent:'#1e3a5f', dark:false},
-  {id:'slate',   name:'Slate',   style:'minimal',  c1:'#f8fafc', c2:'#ffffff', accent:'#334155', dark:false},
-  {id:'mint',    name:'Mint',    style:'minimal',  c1:'#f0fdf4', c2:'#ffffff', accent:'#059669', dark:false},
-  {id:'blush',   name:'Blush',   style:'flourish', c1:'#fff5fa', c2:'#ffffff', accent:'#be185d', dark:false},
-  {id:'midnight',name:'Midnight',style:'dark',     c1:'#0f1f3d', c2:'#1a2f52', accent:'#e8c14a', dark:true},
-  {id:'emerald', name:'Emerald', style:'dark',     c1:'#0b3d2e', c2:'#14532d', accent:'#fbbf24', dark:true}
+  {id:'sage',   name:'Sage',   layout:'editorial', bg:'#f2f5f0', ink:'#33403a', accent:'#6f7d5f', gold:'#a8b59a', serif:true},
+  {id:'dusty',  name:'Dusty Blue', layout:'editorial', bg:'#f0f4f8', ink:'#2e3a47', accent:'#7b93a8', gold:'#b9c8d6', serif:true},
+  {id:'cream',  name:'Cream',  layout:'editorial', bg:'#fbf7ef', ink:'#4a3f33', accent:'#b28a5c', gold:'#d6c4a8', serif:true},
+  {id:'blush',  name:'Blush',  layout:'editorial', bg:'#faf1f3', ink:'#4a3338', accent:'#c27f8f', gold:'#ddb6c0', serif:true},
+  {id:'classic',name:'Classic',layout:'centered',  bg:'#ffffff', ink:'#2b3a4a', accent:'#1d4ed8', gold:'#a8862d', serif:true},
+  {id:'rose',   name:'Rose',   layout:'centered',  bg:'#fff8f8', ink:'#3d2b33', accent:'#e11d48', gold:'#f2b8c0', serif:true},
+  {id:'burgundy',name:'Burgundy',layout:'seal',     bg:'#4a1f2a', ink:'#f3e3e7', accent:'#f0d9a0', gold:'#e8c86a', serif:true, dark:true},
+  {id:'forest', name:'Forest', layout:'seal',       bg:'#16301f', ink:'#e5efe7', accent:'#e8c86a', gold:'#d4af37', serif:true, dark:true},
+  {id:'midnight',name:'Midnight',layout:'seal',     bg:'#121b33', ink:'#e6ebf7', accent:'#e8c86a', gold:'#c9a227', serif:true, dark:true},
+  {id:'terra',  name:'Terracotta', layout:'modern', bg:'#f7efe8', ink:'#3d2b1f', accent:'#c15f3c', gold:'#e0b28a', serif:false}
 ];
 (function(){
   var FREE_TRIES = 1;
@@ -134,9 +133,9 @@ window.TOOL_TEMPLATES = [
   window.onTplChange = function(){ render(); };
 
   function wrapText(text, x, y, maxW, lineH, maxLines){
-    var words = String(text).split(' '), line = '', lines = 0;
-    for(var i=0;i<words.length;i++){
-      var test = line + (line ? ' ' : '') + words[i];
+    var words = String(text).split(' '), line = '', lines = 0, i, test;
+    for(i=0;i<words.length;i++){
+      test = line + (line?' ':'') + words[i];
       if(ctx.measureText(test).width > maxW && line){ ctx.fillText(line, x, y); line = words[i]; y += lineH; lines++; if(lines >= maxLines) return; }
       else line = test;
     }
@@ -146,51 +145,59 @@ window.TOOL_TEMPLATES = [
   function render(){
     var t = tpl();
     var W = canvas.width, H = canvas.height;
-    var ac = t.accent, dark = t.dark;
+    var ink = t.ink, ac = t.accent, gold = t.gold || ac, dark = !!t.dark;
+    var serif = 'Georgia, serif', sans = 'Trebuchet MS, sans-serif';
     var title = document.getElementById('title').value || 'You\'re Invited!';
     var msg = document.getElementById('message').value || '';
     var date = document.getElementById('date').value, time = document.getElementById('time').value;
     var loc = document.getElementById('location').value;
     ctx.textAlign = 'center';
 
-    // background
-    if(t.style === 'dark'){
-      var dg = ctx.createLinearGradient(0,0,W,H); dg.addColorStop(0,t.c1); dg.addColorStop(1,t.c2);
-      ctx.fillStyle = dg; ctx.fillRect(0,0,W,H);
-    } else {
-      var grad = ctx.createLinearGradient(0,0,W,H); grad.addColorStop(0,t.c1); grad.addColorStop(1,t.c2);
-      ctx.fillStyle = grad; ctx.fillRect(0,0,W,H);
-    }
-    // frame
-    if(t.style === 'bordered'){
-      ctx.strokeStyle = ac; ctx.lineWidth = 6; ctx.strokeRect(26,26,W-52,H-52);
-      ctx.strokeStyle = ac; ctx.lineWidth = 1; ctx.strokeRect(36,36,W-72,H-72);
-      ctx.fillStyle = ac; ctx.fillRect(0,0,W,12); ctx.fillRect(0,H-12,W,12);
-    } else if(t.style === 'minimal'){
-      ctx.strokeStyle = ac; ctx.lineWidth = 1.5; ctx.strokeRect(34,34,W-68,H-68);
-    } else if(t.style === 'flourish'){
-      ctx.strokeStyle = ac; ctx.lineWidth = 3; ctx.strokeRect(24,24,W-48,H-48);
-      ctx.strokeStyle = ac; ctx.lineWidth = 6;
-      ctx.beginPath(); ctx.moveTo(46,64); ctx.arcTo(46,46,64,46,6); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(W-64,46); ctx.arcTo(W-46,46,W-46,64,6); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(46,H-64); ctx.arcTo(46,H-46,64,H-46,6); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(W-64,H-46); ctx.arcTo(W-46,H-46,W-46,H-64,6); ctx.stroke();
-    } else {
+    // ---- background ----
+    ctx.fillStyle = t.bg; ctx.fillRect(0,0,W,H);
+
+    if(t.layout === 'editorial'){
+      // editorial minimalism: white space, oversized date, serif+sans, thin rule
+      ctx.fillStyle = ink; ctx.font = 'bold 34px '+sans; ctx.fillText(title.toUpperCase(), W/2, 180);
+      ctx.strokeStyle = ac; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(W/2-60, 220); ctx.lineTo(W/2+60, 220); ctx.stroke();
+      ctx.fillStyle = ink; ctx.font = 'italic 26px '+serif; wrapText(msg, W/2, 320, W-240, 40, 4);
+      ctx.fillStyle = ac; ctx.font = 'bold 84px '+serif; ctx.fillText(date, W/2, 480);
+      ctx.fillStyle = ink; ctx.font = '30px '+sans; ctx.fillText(time, W/2, 540);
+      ctx.fillStyle = ac; ctx.font = '24px '+sans; ctx.fillText(loc, W/2, 600);
+      // tiny label top
+      ctx.fillStyle = ac; ctx.font = '13px '+sans; ctx.fillText('YOU ARE INVITED', W/2, 120);
+    } else if(t.layout === 'centered'){
       ctx.strokeStyle = ac; ctx.lineWidth = 8; ctx.strokeRect(24,24,W-48,H-48);
-      ctx.strokeStyle = t.c1; ctx.lineWidth = 3; ctx.strokeRect(38,38,W-76,H-76);
+      ctx.strokeStyle = gold; ctx.lineWidth = 2; ctx.strokeRect(38,38,W-76,H-76);
+      ctx.fillStyle = ac; ctx.fillRect(0,0,W,10);
+      ctx.fillStyle = ac; ctx.font = 'bold 84px '+serif; wrapText(title, W/2, 250, W-160, 96, 3);
+      ctx.fillStyle = ink; ctx.font = 'italic 30px '+serif; wrapText(msg, W/2, 350, W-180, 44, 4);
+      ctx.fillStyle = ac; ctx.font = 'bold 40px '+serif; ctx.fillText(date, W/2, 520);
+      ctx.fillText(time, W/2, 575);
+      ctx.fillStyle = '#5a7ea0'; ctx.font = '28px '+serif; ctx.fillText(loc, W/2, 625);
+    } else if(t.layout === 'seal'){
+      // wax-seal luxury on jewel-tone stock
+      ctx.fillStyle = t.bg; ctx.fillRect(0,0,W,H);
+      ctx.strokeStyle = gold; ctx.lineWidth = 3; ctx.strokeRect(28,28,W-56,H-56);
+      ctx.strokeStyle = 'rgba(232,200,106,.5)'; ctx.lineWidth = 1; ctx.strokeRect(38,38,W-76,H-76);
+      // wax seal top
+      ctx.fillStyle = ac; ctx.beginPath(); ctx.arc(W/2, 120, 40, 0, Math.PI*2); ctx.fill();
+      ctx.strokeStyle = 'rgba(0,0,0,.25)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(W/2,120,40,0,Math.PI*2); ctx.stroke();
+      ctx.fillStyle = t.bg; ctx.font = '22px '+serif; ctx.fillText('✦', W/2, 130);
+      ctx.fillStyle = gold; ctx.font = 'bold 46px '+serif; wrapText(title, W/2, 240, W-200, 54, 3);
+      ctx.fillStyle = ink; ctx.font = 'italic 24px '+serif; wrapText(msg, W/2, 340, W-220, 36, 4);
+      ctx.fillStyle = gold; ctx.font = 'bold 42px '+serif; ctx.fillText(date, W/2, 500);
+      ctx.fillStyle = ink; ctx.font = '26px '+serif; ctx.fillText(time, W/2, 550);
+      ctx.fillText(loc, W/2, 600);
+    } else { // modern asymmetric
+      ctx.fillStyle = ac; ctx.fillRect(0,0,90,H);
+      ctx.textAlign = 'left';
+      ctx.fillStyle = ac; ctx.font = 'bold 13px '+sans; ctx.fillText('INVITATION', 130, 130);
+      ctx.fillStyle = ink; ctx.font = 'bold 66px '+sans; wrapText(title, 130, 220, W-220, 72, 3);
+      ctx.fillStyle = '#6b7280'; ctx.font = '24px '+sans; wrapText(msg, 130, 350, W-240, 34, 5);
+      ctx.fillStyle = ac; ctx.font = 'bold 52px '+sans; ctx.fillText(date, 130, 520);
+      ctx.fillStyle = ink; ctx.font = '26px '+sans; ctx.fillText(time + '  ·  ' + loc, 130, 575);
     }
-    // title
-    ctx.fillStyle = ac; ctx.font = 'bold 84px Georgia, serif';
-    wrapText(title, W/2, 250, W-160, 96, 3);
-    // message
-    ctx.fillStyle = dark ? '#cbd5e1' : '#34495e'; ctx.font = 'italic 30px Georgia, serif';
-    wrapText(msg, W/2, 350, W-180, 44, 4);
-    // details
-    ctx.fillStyle = ac; ctx.font = 'bold 40px Georgia, serif';
-    ctx.fillText(date, W/2, 520);
-    ctx.fillText(time, W/2, 575);
-    ctx.fillStyle = dark ? '#94a3b8' : '#5a7ea0'; ctx.font = '28px Georgia, serif';
-    ctx.fillText(loc, W/2, 625);
 
     var wm = document.getElementById('wmText');
     if(locked){

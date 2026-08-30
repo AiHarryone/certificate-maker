@@ -23,8 +23,6 @@
   .panel h2{color:#3a7bd5;font-size:18px;margin-bottom:14px;}
   label{display:block;font-weight:bold;margin:12px 0 5px;color:#34495e;font-size:14px;}
   input[type=text]{width:100%;padding:10px;border:2px solid #d6e2f0;border-radius:8px;font-size:14px;background:#fff;font-family:inherit;}
-  .row{display:flex;gap:10px;}
-  .row > div{flex:1;}
   .btn{display:inline-block;background:#3a7bd5;color:#fff;border:none;padding:12px 26px;border-radius:30px;font-size:16px;font-weight:bold;cursor:pointer;margin-top:16px;}
   .btn:hover{background:#2c6ab3;}
   .btn.green{background:#27ae60;}
@@ -107,16 +105,16 @@
 <script src="tpl-engine.js"></script>
 <script>
 window.TOOL_TEMPLATES = [
-  {id:'blue',  name:'Blue',   style:'band',  c1:'#eef4ff', c2:'#ffffff', accent:'#3a7bd5', dark:false},
-  {id:'navy',  name:'Navy',   style:'band',  c1:'#eef4ff', c2:'#ffffff', accent:'#1e3a5f', dark:false},
-  {id:'teal',  name:'Teal',   style:'band',  c1:'#ecfdf5', c2:'#ffffff', accent:'#0d9488', dark:false},
-  {id:'gold',  name:'Gold',   style:'bordered', c1:'#fdf6e3', c2:'#ffffff', accent:'#c9a227', dark:false},
-  {id:'green', name:'Green',  style:'bordered', c1:'#f0fdf4', c2:'#ffffff', accent:'#16a34a', dark:false},
-  {id:'slate', name:'Slate',  style:'minimal', c1:'#f8fafc', c2:'#ffffff', accent:'#334155', dark:false},
-  {id:'mint',  name:'Mint',   style:'minimal', c1:'#f0fdf4', c2:'#ffffff', accent:'#059669', dark:false},
-  {id:'rose',  name:'Rose',   style:'gradient', c1:'#fecdd3', c2:'#fff1f2', accent:'#e11d48', dark:false},
-  {id:'midnight', name:'Midnight', style:'dark', c1:'#0f1f3d', c2:'#1a2f52', accent:'#e8c14a', dark:true},
-  {id:'emerald', name:'Emerald', style:'dark', c1:'#0b3d2e', c2:'#14532d', accent:'#fbbf24', dark:true}
+  {id:'blue',   name:'Blue',   layout:'band',    bg:'#ffffff', ink:'#1e2a44', accent:'#1d4ed8', gold:'#93b4f0', dark:false},
+  {id:'navy',   name:'Navy',   layout:'band',    bg:'#ffffff', ink:'#1e2a44', accent:'#1e3a5f', gold:'#9db4cc', dark:false},
+  {id:'green',  name:'Green',  layout:'band',    bg:'#ffffff', ink:'#17342a', accent:'#0d9488', gold:'#8ad0c0', dark:false},
+  {id:'wmin',   name:'White',  layout:'minimal', bg:'#ffffff', ink:'#0a0a0a', accent:'#111827', gold:'#9ca3af', dark:false},
+  {id:'wsage',  name:'Sage',   layout:'minimal', bg:'#f7faf5', ink:'#2f3a2c', accent:'#4d6b47', gold:'#a3b594', dark:false},
+  {id:'wterra', name:'Terra',  layout:'minimal', bg:'#fbf7f2', ink:'#3d2b1f', accent:'#c15f3c', gold:'#e0b28a', dark:false},
+  {id:'black',  name:'Black Gold', layout:'dark', bg:'#0b0b0d', ink:'#e8e8e8', accent:'#d4af37', gold:'#d4af37', dark:true},
+  {id:'navyG',  name:'Navy Gold',  layout:'dark', bg:'#101b2e', ink:'#e6ecf5', accent:'#d4af37', gold:'#d4af37', dark:true},
+  {id:'slate',  name:'Slate',  layout:'modern',  bg:'#ffffff', ink:'#1e293b', accent:'#334155', gold:'#94a3b8', dark:false},
+  {id:'rose',   name:'Rose',   layout:'modern',  bg:'#ffffff', ink:'#402f33', accent:'#e11d48', gold:'#f2b8c0', dark:false}
 ];
 (function(){
   var FREE_TRIES = 1;
@@ -126,62 +124,49 @@ window.TOOL_TEMPLATES = [
   var ctx = canvas.getContext('2d');
   window.onTplChange = function(){ render(); };
 
-  function truncate(s, maxW){
-    s = String(s||''); var w = ctx.measureText(s).width;
-    if(w <= maxW) return s;
-    while(s.length > 1 && ctx.measureText(s+'…').width > maxW) s = s.slice(0,-1);
-    return s + '…';
-  }
+  function truncate(s, maxW){ s = String(s||''); var w = ctx.measureText(s).width; if(w<=maxW) return s; while(s.length>1 && ctx.measureText(s+'…').width>maxW) s=s.slice(0,-1); return s+'…'; }
 
   function render(){
     var t = tpl();
     var W = canvas.width, H = canvas.height;
-    var ac = t.accent, dark = t.dark;
+    var ink = t.ink, ac = t.accent, gold = t.gold||ac, dark = t.dark;
+    var sans = 'Trebuchet MS, sans-serif', serif = 'Georgia, serif';
     var name = document.getElementById('name').value || 'Your Name';
     var role = document.getElementById('role').value || '';
     var org = document.getElementById('org').value || '';
-    ctx.textAlign = 'center';
 
-    if(t.style === 'dark'){
-      var dg = ctx.createLinearGradient(0,0,W,H); dg.addColorStop(0,t.c1); dg.addColorStop(1,t.c2);
-      ctx.fillStyle = dg; ctx.fillRect(0,0,W,H);
-    } else {
-      ctx.fillStyle = '#fff'; ctx.fillRect(0,0,W,H);
-      if(t.style === 'gradient'){
-        var gg = ctx.createLinearGradient(0,0,W,0); gg.addColorStop(0,t.c1); gg.addColorStop(1,t.c2);
-        ctx.fillStyle = gg; ctx.fillRect(0,0,W,H);
-      }
-    }
-    // frame
-    if(t.style === 'bordered'){
-      ctx.strokeStyle = ac; ctx.lineWidth = 6; ctx.strokeRect(20,20,W-40,H-40);
-      ctx.strokeStyle = t.c1; ctx.lineWidth = 2; ctx.strokeRect(30,30,W-60,H-60);
-    } else if(t.style === 'minimal'){
-      ctx.strokeStyle = ac; ctx.lineWidth = 1.5; ctx.strokeRect(24,24,W-48,H-48);
-    } else if(t.style === 'dark'){
-      ctx.strokeStyle = ac; ctx.lineWidth = 2; ctx.strokeRect(20,20,W-40,H-40);
-    } else {
-      // band / gradient
+    ctx.fillStyle = t.bg; ctx.fillRect(0,0,W,H);
+    if(t.layout === 'band'){
       ctx.fillStyle = ac; ctx.fillRect(0,0,W,110);
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#fff'; ctx.font = 'bold 34px '+sans; ctx.fillText(truncate(org, W-80), W/2, 70);
+      ctx.fillStyle = ink; ctx.font = 'bold 100px '+sans; ctx.fillText(truncate(name, W-120), W/2, 330);
+      ctx.fillStyle = '#5a7ea0'; ctx.font = '40px '+sans; ctx.fillText(truncate(role, W-120), W/2, 410);
+      ctx.fillStyle = ac; ctx.fillRect(W/2-260, 470, 520, 64);
+      ctx.fillStyle = '#fff'; ctx.font = 'bold 36px '+sans; ctx.fillText(truncate(org, 480), W/2, 512);
+    } else if(t.layout === 'minimal'){
+      ctx.textAlign = 'center';
+      ctx.fillStyle = gold; ctx.font = '14px '+sans; ctx.fillText(org.toUpperCase(), W/2, 150);
+      ctx.strokeStyle = '#e5e7eb'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(W/2-40,175); ctx.lineTo(W/2+40,175); ctx.stroke();
+      ctx.fillStyle = ink; ctx.font = 'bold 66px '+serif; ctx.fillText(truncate(name, W-160), W/2, 320);
+      ctx.fillStyle = ac; ctx.font = '24px '+sans; ctx.fillText(truncate(role, W-160), W/2, 380);
+    } else if(t.layout === 'dark'){
+      ctx.textAlign = 'center';
+      ctx.fillStyle = gold; ctx.font = 'bold 30px '+sans; ctx.fillText(org.toUpperCase(), W/2, 130);
+      ctx.strokeStyle = 'rgba(212,175,55,.4)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(W/2-60,160); ctx.lineTo(W/2+60,160); ctx.stroke();
+      ctx.fillStyle = ink; ctx.font = 'bold 96px '+serif; ctx.fillText(truncate(name, W-140), W/2, 330);
+      ctx.fillStyle = gold; ctx.font = '34px '+sans; ctx.fillText(truncate(role, W-140), W/2, 400);
+    } else { // modern side block
+      ctx.fillStyle = ac; ctx.fillRect(0,0,80,H);
+      ctx.textAlign = 'left';
+      ctx.fillStyle = gold; ctx.font = 'bold 14px '+sans; ctx.fillText(org.toUpperCase(), 120, 160);
+      ctx.fillStyle = ink; ctx.font = 'bold 92px '+sans; ctx.fillText(truncate(name, W-200), 120, 330);
+      ctx.fillStyle = '#6b7280'; ctx.font = '34px '+sans; ctx.fillText(truncate(role, W-200), 122, 390);
     }
-    // name
-    ctx.fillStyle = dark ? '#f1f5f9' : '#2c3e50';
-    ctx.font = 'bold 110px Trebuchet MS, sans-serif';
-    ctx.fillText(truncate(name, W-120), W/2, 330);
-    // role
-    ctx.fillStyle = dark ? '#cbd5e1' : '#5a7ea0'; ctx.font = '44px Trebuchet MS, sans-serif';
-    ctx.fillText(truncate(role, W-120), W/2, 410);
-    // org band
-    ctx.fillStyle = ac; ctx.fillRect(W/2-260, 470, 520, 64);
-    ctx.fillStyle = '#fff'; ctx.font = 'bold 38px Trebuchet MS, sans-serif';
-    ctx.fillText(truncate(org, 480), W/2, 512);
 
     var wm = document.getElementById('wmText');
-    if(locked){
-      drawWatermark(ctx, W, H, dark);
-      wm.textContent = '🔒 Free version — watermark will appear on download. Unlock to remove.';
-      wm.style.display = 'block';
-    } else { wm.style.display = 'none'; }
+    if(locked){ drawWatermark(ctx, W, H, dark); wm.textContent='🔒 Free version — watermark will appear on download. Unlock to remove.'; wm.style.display='block'; }
+    else { wm.style.display='none'; }
   }
 
   function showPaywall(){ document.getElementById('paywall').style.display = 'flex'; }

@@ -110,16 +110,16 @@
 <script src="tpl-engine.js"></script>
 <script>
 window.TOOL_TEMPLATES = [
-  {id:'royal',   name:'Royal',   style:'formal', c1:'#fdf6e3', c2:'#fffdf8', accent:'#6a1b9a', dark:false},
-  {id:'navy',    name:'Navy',    style:'formal', c1:'#fdf6e3', c2:'#fffdf8', accent:'#1e3a5f', dark:false},
-  {id:'green',   name:'Green',   style:'formal', c1:'#fdf6e3', c2:'#fffdf8', accent:'#1b5e20', dark:false},
-  {id:'gold',    name:'Gold',    style:'seal',   c1:'#fdf6e3', c2:'#fffdf8', accent:'#8a6d1f', dark:false},
-  {id:'crimson', name:'Crimson', style:'seal',   c1:'#fdf6e3', c2:'#fffdf8', accent:'#b71c1c', dark:false},
-  {id:'slate',   name:'Slate',   style:'minimal',c1:'#f8fafc', c2:'#ffffff', accent:'#334155', dark:false},
-  {id:'mint',    name:'Mint',    style:'minimal',c1:'#f0fdf4', c2:'#ffffff', accent:'#059669', dark:false},
-  {id:'teal',    name:'Teal',    style:'minimal',c1:'#ecfeff', c2:'#ffffff', accent:'#0d9488', dark:false},
-  {id:'midnight',name:'Midnight',style:'dark',   c1:'#0f1f3d', c2:'#1a2f52', accent:'#e8c14a', dark:true},
-  {id:'emerald', name:'Emerald', style:'dark',   c1:'#0b3d2e', c2:'#14532d', accent:'#fbbf24', dark:true}
+  {id:'royal',   name:'Royal',   layout:'formal', bg:'#fdf8f0', ink:'#2b2115', accent:'#6a1b9a', gold:'#a8862d', serif:true},
+  {id:'navy',    name:'Navy',    layout:'formal', bg:'#fdf8f0', ink:'#2b2115', accent:'#1e3a5f', gold:'#a8862d', serif:true},
+  {id:'green',   name:'Green',   layout:'formal', bg:'#fdf8f0', ink:'#2b2115', accent:'#1b5e20', gold:'#a8862d', serif:true},
+  {id:'gold',    name:'Gold',    layout:'seal',   bg:'#fffdf6', ink:'#2b2115', accent:'#8a6d1f', gold:'#c9a227', serif:true},
+  {id:'burgundy',name:'Burgundy',layout:'seal',   bg:'#fff7f5', ink:'#3a1d1d', accent:'#7f1d1d', gold:'#c9a227', serif:true},
+  {id:'modern',  name:'Modern',  layout:'modern', bg:'#ffffff', ink:'#0f172a', accent:'#2563eb', gold:'#93b4f0', serif:false},
+  {id:'slate',   name:'Slate',   layout:'modern', bg:'#ffffff', ink:'#1e293b', accent:'#334155', gold:'#94a3b8', serif:false},
+  {id:'minimal', name:'Minimal', layout:'minimal',bg:'#ffffff', ink:'#09090b', accent:'#09090b', gold:'#a1a1aa', serif:false},
+  {id:'midnight',name:'Midnight',layout:'dark',   bg:'#0b1220', ink:'#e8edf5', accent:'#d4af37', gold:'#d4af37', serif:true, dark:true},
+  {id:'forest',  name:'Forest',  layout:'dark',   bg:'#0d1f15', ink:'#e5efe7', accent:'#d4af37', gold:'#d4af37', serif:true, dark:true}
 ];
 (function(){
   var FREE_TRIES = 1;
@@ -129,78 +129,69 @@ window.TOOL_TEMPLATES = [
   var ctx = canvas.getContext('2d');
   window.onTplChange = function(){ render(); };
 
-  function truncate(s, maxW){
-    s = String(s||''); if(ctx.measureText(s).width <= maxW) return s;
-    while(s.length > 1 && ctx.measureText(s+'…').width > maxW) s = s.slice(0,-1);
-    return s + '…';
-  }
+  function truncate(s, maxW){ s=String(s||''); if(ctx.measureText(s).width<=maxW) return s; while(s.length>1 && ctx.measureText(s+'…').width>maxW) s=s.slice(0,-1); return s+'…'; }
 
   function render(){
     var t = tpl();
     var W = canvas.width, H = canvas.height;
-    var ac = t.accent, dark = t.dark;
+    var ink = t.ink, ac = t.accent, gold = t.gold||ac, dark = t.dark;
+    var serif = 'Georgia, serif', sans = 'Trebuchet MS, sans-serif';
     var name = document.getElementById('name').value || 'Your Name';
     var program = document.getElementById('program').value || '';
     var institution = document.getElementById('institution').value || '';
     var date = document.getElementById('date').value || '';
     ctx.textAlign = 'center';
-    var serif = 'Georgia, serif';
 
-    if(t.style === 'dark'){
-      var dg = ctx.createLinearGradient(0,0,W,H); dg.addColorStop(0,t.c1); dg.addColorStop(1,t.c2);
-      ctx.fillStyle = dg; ctx.fillRect(0,0,W,H);
-    } else { ctx.fillStyle = '#fdfcf8'; ctx.fillRect(0,0,W,H); }
-
-    // borders
-    if(t.style === 'seal' || t.style === 'formal'){
+    ctx.fillStyle = t.bg; ctx.fillRect(0,0,W,H);
+    if(t.layout === 'formal' || t.layout === 'seal'){
       ctx.strokeStyle = ac; ctx.lineWidth = 14; ctx.strokeRect(28,28,W-56,H-56);
-      ctx.strokeStyle = '#c9a227'; ctx.lineWidth = 3; ctx.strokeRect(50,50,W-100,H-100);
-    } else if(t.style === 'minimal'){
-      ctx.strokeStyle = ac; ctx.lineWidth = 1.5; ctx.strokeRect(36,36,W-72,H-72);
-      ctx.fillStyle = ac; ctx.fillRect(0,0,W,5);
+      ctx.strokeStyle = gold; ctx.lineWidth = 3; ctx.strokeRect(50,50,W-100,H-100);
+      ctx.fillStyle = gold; ctx.beginPath(); ctx.arc(W-110,110,46,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.font = 'bold 28px '+serif; ctx.fillText('★', W-110, 120);
+      ctx.fillStyle = ac; ctx.font = 'bold 58px '+serif; ctx.fillText('DIPLOMA', W/2, 210);
+      ctx.fillStyle = '#5a7ea0'; ctx.font = '28px '+serif; ctx.fillText('This certifies that', W/2, 270);
+      ctx.fillStyle = ink; ctx.font = 'bold 78px '+serif; ctx.fillText(truncate(name, W-180), W/2, 380);
+      ctx.fillStyle = '#5a7ea0'; ctx.font = 'italic 38px '+serif; ctx.fillText('has completed the requirements of', W/2, 450);
+      ctx.fillStyle = ac; ctx.font = 'bold 46px '+serif; ctx.fillText(truncate(program, W-180), W/2, 520);
+      ctx.fillStyle = '#5a7ea0'; ctx.font = '32px '+serif; ctx.fillText('at ' + truncate(institution, W-180), W/2, 585);
+      ctx.fillStyle = '#8a9bb0'; ctx.font = '26px '+serif; ctx.fillText(date, W/2, 630);
+      ctx.strokeStyle = '#8a9bb0'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(W/2-200,660); ctx.lineTo(W/2-40,660); ctx.stroke();
+      ctx.fillStyle = '#8a9bb0'; ctx.font = '22px '+serif; ctx.fillText('Registrar', W/2-120, 685);
+    } else if(t.layout === 'modern'){
+      ctx.strokeStyle = '#e5e7eb'; ctx.lineWidth = 1; ctx.strokeRect(30,30,W-60,H-60);
+      ctx.textAlign = 'left';
+      ctx.fillStyle = ac; ctx.font = 'bold 15px '+sans; ctx.fillText('DIPLOMA', 70, 120);
+      ctx.fillStyle = '#9ca3af'; ctx.font = '15px '+sans; ctx.fillText('OF ' + institution.toUpperCase(), 70, 150);
+      ctx.strokeStyle = ac; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(70,180); ctx.lineTo(250,180); ctx.stroke();
+      ctx.fillStyle = ink; ctx.font = 'bold 64px '+sans; ctx.fillText(truncate(name, W-180), 70, 300);
+      ctx.fillStyle = '#6b7280'; ctx.font = '22px '+sans; ctx.fillText('has successfully completed', 70, 350);
+      ctx.fillStyle = ac; ctx.font = 'bold 34px '+serif; ctx.fillText(truncate(program, W-180), 70, 400);
+      ctx.fillStyle = '#9ca3af'; ctx.font = '18px '+sans; ctx.fillText(institution + '  ·  ' + date, 70, H-120);
+      ctx.fillStyle = ink; ctx.font = 'italic 20px '+sans; ctx.fillText('Registrar', 70, H-70);
+      ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(70,H-88); ctx.lineTo(300,H-88); ctx.stroke();
+    } else if(t.layout === 'minimal'){
+      ctx.strokeStyle = '#e5e7eb'; ctx.lineWidth = 1; ctx.strokeRect(40,40,W-80,H-80);
+      ctx.fillStyle = '#a1a1aa'; ctx.font = '13px '+sans; ctx.fillText('CERTIFICATE OF COMPLETION', W/2, 160);
+      ctx.fillStyle = ink; ctx.font = 'bold 96px '+sans; ctx.fillText(truncate(name, W-140), W/2, 360);
+      ctx.fillStyle = '#6b7280'; ctx.font = '20px '+sans; ctx.fillText('has completed', W/2, 430);
+      ctx.fillStyle = '#09090b'; ctx.font = 'bold 30px '+serif; ctx.fillText(truncate(program, W-180), W/2, 480);
+      ctx.fillStyle = '#a1a1aa'; ctx.font = '14px '+sans; ctx.fillText(institution.toUpperCase() + '  ·  ' + date, W/2, H-120);
     } else { // dark
-      ctx.strokeStyle = ac; ctx.lineWidth = 2; ctx.strokeRect(26,26,W-52,H-52);
-      ctx.strokeStyle = 'rgba(201,162,39,.4)'; ctx.lineWidth = 1; ctx.strokeRect(34,34,W-68,H-68);
+      ctx.strokeStyle = gold; ctx.lineWidth = 2; ctx.strokeRect(26,26,W-52,H-52);
+      ctx.strokeStyle = 'rgba(212,175,55,.35)'; ctx.lineWidth = 1; ctx.strokeRect(35,35,W-70,H-70);
+      ctx.fillStyle = gold; ctx.font = '26px '+serif; ctx.fillText('✦', W/2, 150);
+      ctx.fillStyle = gold; ctx.font = 'bold 58px '+serif; ctx.fillText('DIPLOMA', W/2, 230);
+      ctx.fillStyle = ink; ctx.font = '26px '+serif; ctx.fillText('This certifies that', W/2, 300);
+      ctx.fillStyle = ink; ctx.font = 'bold 74px '+serif; ctx.fillText(truncate(name, W-180), W/2, 400);
+      ctx.fillStyle = '#cbd5e1'; ctx.font = 'italic 34px '+serif; ctx.fillText('has completed the requirements of', W/2, 470);
+      ctx.fillStyle = gold; ctx.font = 'bold 42px '+serif; ctx.fillText(truncate(program, W-180), W/2, 530);
+      ctx.fillStyle = '#94a3b8'; ctx.font = '26px '+serif; ctx.fillText('at ' + truncate(institution, W-180), W/2, 585);
+      ctx.fillStyle = '#94a3b8'; ctx.font = '22px '+serif; ctx.fillText(date, W/2, 630);
     }
-
-    // seal / emblem
-    if(t.style === 'seal'){
-      ctx.fillStyle = ac; ctx.beginPath(); ctx.arc(W-110,110,46,0,Math.PI*2); ctx.fill();
-      ctx.fillStyle = '#fff'; ctx.font = 'bold 28px '+serif; ctx.fillText('★', W-110, 120);
-    } else if(t.style === 'formal'){
-      ctx.fillStyle = '#c9a227'; ctx.beginPath(); ctx.arc(W-110,110,46,0,Math.PI*2); ctx.fill();
-      ctx.fillStyle = '#fff'; ctx.font = 'bold 28px '+serif; ctx.fillText('★', W-110, 120);
-    } else if(t.style === 'minimal'){
-      ctx.fillStyle = ac; ctx.font = '26px '+serif; ctx.fillText('✦', W-110, 130);
-    } else {
-      ctx.fillStyle = ac; ctx.font = '26px '+serif; ctx.fillText('✦', W-110, 130);
-    }
-
-    var headY = (t.style === 'minimal') ? 150 : 200;
-    ctx.fillStyle = ac; ctx.font = 'bold 58px '+serif; ctx.fillText('DIPLOMA', W/2, headY);
-    ctx.fillStyle = dark ? '#cbd5e1' : '#5a7ea0'; ctx.font = '28px '+serif;
-    ctx.fillText('This certifies that', W/2, headY+60);
-    ctx.fillStyle = dark ? '#f1f5f9' : '#2c3e50'; ctx.font = 'bold 78px '+serif;
-    ctx.fillText(truncate(name, W-180), W/2, headY+170);
-    ctx.fillStyle = dark ? '#cbd5e1' : '#34495e'; ctx.font = 'italic 38px '+serif;
-    ctx.fillText('has successfully completed the requirements of', W/2, headY+240);
-    ctx.fillStyle = ac; ctx.font = 'bold 46px '+serif;
-    ctx.fillText(truncate(program, W-180), W/2, headY+310);
-    ctx.fillStyle = dark ? '#94a3b8' : '#5a7ea0'; ctx.font = '32px '+serif;
-    ctx.fillText('at ' + truncate(institution, W-180), W/2, headY+375);
-    ctx.fillStyle = dark ? '#94a3b8' : '#8a9bb0'; ctx.font = '26px '+serif;
-    ctx.fillText(date, W/2, headY+425);
-    ctx.strokeStyle = dark ? '#64748b' : '#8a9bb0'; ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.moveTo(W/2-200, headY+455); ctx.lineTo(W/2-40, headY+455); ctx.stroke();
-    ctx.fillStyle = dark ? '#94a3b8' : '#8a9bb0'; ctx.font = '22px '+serif;
-    ctx.fillText('Registrar', W/2-120, headY+480);
 
     var wm = document.getElementById('wmText');
-    if(locked){
-      drawWatermark(ctx, W, H, dark);
-      wm.textContent = '🔒 Free version — watermark will appear on download. Unlock to remove.';
-      wm.style.display = 'block';
-    } else { wm.style.display = 'none'; }
+    if(locked){ drawWatermark(ctx, W, H, dark); wm.textContent='🔒 Free version — watermark will appear on download. Unlock to remove.'; wm.style.display='block'; }
+    else { wm.style.display='none'; }
   }
 
   function showPaywall(){ document.getElementById('paywall').style.display = 'flex'; }
