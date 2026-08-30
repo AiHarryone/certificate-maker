@@ -199,7 +199,18 @@
     {id:'bloom',    name:'Watercolor',    premium:'bloom',    layout:'premium', bg:'#fdfbf7', ink:'#4a2f3d', accent:'#c27f8f', gold:'#c9a227', accentSoft:'#f3e3e7', bloom2:'#a7b8a4', bloom3:'#d9c6a9', serif:true, signature:'wash', unlocked:false},
     {id:'emerald',  name:'Emerald Royale',premium:'emerald',  layout:'premium', bg:'#0d3b2a', ink:'#f6f1e3', accent:'#c9a227', gold:'#d4af37', accentSoft:'#123c2d', serif:true,  signature:'laurel', unlocked:false},
     {id:'medal',    name:'Ribbon & Medal',premium:'medal',    layout:'premium', bg:'#fbf8f1', ink:'#1e2a44', accent:'#9f1d1d', gold:'#d4af37', accentSoft:'#f5e8e8', ribbonColor:'#9f1d1d', serif:true, signature:'medal', unlocked:false},
-    {id:'ceremony', name:'Ceremony',      premium:'ceremony', layout:'premium', bg:'#fdfbf6', ink:'#5b1f1f', accent:'#8c6a3f', gold:'#c9a227', accentSoft:'#f0e9dc', serif:true,  signature:'pediment', unlocked:false}
+    {id:'ceremony', name:'Ceremony',      premium:'ceremony', layout:'premium', bg:'#fdfbf6', ink:'#5b1f1f', accent:'#8c6a3f', gold:'#c9a227', accentSoft:'#f0e9dc', serif:true,  signature:'pediment', unlocked:false},
+    // ═══ Premium Collection Round 2 (certificate-only, customers pay for these) ═══
+    {id:'parchment', name:'Parchment',      premium:'parchment', layout:'premium', bg:'#efe0b8', ink:'#4a3520', accent:'#8c6a3f', gold:'#a8862d', accentSoft:'#ead9ad', serif:true,  signature:'seal', unlocked:false},
+    {id:'floral',    name:'Floral Frame',   premium:'floral',    layout:'premium', bg:'#fffdf9', ink:'#5c3a3a', accent:'#c27f8f', gold:'#d4af37', accentSoft:'#f6e9ec', serif:true,  signature:'garland', unlocked:false},
+    {id:'geometric', name:'Geometric',      premium:'geometric', layout:'premium', bg:'#ffffff', ink:'#1a2333', accent:'#e08a3c', gold:'#d4af37', accentSoft:'#fbeeda', serif:false, signature:'pattern', unlocked:false},
+    {id:'dawn',      name:'Gradient Dawn',  premium:'gradientDawn', layout:'premium', bg:'#a5c8e4', gd2:'#f3d8d8', ink:'#ffffff', accent:'#ffffff', gold:'#d4af37', accentSoft:'#dceaf7', serif:true, signature:'gradient', unlocked:false},
+    {id:'crimson',   name:'Regal Crimson',  premium:'crimson',   layout:'premium', bg:'#7a1220', ink:'#f6ecdf', accent:'#c9a227', gold:'#d4af37', accentSoft:'#5a0e18', serif:true,  signature:'crown', unlocked:false, dark:true},
+    {id:'heritage',  name:'Heritage',       premium:'heritage',  layout:'premium', bg:'#fdf9f0', ink:'#27472e', accent:'#2e5d3a', gold:'#c9a227', accentSoft:'#e9efe4', serif:true,  signature:'double-border', unlocked:false},
+    {id:'nouveau',   name:'Art Nouveau',    premium:'artNouveau',layout:'premium', bg:'#fbf6ee', ink:'#1f4e4a', accent:'#c98b7a', gold:'#c9a227', accentSoft:'#e8eee9', serif:true,  signature:'swirl', unlocked:false},
+    {id:'rosegold',  name:'Rose Gold',      premium:'roseGold',  layout:'premium', bg:'#fdf1f3', ink:'#5a3c3a', accent:'#c98b82', gold:'#d4af37', accentSoft:'#f6e4e6', serif:true,  signature:'rose', unlocked:false},
+    {id:'slab',      name:'Modern Slab',    premium:'modernSlab',layout:'premium', bg:'#ffffff', ink:'#111827', accent:'#2563eb', gold:'#d4af37', accentSoft:'#e6edfb', serif:false, signature:'band', unlocked:false},
+    {id:'platinum',  name:'Platinum',       premium:'platinum',  layout:'premium', bg:'#1c2330', ink:'#f0f2f5', accent:'#c2c8d0', gold:'#9aa2ad', accentSoft:'#2a3344', serif:true,  signature:'silver', unlocked:false, dark:true}
   ];
   var FREE_TPLS = 1; // number of free templates
   var PREMIUM_PRICE = 9.99;
@@ -431,7 +442,7 @@
     // watermark if locked — full-page repeated diagonal
     var wm = document.getElementById('wmText');
     if(locked){
-      drawWatermark(ctx, W, H, t.layout === 'dark' || t.premium === 'emerald');
+      drawWatermark(ctx, W, H, t.layout === 'dark' || t.premium === 'emerald' || t.premium === 'crimson' || t.premium === 'platinum');
       wm.textContent = '🔒 Free version — watermark will appear on download. Unlock to remove.';
       wm.style.display = 'block';
     } else {
