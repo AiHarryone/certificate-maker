@@ -40,6 +40,8 @@ HEAD = '''<!DOCTYPE html>
   .hero{text-align:center;padding:46px 0 26px;}
   .hero h1{font-size:34px;color:#2c3e50;margin-bottom:12px;letter-spacing:-.5px;}
   .hero p{font-size:17px;color:#7a8ea8;max-width:640px;margin:0 auto;}
+  .hero .answer{background:#fff;border-left:4px solid #3a7bd5;border-radius:8px;padding:12px 16px;max-width:680px;margin:16px auto 0;text-align:left;font-size:15px;color:#2c3e50;box-shadow:0 4px 14px rgba(58,123,213,.1);}
+  .hero .answer b{color:#3a7bd5;}
   .hero .sub{font-size:14px;color:#93a5bd;margin-top:12px;}
   section{padding:26px 0;}
   h2{color:#3a7bd5;margin-bottom:14px;font-size:24px;}
@@ -85,7 +87,8 @@ HEAD = '''<!DOCTYPE html>
   <div class="hero">
     <h1>{h1}</h1>
     <p>{hero_p}</p>
-    <p class="sub">Free in your browser · No signup · Printable</p>
+    <p class="answer"><b>Short answer:</b> {tldr}</p>
+    <p class="sub">Free in your browser · No signup · Printable · Updated 2026</p>
   </div>
 
   {sections}
@@ -104,7 +107,8 @@ HEAD = '''<!DOCTYPE html>
 </div>
 
 <footer>
-  Made for teachers, trainers and creators who value beautiful certificates. Questions? Ai_harryone@outlook.com · <a href="{base}/index.html">Certificate Maker</a> · <a href="{base}/privacy.html">Privacy</a> · <a href="{base}/terms.html">Terms</a>
+  <p>Made for teachers, trainers and creators who value beautiful certificates. Questions? Ai_harryone@outlook.com · <a href="{base}/index.html">Certificate Maker</a> · <a href="{base}/privacy.html">Privacy</a> · <a href="{base}/terms.html">Terms</a></p>
+  <p style="margin-top:8px;font-size:12px;opacity:.75;">Last updated: August 30, 2026</p>
 </footer>
 </body>
 </html>
@@ -1331,9 +1335,13 @@ PAGES = [
 
 def render(page):
     html = HEAD
+    ld = _ld_for(page)
+    extra = '{"@context":"https://schema.org","@type":"WebPage","name":"%s","dateModified":"2026-08-30T00:00:00Z","datePublished":"2026-08-30T00:00:00Z"}' % page['title'].replace('"', '\\"')
+    ld_block = ('[%s,%s]' % (ld, extra)) if ld else extra
     subs = {
         '{title}': page['title'], '{meta}': page['meta'], '{slug}': page['slug'],
-        '{ldjson}': _ld_for(page['sections']), '{h1}': page['h1'], '{hero_p}': page['hero_p'],
+        '{ldjson}': ld_block, '{h1}': page['h1'], '{hero_p}': page['hero_p'],
+        '{tldr}': page['meta'],
         '{sections}': '\n\n'.join(page['sections']),
         '{cta_h2}': page['cta_h2'], '{cta_p}': page['cta_p'],
     }
