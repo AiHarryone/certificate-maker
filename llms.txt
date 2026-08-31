@@ -1,0 +1,43 @@
+# Certificate Maker
+
+> Free online certificate generator: create professional award, completion, recognition and graduation certificates in your browser in 30 seconds. No design skills, no software, no signup. The first certificate is free; a one-time $9.99 unlocks all premium templates and watermark-free downloads.
+
+## Tools
+
+- [Certificate Maker](https://aiharryone.github.io/certificate-maker/): Generate and download a printable certificate from 26 templates (classic, victorian, gold seal, marble, and more) with customizable recipient, reason, colors and fonts.
+- [Certificate QR Maker](https://aiharryone.github.io/certificate-maker/certificate-qr-maker.html): Add a scannable QR code to any certificate for verification or event check-in.
+- [Invitation Card Maker](https://aiharryone.github.io/certificate-maker/invitation-card-maker.html): Design birthday, wedding and event invitation cards from 20+ templates.
+- [Name Tag Maker](https://aiharryone.github.io/certificate-maker/name-tag-maker.html): Print professional name tags and badges for events and conferences.
+- [Diploma Maker](https://aiharryone.github.io/certificate-maker/diploma-maker.html): Create formal academic diplomas with ornamental borders and seals.
+- [Business Card Maker](https://aiharryone.github.io/certificate-maker/business-card-maker.html): Design and print business cards with modern and classic styles.
+- [Flyer & Poster Maker](https://aiharryone.github.io/certificate-maker/flyer-poster-maker.html): Make flyers and posters for promotions, events and announcements.
+- [Thank You Card Maker](https://aiharryone.github.io/certificate-maker/thank-you-card-maker.html): Create elegant thank-you cards for customers and staff.
+- [Event Ticket Maker](https://aiharryone.github.io/certificate-maker/event-ticket-maker.html): Generate printable event tickets with QR, dates and seating.
+
+## Certificate Templates & Guides
+
+- [Award Certificate Template](https://aiharryone.github.io/certificate-maker/seo/award-certificate-template.html): Free award certificate template with wording to copy.
+- [Certificate of Achievement Template](https://aiharryone.github.io/certificate-maker/seo/certificate-of-achievement-template.html): Achievement certificate template + phrasing ideas.
+- [Course Completion Certificate Template](https://aiharryone.github.io/certificate-maker/seo/course-completion-certificate-template.html): Completion certificate for courses, training and workshops.
+- [Recognition Certificate Template](https://aiharryone.github.io/certificate-maker/seo/recognition-certificate-template.html): Employee and colleague recognition certificate.
+- [Graduation Certificate Template](https://aiharryone.github.io/certificate-maker/seo/graduation-certificate-template.html): Graduation and program-completion certificate.
+- [Participation Certificate Template](https://aiharryone.github.io/certificate-maker/seo/participation-certificate-template.html): Certificate for events, webinars and classes.
+- [Appreciation Certificate Template](https://aiharryone.github.io/certificate-maker/seo/appreciation-certificate-template.html): Thank-you and volunteer appreciation certificate.
+- [Printable Certificate Templates](https://aiharryone.github.io/certificate-maker/seo/printable-certificate-templates.html): Blank, print-ready certificate templates.
+- [How to Make a Certificate Online](https://aiharryone.github.io/certificate-maker/seo/how-to-make-a-certificate-online.html): Step-by-step guide to making a certificate in your browser.
+- [Employee of the Month Certificate](https://aiharryone.github.io/certificate-maker/seo/employee-of-the-month-certificate.html): Workplace recognition certificate.
+- [Teacher Appreciation Certificate](https://aiharryone.github.io/certificate-maker/seo/teacher-appreciation-certificate.html): Thank-you certificate for teachers.
+- [Volunteer Certificate Template](https://aiharryone.github.io/certificate-maker/seo/volunteer-certificate-template.html): Certificate for volunteer service.
+- [Retirement Certificate Template](https://aiharryone.github.io/certificate-maker/seo/retirement-certificate-template.html): Retirement appreciation certificate.
+- [Sports Award Certificate](https://aiharryone.github.io/certificate-maker/seo/sports-award-certificate.html): MVP, champion and sports participation certificate.
+
+## Pricing
+
+- Free: one certificate with a small watermark.
+- $9.99 one-time (no subscription): all premium templates, unlimited certificates, watermark-free downloads.
+
+## Resources
+
+- [Sitemap](https://aiharryone.github.io/certificate-maker/sitemap.xml)
+- [Privacy Policy](https://aiharryone.github.io/certificate-maker/privacy.html)
+- [Terms of Service](https://aiharryone.github.io/certificate-maker/terms.html)
