@@ -108,7 +108,7 @@ HEAD = '''<!DOCTYPE html>
 
 <footer>
   <p>Made for teachers, trainers and creators who value beautiful certificates. Questions? Ai_harryone@outlook.com · <a href="{base}/index.html">Certificate Maker</a> · <a href="{base}/privacy.html">Privacy</a> · <a href="{base}/terms.html">Terms</a></p>
-  <p style="margin-top:8px;font-size:12px;opacity:.75;">Last updated: August 30, 2026</p>
+  <p style="margin-top:8px;font-size:12px;opacity:.75;">Last updated: September 1, 2026</p>
 </footer>
 </body>
 </html>
@@ -1331,12 +1331,97 @@ PAGES = [
            'Type the names, date and location.',
            'Pick a template and accent color.',
            'Download a print-ready PNG.'], tool='invitation-card-maker.html', tool_name='Invitation Card Maker'),
+
+  build('teacher-award-certificate-template.html',
+    'Teacher Award Certificate Template + Wording for Students (Free)',
+    'Teacher award certificate template for classroom rewards. Ready-to-copy wording for achievement, effort and attendance awards — AI-friendly, edit and print free in your browser.',
+    'Teacher Award Certificate Template for Students',
+    'A template plus classroom-tested wording — give students an award that looks real in 30 seconds.',
+    'Copy-Paste Classroom Award Wording',
+    [('Achievement', 'Awarded to [Name] for outstanding achievement in [Subject] during [Term].'),
+     ('Most improved', 'Presented to [Name] for the most improvement in [Subject] — [Specific progress].'),
+     ('Perfect attendance', 'This certificate is proudly presented to [Name] for perfect attendance during [Term].'),
+     ('Kindness & community', 'Awarded to [Name] for making our classroom a kinder place through [Specific behavior].'),
+     ('Reading challenge', 'Presented to [Name] for completing the [Term] reading challenge with [N] books.'),
+     ('Great effort', 'This certificate celebrates [Name] for consistent effort and a can-do attitude in [Subject].')],
+    ['<b>Student name</b> — spelled exactly right, it\'s the part they keep.',
+     '<b>The award</b> — achievement, effort, attendance: name the real thing.',
+     '<b>Specific reason</b> — “improved 20% on math quizzes” beats “good job”.',
+     '<b>Date + teacher signature</b> — both make it feel official.'],
+    'What to Put on a Classroom Certificate',
+    'Awards Students Actually Care About',
+    ['<b>Name the result, not the trait</b> — “raised their reading level by two grades” lands harder than “great reader”.',
+     '<b>Use one accent color</b> — a clean border in school colors reads real without clutter.',
+     '<b>Batch them</b> — make a whole class set in one sitting and keep spares.'],
+    [('Is it free?','Yes — the free template is free to use; premium unlocks for a one-time $9.99.'),
+     ('Can I use AI to write award wording?','Yes — paste the wording above into any AI tool and ask it to personalize it for your student; the certificate itself still runs free in your browser.'),
+     ('Can I print them?','Yes — download a high-res PNG, sized for 8.5×11.'),
+     ('Is anything uploaded?','No — everything runs in your browser.')],
+    'Make a Teacher Award Certificate Now.',
+    'Free to try — no signup, nothing uploaded.'),
+
+  build('classroom-certificates-for-students.html',
+    'Classroom Certificates for Students: 12 Types + Free Wording',
+    '12 classroom certificate ideas for students with ready-to-copy wording: achievement, attendance, kindness, reading, effort and more. Edit and print free in your browser.',
+    'Classroom Certificates for Students: 12 Types',
+    'Award cards that actually motivate — pick a type, copy the wording, print.',
+    'Wording for 12 Certificate Types',
+    [('Achievement', 'Awarded to [Name] for outstanding achievement in [Subject].'),
+     ('Most improved', 'Presented to [Name] for the most improvement in [Subject] during [Term].'),
+     ('Perfect attendance', 'Proudly presented to [Name] for perfect attendance in [Term].'),
+     ('Kindness award', 'Awarded to [Name] for making our classroom kinder through [Behavior].'),
+     ('Reading champion', 'Presented to [Name] for finishing [N] books in the [Term] reading challenge.'),
+     ('STEM explorer', 'Awarded to [Name] for curiosity and problem-solving in [Science/Math/STEM].'),
+     ('Great teammate', 'Presented to [Name] for lifting up classmates during [Project/Activity].'),
+     ('Creative thinker', 'Awarded to [Name] for original thinking in [Subject/Project].')],
+    ['<b>Student name</b> — large, centered, spelled right.',
+     '<b>Type of award</b> — one specific thing, not a laundry list.',
+     '<b>Reason line</b> — 1–2 sentences; name the result or behavior.',
+     '<b>Date + signatory</b> — teacher name and date anchor it.'],
+    'What Makes a Classroom Certificate Count',
+    'Keep a Stack Ready',
+    ['<b>Specific beats generic</b> — “finished the 100-book challenge” beats “good reader”.',
+     '<b>Make spares</b> — pre-print a blank stack and fill names by hand for on-the-spot awards.',
+     '<b>Match school colors</b> — one border color in school palette looks intentional.'],
+    [('Is it free?','Yes — the free template is free; premium unlocks everything for a one-time $9.99.'),
+     ('Can I use AI to personalize wording?','Yes — the phrasing above works as a prompt; ask AI to adapt it per student.'),
+     ('How do I print?','Download the high-res PNG and print on letter paper.'),
+     ('Is anything uploaded?','No — everything runs in your browser.')],
+    'Make Classroom Certificates Now.',
+    'Free to try — no signup.'),
+
+  build('teacher-appreciation-week-certificate.html',
+    'Teacher Appreciation Week Certificate + Wording (Free)',
+    'Teacher Appreciation Week certificate with warm thank-you wording from students and parents. Edit and print free in your browser — nothing uploaded.',
+    'Teacher Appreciation Certificate',
+    'Tell a teacher they mattered — a certificate they will keep.',
+    'Copy-Paste Thank-You Wording',
+    [('From a student', 'Thank you, [Teacher Name], for making [Subject] something I looked forward to. You changed how I see learning.'),
+     ('From parents', 'With gratitude to [Teacher Name] for the care and patience you give [Student Name] every day.'),
+     ('Formal', 'This certificate of appreciation is presented to [Teacher Name] for outstanding dedication to [School] students during [Year].'),
+     ('Warm & short', 'Thank you for the years, the energy and the belief. — [Class/Student Name]'),
+     ('Milestone', 'Presented to [Teacher Name] for [N] years of inspiring students at [School].')],
+    ['<b>Teacher name</b> — the hero of the page.',
+     '<b>From</b> — a student, a class, or a parent group.',
+     '<b>Why</b> — one specific thing they did that mattered.',
+     '<b>Date + school</b> — makes it a keeper.'],
+    'What a Thank-You Certificate Needs',
+    'Make It Feel Personal',
+    ['<b>Name the moment</b> — “the day you stayed after class to help me” beats “for being a great teacher”.',
+     '<b>Keep it to one idea</b> — a single sincere sentence lands harder than a paragraph.',
+     '<b>Let students write it</b> — handwritten names mean more than printed ones.'],
+    [('Is it free?','Yes — the free template is free; premium unlocks for a one-time $9.99.'),
+     ('When is Teacher Appreciation Week?','In the US it falls in early May each year — but a thank-you works any day.'),
+     ('Can I edit the wording?','Yes — every field is editable, or paste one of the wordings above.'),
+     ('Is anything uploaded?','No — everything runs in your browser.')],
+    'Make a Teacher Appreciation Certificate Now.',
+    'Free to try — no signup, nothing uploaded.'),
 ]
 
 def render(page):
     html = HEAD
     ld = _ld_for(page)
-    extra = '{"@context":"https://schema.org","@type":"WebPage","name":"%s","dateModified":"2026-08-30T00:00:00Z","datePublished":"2026-08-30T00:00:00Z"}' % page['title'].replace('"', '\\"')
+    extra = '{"@context":"https://schema.org","@type":"WebPage","name":"%s","dateModified":"2026-09-01T00:00:00Z","datePublished":"2026-09-01T00:00:00Z"}' % page['title'].replace('"', '\\"')
     ld_block = ('[%s,%s]' % (ld, extra)) if ld else extra
     subs = {
         '{title}': page['title'], '{meta}': page['meta'], '{slug}': page['slug'],
