@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="msvalidate.01" content="E62785F51D89A3BD3AFBB2BC2BB07BF9">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Report Card Comment Generator — Free AI-Assisted Comments for Teachers</title>
+<meta name="description" content="Generate professional report card comments for students in seconds: pick a grade level and traits, get ready-to-copy comments with an opening, specifics and a next-step. Free in your browser.">
+<link rel="canonical" href="https://aiharryone.github.io/certificate-maker/report-card-comment-generator.html">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Trebuchet MS','Segoe UI',sans-serif;background:#f4f7fb;color:#2c3e50;line-height:1.6;}
+  header{background:linear-gradient(135deg,#3a7bd5,#00d2ff);color:#fff;padding:20px 0;margin-bottom:30px;}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 20px;}
+  .nav{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;}
+  .logo{font-weight:bold;font-size:22px;}
+  .nav a{color:#fff;text-decoration:none;font-weight:bold;margin-left:20px;}
+  .nav a:hover{text-decoration:underline;}
+  h1{color:#2c3e50;margin-bottom:10px;font-size:30px;}
+  .sub{color:#7a8ea8;margin-bottom:24px;font-size:16px;}
+  .layout{display:grid;grid-template-columns:1fr 380px;gap:30px;align-items:start;}
+  @media(max-width:900px){.layout{grid-template-columns:1fr;}}
+  .panel{background:#fff;border-radius:14px;padding:22px;box-shadow:0 4px 14px rgba(58,123,213,.1);}
+  .panel h2{color:#3a7bd5;font-size:18px;margin-bottom:6px;}
+  .panel .hint{color:#7a8ea8;font-size:13px;margin-bottom:10px;}
+  label{display:block;font-weight:bold;margin:12px 0 5px;color:#34495e;font-size:14px;}
+  input[type=text],select{width:100%;padding:10px;border:2px solid #d6e2f0;border-radius:8px;font-size:14px;background:#fff;font-family:inherit;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;}
+  .chip{background:#f4f7fb;border:2px solid #d6e2f0;border-radius:20px;padding:7px 14px;font-size:13px;cursor:pointer;transition:.15s;user-select:none;}
+  .chip:hover{border-color:#3a7bd5;background:#eef5ff;}
+  .chip.active{background:#3a7bd5;border-color:#3a7bd5;color:#fff;}
+  .btn{display:inline-block;background:#3a7bd5;color:#fff;border:none;padding:12px 26px;border-radius:30px;font-size:16px;font-weight:bold;cursor:pointer;margin-top:16px;margin-right:10px;}
+  .btn:hover{background:#2c6ab3;}
+  .btn.green{background:#27ae60;}
+  .btn.green:hover{background:#1f9b52;}
+  .btn.ghost{background:#fff;color:#3a7bd5;border:2px solid #3a7bd5;}
+  .btn.ghost:hover{background:#eef5ff;}
+  .out-wrap{background:#fff;border-radius:14px;padding:22px;box-shadow:0 4px 14px rgba(58,123,213,.1);}
+  .out-wrap h2{color:#3a7bd5;font-size:18px;margin-bottom:6px;}
+  .comment{background:#f8fafc;border:1px solid #e2ecf7;border-left:4px solid #3a7bd5;border-radius:10px;padding:16px;margin-top:12px;position:relative;}
+  .comment p{font-size:15px;color:#34495e;}
+  .comment .copy{position:absolute;top:10px;right:10px;background:#3a7bd5;color:#fff;border:none;border-radius:6px;padding:5px 12px;font-size:12px;cursor:pointer;}
+  .comment .copy:hover{background:#2c6ab3;}
+  .cta{margin-top:22px;background:linear-gradient(135deg,#27ae60,#3a7bd5);border-radius:14px;padding:20px;color:#fff;text-align:center;}
+  .cta h3{margin-bottom:8px;font-size:18px;}
+  .cta a{display:inline-block;margin-top:10px;background:#fff;color:#2c6ab3;font-weight:bold;text-decoration:none;padding:10px 22px;border-radius:30px;}
+  footer{background:#2c3e50;color:#a8bdc9;padding:24px 0;text-align:center;font-size:13px;margin-top:50px;}
+  footer a{color:#7ec8e3;text-decoration:none;}
+  footer p{margin-top:8px;font-size:12px;opacity:.75;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="logo">Certificate Maker</div>
+    <nav>
+      <a href="https://aiharryone.github.io/certificate-maker/">Home</a>
+      <a href="https://aiharryone.github.io/certificate-maker/thank-you-card-maker.html">Thank You Cards</a>
+      <a href="https://aiharryone.github.io/certificate-maker/certificate-of-completion-template.html">Completion</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <h1>Report Card Comment Generator</h1>
+  <p class="sub">AI-assisted comments for report cards: pick the grade level and a few traits, get a professional, ready-to-copy comment in seconds. Free in your browser — nothing uploaded.</p>
+
+  <div class="layout">
+    <div class="panel">
+      <h2>Student &amp; subject</h2>
+      <p class="hint">Comments are written for one student at a time.</p>
+      <label>Student name</label>
+      <input type="text" id="name" placeholder="e.g. Ava">
+      <div class="row" style="display:flex;gap:10px;">
+        <div style="flex:1;"><label>Subject</label>
+          <select id="subject">
+            <option>Reading</option><option>Writing</option><option>Math</option>
+            <option>Science</option><option>Social Studies</option><option>Art</option>
+            <option>Music</option><option>PE</option><option>General</option>
+          </select>
+        </div>
+        <div style="flex:1;"><label>Grade level</label>
+          <select id="grade">
+            <option value="A">A · Excellent</option>
+            <option value="B" selected>B · Good</option>
+            <option value="C">C · Satisfactory</option>
+            <option value="D">D · Needs support</option>
+          </select>
+        </div>
+      </div>
+
+      <label>Traits (pick 1–3)</label>
+      <div class="chips" id="chips"></div>
+
+      <button class="btn green" onclick="generate()">Generate comments</button>
+      <button class="btn ghost" onclick="generate(true)">New variation</button>
+    </div>
+
+    <div class="out-wrap">
+      <h2>Your comments</h2>
+      <p class="hint">Three variations — copy the one you like, or refresh for new phrasing.</p>
+      <div id="output"></div>
+      <div class="cta">
+        <h3>Turn a comment into an award</h3>
+        <p>Print a matching certificate to hand out with the report card.</p>
+        <a href="https://aiharryone.github.io/certificate-maker/">Make an Award Certificate</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <a href="https://aiharryone.github.io/certificate-maker/">Certificate Maker</a> · Report Card Comment Generator ·
+    <a href="https://aiharryone.github.io/certificate-maker/seo/teacher-award-certificate-template.html">Teacher Award Certificates</a>
+    <p>Last updated: September 1, 2026 · Free in your browser · No signup · Nothing uploaded</p>
+  </div>
+</footer>
+
+<script>
+// ---------- 措辞引擎 (纯本地规则组合) ----------
+const TRAITS = {
+  hardworking: 'arrives ready to learn and puts consistent, careful effort into every assignment.',
+  attentive: 'listens closely and stays focused during lessons, which shows in the quality of their questions.',
+  independent: 'works independently and takes ownership of their own learning without prompting.',
+  creative: 'brings original, thoughtful ideas to [subject] and is not afraid to try a new approach.',
+  teamwork: 'collaborates well with classmates and lifts the group without needing to be the loudest voice.',
+  initiative: 'shows initiative — they often go a step beyond what is asked and seek out ways to improve.',
+  improving: 'has shown steady, measurable improvement this term and should be genuinely proud of the progress.',
+  quiet: 'contributes thoughtfully in small groups and is beginning to find their voice in class discussions.',
+  needs_encouragement: 'responds well to encouragement and would benefit from small, consistent wins to build confidence.',
+  struggles_focus: 'is learning to manage their focus during independent work — short, structured checkpoints help.',
+  rushes: 'sometimes rushes through tasks; slowing down to check their work makes a real difference.',
+  strong_reading: 'is a confident reader who makes strong connections between the text and their own experience.',
+  strong_math: 'grasps new math concepts quickly and can explain their reasoning clearly.'
+};
+const OPENER = {
+  A: ['[name] is an outstanding student in [subject], consistently producing high-quality work.',
+      '[name] has had a truly excellent term in [subject] and sets a strong example for the class.',
+      'It is a pleasure to teach [name] — their work in [subject] this term has been exceptional.'],
+  B: ['[name] is a solid, dependable student in [subject] who is making good progress.',
+      '[name] has had a good term in [subject] and continues to build on their strengths.',
+      'It has been a positive term for [name] in [subject]; they are developing well.'],
+  C: ['[name] is working toward meeting expectations in [subject] and is showing signs of progress.',
+      '[name] has made some progress in [subject] this term and continues to develop.',
+      'In [subject], [name] is on a path of steady development, though there is room to grow.'],
+  D: ['[name] is currently working below grade level in [subject], and with targeted support they are beginning to close the gap.',
+      'This term has been challenging for [name] in [subject], but they are showing a willingness to improve.',
+      '[name] needs continued support in [subject]; with consistent practice, progress is within reach.']
+};
+const CLOSER = {
+  A: ['My goal is to keep challenging [them] with extension work so the growth continues.',
+      'I look forward to seeing what [name] achieves next term.',
+      'With this trajectory, [name] is well prepared for the next level of challenge.'],
+  B: ['A small focus on [next step] would help [name] move from good to great.',
+      'Continuing to [practice|review] at home will keep the momentum going.',
+      'I would love to see [name] take on one stretch goal before the next report.'],
+  C: ['Daily [practice|review] at home would make a meaningful difference.',
+      'Setting one small, achievable goal each week will help [name] build confidence.',
+      'A consistent homework routine will help [name] consolidate what we cover in class.'],
+  D: ['A short daily practice routine, even ten minutes, would significantly help [name] catch up.',
+      'Partnering on a clear plan will give [name] the structure they need to progress.',
+      'I recommend [name] attend extra help sessions so we can close the gap together.']
+};
+const SUGGEST = {
+  Reading: 'a short daily reading routine', Writing: 'planning before writing', Math: 'daily math facts practice',
+  Science: 'reviewing vocabulary before each unit', 'Social Studies': 'talking through current events at home',
+  Art: 'keeping a sketchbook', Music: 'a few minutes of daily practice', PE: 'setting a personal fitness goal',
+  General: 'one small daily goal'
+};
+function pick(a){return a[Math.floor(Math.random()*a.length)];}
+function fill(s,name,subject,he){
+  return s.replace(/\[name\]/g,name).replace(/\[subject\]/g,subject.toLowerCase())
+          .replace(/\[them\]/g,he?'him':'her').replace(/\[next step\]/g,SUGGEST[subject]||'a specific goal')
+          .replace(/\[practice\|review\]/g,Math.random()<.5?'practice':'review');
+}
+function makeComment(name,subject,grade,traits,he){
+  const parts=[];
+  parts.push(fill(pick(OPENER[grade]),name,subject,he));
+  const used=[];
+  traits.slice(0,2).forEach(t=>{
+    let s=TRAITS[t]; if(s.includes('[subject]')) s=s.replace('[subject]',subject.toLowerCase());
+    const prefix=pick(['','Also, ','[name] ','In particular, ']).replace('[name] ',name+' ');
+    parts.push(prefix.charAt(0).toUpperCase()+prefix.slice(1)+s.replace(/^[a-z]/,c=>c.toUpperCase()));
+  });
+  parts.push(fill(pick(CLOSER[grade]),name,subject,he));
+  return parts.join(' ');
+}
+// 初始化
+(function(){
+  const keys=Object.keys(TRAITS);
+  const box=document.getElementById('chips');
+  keys.forEach(k=>{
+    const d=document.createElement('div');
+    d.className='chip';
+    d.textContent=k.replace(/_/g,' ');
+    d.dataset.k=k;
+    d.onclick=()=>{d.classList.toggle('active');};
+    box.appendChild(d);
+  });
+})();
+function generate(variation){
+  const name=document.getElementById('name').value.trim()||'Ava';
+  const subject=document.getElementById('subject').value;
+  const grade=document.getElementById('grade').value;
+  const he=Math.random()<.5;
+  const traits=[...document.querySelectorAll('#chips .chip.active')].map(c=>c.dataset.k);
+  const out=document.getElementById('output');
+  out.innerHTML='';
+  for(let i=0;i<3;i++){
+    const c=document.createElement('div');
+    c.className='comment';
+    const p=document.createElement('p');
+    p.textContent=makeComment(name,subject,grade,traits,he);
+    const b=document.createElement('button');
+    b.className='copy';
+    b.textContent='Copy';
+    b.onclick=()=>{navigator.clipboard.writeText(p.textContent).then(()=>{b.textContent='Copied ✓';setTimeout(()=>b.textContent='Copy',1400);});};
+    c.appendChild(p);c.appendChild(b);
+    out.appendChild(c);
+  }
+}
+generate();
+</script>
+</body>
+</html>
