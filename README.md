@@ -70,6 +70,8 @@ Yes — anything you create is yours to use, print and distribute.
 
 ## 💡 Also built by the same person
 
+- 🎃 [TrendSnap](https://aiharryone.github.io/trendsnap/) — free Halloween Invitation Maker with 20 hand-drawn templates, in your browser, nothing uploaded
+
 - [PixelFix](https://aiharryone.github.io/pixelfix/) — 9 free browser photo tools
 - [KDP Launch Kit](https://aiharryone.github.io/kdp-launch-kit/) — free tools for Amazon KDP self-publishers
 
